@@ -29,6 +29,14 @@ return [
     */
 
     'disks' => [
+        'admin' => [
+            'driver' => 'local',
+            'root' => public_path('uploads'),
+            'url' => env('APP_URL') . '/uploads',
+            'serve' => true,
+            'throw' => false,
+            'report' => false,
+        ],
         'assets' => [
             'driver' => 'local',
             'root' => public_path('assets'),
