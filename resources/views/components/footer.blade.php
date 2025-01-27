@@ -1,47 +1,78 @@
-<footer class="bg-gray-800 text-white pt-8">
-    <div class="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div>
-            <h3 class="font-bold text-lg mb-2">О компании</h3>
-            <hr class="border-gray-600 mb-2">
-            <p>{{ $company->name }}</p>
-            <p>{{ $company->description }}</p>
-            <p>Телефоны:</p>
-            <ul class="space-y-1">
-                @foreach ($company->phones as $phone)
-                    <li class="flex items-center space-x-2">
-                        <i class="mdi mdi-phone"></i>
-                        <a href="tel:{{ $phone }}" class="text-white underline">{{ $phone }}</a>
-                    </li>
-                @endforeach
-            </ul>
+<footer class="bg-gray-900">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="space-y-4">
+                <h3 class="text-indigo-400 font-semibold text-lg">О компании</h3>
+                <div class="text-gray-400 space-y-2">
+                    <p class="font-medium text-white">{{ $company->name }}</p>
+                    <p class="text-sm">{{ $company->description }}</p>
+                    <div class="space-y-2">
+                        <p class="text-indigo-400 font-medium">Телефоны:</p>
+                        <ul class="space-y-2">
+                            @foreach ($company->phones as $phone)
+                                <li>
+                                    <a href="tel:{{ $phone }}" class="inline-flex items-center text-gray-400 hover:text-white transition-colors duration-200">
+                                        <span class="mdi mdi-phone text-indigo-400 mr-2"></span>
+                                        {{ $phone }}
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    <div>
+                        <a href="mailto:{{ $company->email }}" class="inline-flex items-center text-gray-400 hover:text-white transition-colors duration-200">
+                            <span class="mdi mdi-email text-indigo-400 mr-2"></span>
+                            {{ $company->email }}
+                        </a>
+                    </div>
+                </div>
+            </div>
             
-            <p>Email: <a href="mailto:{{ $company->email }}" class="text-white underline">{{ $company->email }}</a></p>
-        </div>
-        <div>
-            <h3 class="font-bold text-lg mb-2">Ссылки</h3>
-            <hr class="border-gray-600 mb-2">
-            <ul>
-                <li><a href="/about" class="text-white  hover:text-gray-400">О нас</a></li>
-                <li><a href="/services" class="text-white  hover:text-gray-400">Услуги</a></li>
-                <li><a href="/cooperation" class="text-white  hover:text-gray-400">Сотрудничество</a></li>
-                <li><a href="/contacts" class="text-white  hover:text-gray-400">Контакты</a></li>
-            </ul>
-        </div>
-        <div>
-            <h3 class="font-bold text-lg mb-2">Социальные сети</h3>
-            <hr class="border-gray-600 mb-2">
-            <div class="block space-y-2">
-                @foreach ($company->socials as $social)
-                <a href="{{ $social['url'] }}" class="block text-white hover:text-gray-400">{{ $social['title'] }}</a>
-                @endforeach
+            <div class="space-y-4">
+                <h3 class="text-indigo-400 font-semibold text-lg">Ссылки</h3>
+                <ul class="space-y-2">
+                    <li>
+                        <a href="/about" class="inline-flex items-center text-gray-400 hover:text-white transition-colors duration-200">
+                            <span class="mdi mdi-information mr-2"></span>О нас
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/services" class="inline-flex items-center text-gray-400 hover:text-white transition-colors duration-200">
+                            <span class="mdi mdi-tools mr-2"></span>Услуги
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/cooperation" class="inline-flex items-center text-gray-400 hover:text-white transition-colors duration-200">
+                            <span class="mdi mdi-handshake mr-2"></span>Сотрудничество
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/contacts" class="inline-flex items-center text-gray-400 hover:text-white transition-colors duration-200">
+                            <span class="mdi mdi-contacts mr-2"></span>Контакты
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="space-y-4">
+                <h3 class="text-indigo-400 font-semibold text-lg">Социальные сети</h3>
+                <div class="space-y-2">
+                    @foreach ($company->socials as $social)
+                        <a href="{{ $social['url'] }}" class="inline-flex items-center text-gray-400 hover:text-white transition-colors duration-200">
+                            <span class="mdi mdi-{{ strtolower($social['title']) }} mr-2"></span>
+                            {{ $social['title'] }}
+                        </a>
+                    @endforeach
+                </div>
             </div>
         </div>
     </div>
-    <div class="bg-gray-700 py-4 mt-8">
-        <div class="mx-auto container">
-            <p class="text-sm">© {{ date('Y') }} {{ $company->name }}. Все права защищены.</p>
+    
+    <div class="border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <p class="text-sm text-gray-400 text-center">
+                &copy; {{ date('Y') }} {{ $company->name }}. Все права защищены.
+            </p>
         </div>
     </div>
-    
 </footer>
-

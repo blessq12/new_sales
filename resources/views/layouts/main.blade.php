@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" class="h-full scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,11 +9,13 @@
     @vite('resources/js/app.js')
     @vite('resources/css/app.css')
 </head>
-<body>
-    <x-header></x-header>
-    <main id="app">
-        @yield('content')
-    </main>
-    <x-footer></x-footer>
+<body class="h-full bg-gray-50 text-gray-900 antialiased">
+    <div class="min-h-full flex flex-col">
+        <x-header></x-header>
+        <main id="app" class="flex-grow">
+            @yield('content')
+        </main>
+        <x-footer></x-footer>
+    </div>
 </body>
 </html>
