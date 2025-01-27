@@ -24,10 +24,22 @@ class MainController extends Controller
     }
     public function certificates()
     {
-        return view('main.certificates');
+        $doc_dir = public_path('assets/images/docs');
+        $files = scandir($doc_dir);
+        $files = array_filter($files, function ($file) {
+            return $file !== '.' && $file !== '..';
+        });
+
+        return view('main.certificates', [
+            'files' => $files,
+        ]);
     }
     public function contacts()
     {
         return view('main.contacts');
+    }
+    public function privacy()
+    {
+        return view('main.privacy');
     }
 }
