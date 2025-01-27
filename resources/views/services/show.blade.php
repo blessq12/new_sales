@@ -4,17 +4,21 @@
 @section('description', $service->description)
 
 @section('content')
-    <section class="py-5">
-        <div class="container">
-            <h1 class="fw-bold">{{ $service->name }}</h1>
-            <p>{{ $service->description }}</p>
+    <x-hero-banner
+        :image="Storage::disk('uploads')->url($service->image)"
+        :title="$service->name"
+        :description="$service->description"
+        :breadcrumbs="[
+            ['title' => 'Услуги', 'url' => route('services')],
+            ['title' => $service->name, 'url' => route('services.show', $service->slug)],
+        ]"
+    ></x-hero-banner>
 
-            <img src="{{ Storage::disk('uploads')->url($service->image) }}" alt="{{ $service->name }}">
-        </div>
-    </section>
-    <section class="py-5">
-        <div class="container">
+    <section class="py-20">
+        <section class="py-5">
+        <div class="container mx-auto">
             {!! $service->content !!}
         </div>
     </section>
+    
 @endsection
