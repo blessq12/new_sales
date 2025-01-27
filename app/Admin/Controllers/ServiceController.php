@@ -7,6 +7,7 @@ use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
+use Illuminate\Support\Str;
 
 class ServiceController extends AdminController
 {
@@ -14,18 +15,18 @@ class ServiceController extends AdminController
     {
         $grid = new Grid(new Service);
         $grid->column('id', __('ID'));
+        $grid->column('image', __('Изображение'))->image('', 100, 100);
         $grid->column('name', __('Название'));
         $grid->column('description', __('Описание'))->limit(30);
-        // $grid->column('content', __('Описание'))->limit(30);
-        $grid->column('image', __('Изображение'))->image();
-        $grid->column('price', __('Цена'));
-        // $grid->column('prefix', __('Префикс'));
+        $grid->column('price', __('Цена'))->display(function ($value) {
+            return $this->prefix . ' ' . $value;
+        });
         $grid->column('slug', __('Слаг'));
 
-        $grid->column('created_at', __('Создано'))->as(function ($value) {
+        $grid->column('created_at', __('Создано'))->display(function ($value) {
             return \Carbon\Carbon::parse($value)->format('d.m.Y H:i');
         });
-        $grid->column('updated_at', __('Обновлено'))->as(function ($value) {
+        $grid->column('updated_at', __('Обновлено'))->display(function ($value) {
             return \Carbon\Carbon::parse($value)->format('d.m.Y H:i');
         });
         return $grid;
@@ -48,13 +49,31 @@ class ServiceController extends AdminController
     protected function form()
     {
         $form = new Form(new Service);
-        $form->text('slug', __('Слаг'))->required();
+        $form->display('slug', __('Слаг'));
         $form->text('name', __('Название'))->required();
-        $form->textarea('description', __('Описание'))->required();
-        $form->image('image', __('Изображение'))->required();
+        $form->hidden('description', __('Описание'));
+        $form->image('image', __('Изображение'))
+            ->uniqueName()
+            ->move('services')
+            ->resize(1024, null, function ($constraint) {
+                $constraint->aspectRatio();
+            })
+            ->encode('webp', 80)
+            ->required();
         $form->text('prefix', __('Префикс'));
         $form->text('price', __('Цена'))->required();
-        $form->textarea('content', __('Контент страницы'), ['class' => 'content-editor']);
+        $form->textarea('content', __('Контент страницы'))->addElementClass('content-editor');
+
+        $form->display('created_at', __('Создано'));
+        $form->display('updated_at', __('Обновлено'));
+
+        $form->saving(function (Form $form) {
+            $form->slug = Str::slug($form->name);
+            $form->description = Str::limit(
+                strip_tags($form->content),
+                160
+            );
+        });
         return $form;
     }
 }

@@ -1,8 +1,8 @@
 <?php
 
 use Encore\Admin\Form;
-use App\Admin\Extensions\Form\CKEditor;
 
 
 Form::forget(['map', 'editor']);
-Admin::js('/vendor/admin.js');
+Admin::js('/assets/js/tinymce/tinymce.min.js');
+Admin::js('/assets/js/admin.js');

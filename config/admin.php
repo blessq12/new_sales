@@ -2,6 +2,11 @@
 
 return [
 
+    'header' => [
+        'scripts' => [
+            'tinymce' => '<script src="/assets/js/tinymce/tinymce.min.js"></script>',
+        ],
+    ],
     /*
     |--------------------------------------------------------------------------
     | Laravel-admin name
