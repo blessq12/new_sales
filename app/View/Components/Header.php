@@ -29,7 +29,7 @@ class Header extends Component
         return \App\Models\Service::all();
     }
 
-    public function company(): Company
+    public function company()
     {
         return \App\Models\Company::first();
     }

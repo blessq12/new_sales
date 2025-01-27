@@ -101,6 +101,84 @@
         </div>
     </section>
 
+    <!-- Отзывы -->
+    <section class="py-24 bg-white">
+        <div class="mx-auto max-w-7xl px-6 lg:px-8">
+            <div class="mx-auto max-w-2xl lg:text-center">
+                <h2 class="text-base font-semibold leading-7 text-indigo-600">Отзывы клиентов</h2>
+                <p class="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+                    Что говорят о нас клиенты
+                </p>
+                <p class="mt-6 text-lg leading-8 text-gray-600">
+                    Более 1000 довольных клиентов доверяют нам свои сантехнические работы
+                </p>
+            </div>
+
+            <div class="mx-auto mt-16 grid max-w-2xl grid-cols-1 grid-rows-1 gap-8 text-sm leading-6 text-gray-900 sm:mt-20 sm:grid-cols-2 xl:mx-0 xl:max-w-none xl:grid-cols-3">
+                @php
+                    $reviews = [
+                        [
+                            'name' => 'Анна Петрова',
+                            'date' => '15.01.2025',
+                            'rating' => 5,
+                            'text' => 'Отличная работа! Мастер пришел вовремя, быстро определил проблему и устранил течь. Очень довольна качеством работы и профессионализмом.',
+                            'service' => 'Устранение протечки',
+                            'avatar' => 'https://images.unsplash.com/photo-1494790108377-be9c29b29330'
+                        ],
+                        [
+                            'name' => 'Михаил Иванов',
+                            'date' => '20.01.2025',
+                            'rating' => 5,
+                            'text' => 'Заказывал установку водонагревателя. Сделали всё аккуратно, быстро и по разумной цене. Уже год прошел - всё работает отлично!',
+                            'service' => 'Установка водонагревателя',
+                            'avatar' => 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d'
+                        ],
+                        [
+                            'name' => 'Елена Сидорова',
+                            'date' => '25.01.2025',
+                            'rating' => 5,
+                            'text' => 'Обратилась по поводу замены смесителя. Мастер приехал с полным набором инструментов, работу выполнил качественно. Очень довольна результатом!',
+                            'service' => 'Замена смесителя',
+                            'avatar' => 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80'
+                        ],
+                    ];
+                @endphp
+
+                @foreach($reviews as $review)
+                    <div class="rounded-2xl bg-white p-6 ring-1 ring-gray-200 hover:shadow-md transition-all duration-200">
+                        <div class="flex items-center gap-x-4 mb-4">
+                            <img class="h-12 w-12 flex-none rounded-full bg-gray-50 object-cover" src="{{ $review['avatar'] }}" alt="{{ $review['name'] }}">
+                            <div>
+                                <div class="font-semibold text-gray-900">{{ $review['name'] }}</div>
+                                <div class="text-gray-600">{{ $review['date'] }}</div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center mb-2">
+                            @for($i = 0; $i < $review['rating']; $i++)
+                                <span class="mdi mdi-star text-yellow-400"></span>
+                            @endfor
+                        </div>
+
+                        <div class="text-sm text-gray-900 mb-4">
+                            <span class="font-semibold">Услуга:</span> {{ $review['service'] }}
+                        </div>
+
+                        <blockquote class="text-gray-600 italic">
+                            "{{ $review['text'] }}"
+                        </blockquote>
+                    </div>
+                @endforeach
+            </div>
+
+            <div class="mt-16 flex justify-center">
+                <a href="javascript:void(0)" class="rounded-xl bg-indigo-600 px-6 py-3 text-lg font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-all duration-200 hover:scale-105">
+                    Смотреть все отзывы
+                </a>
+            </div>
+        </div>
+    </section>
+
     <!-- Контакты -->
     <section class="relative isolate overflow-hidden bg-white py-24 sm:py-32">
         <div class="absolute -top-80 left-[max(6rem,33%)] -z-10 transform-gpu blur-3xl sm:left-1/2 md:top-20 lg:ml-20 xl:top-3 xl:ml-56" aria-hidden="true">
