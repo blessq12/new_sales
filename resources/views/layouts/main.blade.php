@@ -24,60 +24,9 @@
         </main>
 
         <x-footer />
-
-        <!-- Модальные окна -->
-        <callback-form v-model="showCallbackForm" @success="showSuccessMessage"></callback-form>
-        <review-form v-model="showReviewForm" @success="showSuccessMessage"></review-form>
-
-        <!-- Уведомление о cookies -->
+        <callback-form ></callback-form>
+        <review-form ></review-form>
         <cookie-consent></cookie-consent>
-
-        <!-- Уведомление об успешной отправке формы -->
-        <div v-if="successMessage" 
-             class="fixed bottom-4 right-4 bg-green-500 text-white px-6 py-3 rounded-xl shadow-lg z-50 flex items-center"
-             @click="successMessage = ''"
-        >
-            <span class="mdi mdi-check-circle mr-2"></span>
-        </div>
     </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const app = Vue.createApp({
-                data() {
-                    return {
-                        showCallbackForm: false,
-                        showReviewForm: false,
-                        successMessage: ''
-                    }
-                },
-                methods: {
-                    showSuccessMessage(message) {
-                        this.successMessage = message
-                        setTimeout(() => {
-                            this.successMessage = ''
-                        }, 5000)
-                    }
-                }
-            })
-
-            // Глобально регистрируем компоненты
-            app.component('callback-form', CallbackForm)
-            app.component('review-form', ReviewForm)
-            app.component('cookie-consent', CookieConsent)
-            app.component('base-modal', BaseModal)
-
-            app.mount('#app')
-
-            // Добавляем обработчики для кнопок открытия модальных окон
-            window.openCallbackForm = function() {
-                app.config.globalProperties.showCallbackForm = true
-            }
-
-            window.openReviewForm = function() {
-                app.config.globalProperties.showReviewForm = true
-            }
-        })
-    </script>
 </body>
 </html>

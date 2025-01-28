@@ -15,7 +15,7 @@ class MainController extends Controller
     public function index()
     {
         return view('main.index', [
-            'services' => \App\Models\Service::limit(10)->get(),
+            'services' => \App\Models\Service::limit(10)->orderBy('created_at', 'desc')->get(),
         ]);
     }
     public function about()

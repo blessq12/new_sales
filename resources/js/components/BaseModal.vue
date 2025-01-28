@@ -1,6 +1,47 @@
+<script>
+import { useAppStore } from '../store/AppStore';
+
+
+export default {
+    name: 'BaseModal',
+    props: {
+        modelValue: {
+            type: Boolean,
+            required: true
+        },
+        name: {
+            type: String,
+            required: true
+        }
+    },
+    watch: {
+        modelValue(newVal) {
+            if (newVal) {
+                document.body.style.overflow = 'hidden';                
+            } else {
+                document.body.style.overflow = '';
+            }
+        }
+    },
+    setup(props) {
+        const appStore = useAppStore();
+
+        const close = () => {
+            appStore.closeModal(props.name);
+        };
+
+        return {
+            close,
+            appStore
+        };
+    }
+}
+</script>
+
 <template>
     <transition name="modal">
         <div v-if="modelValue" class="fixed inset-0 z-50 overflow-y-auto" @click.self="close">
+            <div class="absolute inset-0 bg-black opacity-70" @click="close"></div>
             <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
                 <div class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
                     <!-- Кнопка закрытия -->
@@ -30,22 +71,7 @@
     </transition>
 </template>
 
-<script>
-export default {
-    name: 'BaseModal',
-    props: {
-        modelValue: {
-            type: Boolean,
-            required: true
-        }
-    },
-    methods: {
-        close() {
-            this.$emit('update:modelValue', false)
-        }
-    }
-}
-</script>
+
 
 <style scoped>
 .modal-enter-active,

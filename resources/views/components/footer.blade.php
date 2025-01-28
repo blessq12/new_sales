@@ -71,9 +71,15 @@
                     </li>
                     <li>
                         <a href="{{ route('main.contacts') }}" class="text-gray-400 hover:text-white transition-colors duration-200">
+                            <span class="mdi mdi-handshake mr-2"></span>Сотрудничество
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('main.contacts') }}" class="text-gray-400 hover:text-white transition-colors duration-200">
                             <span class="mdi mdi-phone mr-2"></span>Контакты
                         </a>
                     </li>
+
                 </ul>
             </div>
 
@@ -83,7 +89,7 @@
                 <div class="grid grid-cols-2 gap-4">
                     @foreach($company->socials as $social)
                         <a href="{{ $social['url'] }}" class="flex items-center text-gray-400 hover:text-white transition-colors duration-200">
-                            <span class="mdi mdi-{{ strtolower($social['title']) }} text-indigo-400 mr-2"></span>
+                            <span class="mdi mdi-{{ strtolower($social['icon']) }} text-indigo-400 mr-2"></span>
                             {{ $social['title'] }}
                         </a>
                     @endforeach
@@ -106,7 +112,7 @@
                         </p>
                 </div>
                 <div class="flex flex-wrap gap-4 md:justify-end text-sm">
-                    <a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">
+                    <a href="{{ route('main.privacy') }}" class="text-gray-400 hover:text-white transition-colors duration-200">
                         Политика конфиденциальности
                     </a>
                     <a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">

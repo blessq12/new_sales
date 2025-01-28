@@ -27,11 +27,15 @@
                         {{ $company->phones[0] }}
                     </a>
                 </p>
-                <div class="mt-10 flex items-center gap-x-6">
-                    <a href="#" class="rounded-xl bg-indigo-600 px-6 py-3 text-lg font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-all duration-200 hover:scale-105">
-                        Получить консультацию
+                <div class="mt-10 block md:flex items-center gap-x-6">
+                    <a 
+                        href="javascript:void(0)" 
+                        class="rounded-xl bg-indigo-600 px-6 py-3 text-lg font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-all duration-200 hover:scale-105 mb-4 md:mb-0 block md:inline-block"
+                        @click="openModal('callback')"
+                    >
+                        Консультация
                     </a>
-                    <a href="{{ route('main.contacts') }}" class="rounded-xl px-6 py-3 text-lg font-semibold text-white ring-1 ring-inset ring-white/30 hover:ring-white/60 transition-all duration-200 hover:scale-105">
+                    <a href="{{ route('main.contacts') }}" class="rounded-xl px-6 py-3 text-lg font-semibold text-white ring-1 ring-inset ring-white/30 hover:ring-white/60 transition-all duration-200 hover:scale-105 mb-4 md:mb-0 block md:inline-block">
                         Контакты
                     </a>
                 </div>
@@ -112,9 +116,18 @@
                 <p class="mt-6 text-lg leading-8 text-gray-600">
                     Более 1000 довольных клиентов доверяют нам свои сантехнические работы
                 </p>
+                <div class="mt-6">
+                    <button 
+                        @click="openModal('review')"
+                        class="inline-flex items-center px-4 py-2 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200"
+                    >
+                        <span class="mdi mdi-plus-circle mr-2"></span>
+                        Оставить отзыв
+                    </button>
+                </div>
             </div>
 
-            <div class="mx-auto mt-16 grid max-w-2xl grid-cols-1 grid-rows-1 gap-8 text-sm leading-6 text-gray-900 sm:mt-20 sm:grid-cols-2 xl:mx-0 xl:max-w-none xl:grid-cols-3">
+            <div class="mx-auto mt-16 grid max-w-4xl grid-cols-1 grid-rows-1 gap-6 text-sm leading-6 text-gray-900 sm:mt-20 sm:grid-cols-3 xl:mx-0 xl:max-w-none xl:grid-cols-3">
                 @php
                     $reviews = [
                         [
@@ -146,7 +159,7 @@
 
                 @foreach($reviews as $review)
                     <div class="rounded-2xl bg-white p-6 ring-1 ring-gray-200 hover:shadow-md transition-all duration-200">
-                        <div class="flex items-center gap-x-4 mb-4">
+                        <div class="flex items-center gap-x-2 mb-4">
                             <img class="h-12 w-12 flex-none rounded-full bg-gray-50 object-cover" src="{{ $review['avatar'] }}" alt="{{ $review['name'] }}">
                             <div>
                                 <div class="font-semibold text-gray-900">{{ $review['name'] }}</div>
@@ -243,10 +256,13 @@
                 </div>
                 
                 <iframe src="https://yandex.ru/map-widget/v1/?ll=84.980994%2C56.503963&mode=whatshere&whatshere%5Bpoint%5D=84.980976%2C56.503885&whatshere%5Bzoom%5D=17&z=17.14" 
-                        class="w-[48rem] max-w-none rounded-xl shadow-xl ring-1 ring-gray-400/10 sm:w-[57rem] md:-ml-4 lg:-ml-0" width="1500" height="900"
-                        frameborder="0"
-                        >
-                    </iframe>
+                    class="w-[48rem] max-w-none rounded-xl shadow-xl ring-1 ring-gray-400/10 sm:w-[57rem] md:-ml-4 lg:-ml-0 block md:hidden" width="600" height="300"
+                    frameborder="0"
+                ></iframe>
+                <iframe src="https://yandex.ru/map-widget/v1/?ll=84.980994%2C56.503963&mode=whatshere&whatshere%5Bpoint%5D=84.980976%2C56.503885&whatshere%5Bzoom%5D=17&z=17.14" 
+                    class="w-[48rem] max-w-none rounded-xl shadow-xl ring-1 ring-gray-400/10 sm:w-[57rem] md:-ml-4 lg:-ml-0 hidden md:block" width="1500" height="900"
+                    frameborder="0"
+                ></iframe>
             </div>
         </div>
     </section>

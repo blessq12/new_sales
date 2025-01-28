@@ -117,6 +117,47 @@
         </div>
     </div>
 
+    <!-- Информация о компании -->
+    <div class="bg-gray-50 py-24 sm:py-32">
+        <div class="mx-auto max-w-7xl px-6 lg:px-8">
+            <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Почему выбирают нас</h2>
+            <div class="mt-10 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                <div class="rounded-2xl bg-white p-8 shadow-md">
+                    <h3 class="text-lg font-semibold leading-8 tracking-tight text-gray-900">Опыт работы</h3>
+                    <p class="mt-4 text-base leading-7 text-gray-600">ООО «Салес» на рынке работает больше 11 лет.</p>
+                </div>
+                <div class="rounded-2xl bg-white p-8 shadow-md">
+                    <h3 class="text-lg font-semibold leading-8 tracking-tight text-gray-900">Проверенные мастера</h3>
+                    <p class="mt-4 text-base leading-7 text-gray-600">Все работы выполняют проверенные мастера с опытом работы.</p>
+                </div>
+                <div class="rounded-2xl bg-white p-8 shadow-md">
+                    <h3 class="text-lg font-semibold leading-8 tracking-tight text-gray-900">Бесплатный выезд</h3>
+                    <p class="mt-4 text-base leading-7 text-gray-600">Выезд мастера бесплатный в пределах города.</p>
+                </div>
+                <div class="rounded-2xl bg-white p-8 shadow-md">
+                    <h3 class="text-lg font-semibold leading-8 tracking-tight text-gray-900">Гибкие скидки</h3>
+                    <p class="mt-4 text-base leading-7 text-gray-600">Гибкая система скидок, от объема.</p>
+                </div>
+                <div class="rounded-2xl bg-white p-8 shadow-md">
+                    <h3 class="text-lg font-semibold leading-8 tracking-tight text-gray-900">Выгодные условия</h3>
+                    <p class="mt-4 text-base leading-7 text-gray-600">Готовы торговаться и дать более выгодные условия.</p>
+                </div>
+                <div class="rounded-2xl bg-white p-8 shadow-md">
+                    <h3 class="text-lg font-semibold leading-8 tracking-tight text-gray-900">Гарантия</h3>
+                    <p class="mt-4 text-base leading-7 text-gray-600">☛ Даем гарантию 2 года на все выполненные работы.</p>
+                </div>
+                <div class="rounded-2xl bg-white p-8 shadow-md">
+                    <h3 class="text-lg font-semibold leading-8 tracking-tight text-gray-900">Консультация</h3>
+                    <p class="mt-4 text-base leading-7 text-gray-600">Консультация бесплатно. Звонить с 8.00 до 23.00 без выходных.</p>
+                </div>
+                <div class="rounded-2xl bg-white p-8 shadow-md">
+                    <h3 class="text-lg font-semibold leading-8 tracking-tight text-gray-900">Связь</h3>
+                    <p class="mt-4 text-base leading-7 text-gray-600">Отвечу на любые вопросы лично или по ☏ телефону.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- CTA секция -->
     <div class="bg-white">
         <div class="mx-auto max-w-7xl py-24 sm:px-6 sm:py-32 lg:px-8">

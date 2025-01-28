@@ -17,7 +17,7 @@
     <!-- Основной контент -->
     <div class="bg-white py-24 sm:py-32">
         <div class="mx-auto max-w-7xl px-6 lg:px-8">
-            <div class="mx-auto max-w-3xl">
+            <div class="mx-auto max-w-4xl">
                 <!-- Основное описание -->
                 <div class="prose prose-lg prose-indigo mx-auto mt-6">
                     {!! $service->content !!}
@@ -25,8 +25,8 @@
 
                 <!-- Преимущества -->
                 <div class="mt-16">
-                    <h2 class="text-2xl font-bold tracking-tight text-gray-900">Почему выбирают нас</h2>
-                    <dl class="mt-10 max-w-xl space-y-8 text-base leading-7 text-gray-600">
+                    <h2 class="text-2xl font-bold tracking-tight text-gray-900 text-center">Почему выбирают нас</h2>
+                    <dl class="mt-10 max-w-xl space-y-8 text-base leading-7 text-gray-600 mx-auto">
                         <div class="relative pl-9">
                             <dt class="inline font-semibold text-gray-900">
                                 <span class="mdi mdi-check-circle absolute left-1 top-1 text-indigo-600 text-xl"></span>
@@ -53,7 +53,7 @@
 
                 <!-- Форма заявки -->
                 <div class="mt-16">
-                    <div class="relative isolate overflow-hidden bg-gray-900 px-6 py-24 shadow-2xl sm:rounded-3xl sm:px-24">
+                    <div class="relative isolate overflow-hidden bg-gray-900 px-4 py-24 shadow-2xl sm:rounded-3xl sm:px-24 rounded-xl">
                         <h2 class="mx-auto max-w-2xl text-center text-3xl font-bold tracking-tight text-white sm:text-4xl">
                             Заказать услугу
                         </h2>

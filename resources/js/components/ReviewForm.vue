@@ -1,5 +1,9 @@
 <template>
-    <base-modal v-model="isOpen" @update:modelValue="$emit('update:modelValue', $event)">
+    <base-modal 
+        v-model="isOpen" 
+        name="review"
+        @update:modelValue="handleModelValue"
+    >
         <template #header>
             Оставить отзыв
         </template>
@@ -11,7 +15,7 @@
                     type="text" 
                     id="name" 
                     v-model="form.name"
-                    class="mt-1 block w-full rounded-xl border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                    class="mt-1 block w-full rounded-xl border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 px-4"
                     :class="{ 'border-red-300': errors.name }"
                     required
                 >
@@ -23,7 +27,7 @@
                 <select 
                     id="service" 
                     v-model="form.service_id"
-                    class="mt-1 block w-full rounded-xl border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                    class="mt-1 block w-full rounded-xl border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 px-4"
                     :class="{ 'border-red-300': errors.service_id }"
                     required
                 >
@@ -58,7 +62,7 @@
                     id="text" 
                     v-model="form.text"
                     rows="4"
-                    class="mt-1 block w-full rounded-xl border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                    class="mt-1 block w-full rounded-xl border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 px-4"
                     :class="{ 'border-red-300': errors.text }"
                     required
                 ></textarea>
@@ -94,7 +98,7 @@
                 {{ loading ? 'Отправка...' : 'Отправить отзыв' }}
             </button>
             <button 
-                @click="$emit('update:modelValue', false)"
+                @click="closeModal"
                 type="button"
                 class="mt-3 inline-flex w-full justify-center rounded-xl bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
             >
@@ -105,65 +109,131 @@
 </template>
 
 <script>
-import BaseModal from './BaseModal.vue'
+import { ref, computed } from 'vue';
+import { useAppStore } from '../store/AppStore';
+import BaseModal from './BaseModal.vue';
+import * as yup from 'yup';
 
 export default {
     name: 'ReviewForm',
     components: {
         BaseModal
     },
-    props: {
-        modelValue: {
-            type: Boolean,
-            required: true
-        }
-    },
-    data() {
-        return {
-            isOpen: this.modelValue,
-            loading: false,
-            services: [],
-            form: {
+    setup() {
+        const appStore = useAppStore();
+        const loading = ref(false);
+        const errors = ref({});
+        const services = ref([]);
+
+        const form = ref({
+            name: '',
+            service_id: '',
+            rating: 0,
+            text: '',
+            privacy: false
+        });
+
+        const isOpen = computed(() => appStore.isModalOpen('review'));
+
+        const resetForm = () => {
+            form.value = {
                 name: '',
                 service_id: '',
                 rating: 0,
                 text: '',
                 privacy: false
-            },
-            errors: {}
-        }
-    },
-    watch: {
-        modelValue(val) {
-            this.isOpen = val
-        }
-    },
-    async created() {
-        try {
-            const response = await axios.get('/api/services')
-            this.services = response.data
-        } catch (error) {
-            console.error('Ошибка при загрузке услуг:', error)
-        }
-    },
-    methods: {
-        async submitForm() {
-            this.loading = true
-            this.errors = {}
+            };
+            errors.value = {};
+        };
+
+        const handleModelValue = (value) => {
+            if (!value) {
+                appStore.closeModal('review');
+                resetForm();
+            }
+        };
+
+        const closeModal = () => {
+            appStore.closeModal('review');
+            resetForm();
+        };
+
+        const loadServices = async () => {
+            try {
+                const response = await fetch('/api/services');
+                if (!response.ok) {
+                    throw new Error('Ошибка загрузки услуг');
+                }
+                services.value = await response.json();
+            } catch (error) {
+                appStore.showToast('error', 'Ошибка загрузки услуг');
+            }
+        };
+
+        const validationSchema = yup.object().shape({
+            name: yup.string().required('Ваше имя обязательно для заполнения'),
+            service_id: yup.string().required('Выберите услугу'),
+            rating: yup.number().min(1, 'Оценка должна быть не менее 1').required('Оценка обязательна'),
+            text: yup.string().required('Ваш отзыв обязателен для заполнения'),
+            privacy: yup.boolean().oneOf([true], 'Необходимо согласие на обработку персональных данных')
+        });
+
+        const submitForm = async () => {
+            if (loading.value) return;
+
+            loading.value = true;
+            errors.value = {};
 
             try {
-                const response = await axios.post('/api/reviews', this.form)
-                this.$emit('update:modelValue', false)
-                // Показываем уведомление об успехе
-                this.$emit('success', 'Спасибо за ваш отзыв!')
-            } catch (error) {
-                if (error.response?.data?.errors) {
-                    this.errors = error.response.data.errors
+                await validationSchema.validate(form.value, { abortEarly: false });
+                
+                const response = await fetch('/api/reviews', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: JSON.stringify(form.value)
+                });
+
+                if (!response.ok) {
+                    const data = await response.json();
+                    if (response.status === 422) {
+                        errors.value = data.errors;
+                        return;
+                    }
+                    throw new Error(data.message || 'Ошибка при отправке формы');
                 }
-            } finally {
-                this.loading = false
+
+                const data = await response.json();
+                closeModal();
+                appStore.showToast('success', 'Отзыв успешно отправлен');
+                // TODO: Показать уведомление об успехе
+            } catch (validationError) {
+                if (validationError.inner) {
+                    validationError.inner.forEach(err => {
+                        appStore.showToast('error', err.message);
+                        loading.value = false;
+                    });
+                } else {
+                    appStore.showToast('error', 'Произошла ошибка при валидации формы');
+                }
             }
-        }
+        };
+
+        // Загружаем список услуг при создании компонента
+        loadServices();
+
+        return {
+            form,
+            loading,
+            errors,
+            services,
+            isOpen,
+            submitForm,
+            closeModal,
+            handleModelValue
+        };
     }
 }
 </script>

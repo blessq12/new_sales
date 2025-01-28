@@ -1,22 +1,15 @@
 <script>
+import { useAppStore } from '../store/AppStore';
+
 export default {
     name: 'CookieConsent',
-    data() {
-        return {
-            isVisible: false
-        }
-    },
     mounted() {
-        // Проверяем, было ли уже получено согласие
-        if (!localStorage.getItem('cookieConsent')) {
-            this.isVisible = true
-        }
+        //
     },
-    methods: {
-        accept() {
-            localStorage.setItem('cookieConsent', 'true')
-            this.isVisible = false
-        }
+    setup() {
+        const appStore = useAppStore();
+        
+        return { appStore };
     }
 }
 </script>
@@ -32,7 +25,7 @@ export default {
 
 <template>
     <transition name="fade">
-        <div v-if="isVisible" class="fixed bottom-0 left-0 right-0 bg-white shadow-lg z-50 border-t border-gray-200">
+        <div v-if="!appStore.hasCookieConsent" class="fixed bottom-0 left-0 right-0 bg-white shadow-lg z-50 border-t border-gray-200">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
                 <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
                     <div class="flex-1">
@@ -42,7 +35,7 @@ export default {
                         </p>
                     </div>
                     <div class="flex-shrink-0">
-                        <button @click="accept" class="inline-flex items-center px-4 py-2 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200">
+                        <button @click="appStore.acceptCookies" class="inline-flex items-center px-4 py-2 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200">
                             Принять
                         </button>
                     </div>
@@ -51,5 +44,3 @@ export default {
         </div>
     </transition>
 </template>
-
-

@@ -1,9 +1,9 @@
-<nav x-data="{ isOpen: false }" class="bg-white shadow-sm sticky top-0 z-50">
+<nav class="bg-white shadow-sm sticky top-0 z-50">
     <!-- Верхняя панель с контактами -->
     <div class="bg-gray-50 border-b">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-10 text-sm">
-                <div class="flex items-center space-x-4">
+                <div class="flex items-center space-x-4 hidden md:flex">
                     @foreach($company->phones as $phone)
                         <a href="tel:{{ $phone }}" class="text-gray-600 hover:text-indigo-600 transition-colors duration-200 flex items-center">
                             <span class="mdi mdi-phone text-indigo-600 mr-1"></span>
@@ -15,10 +15,16 @@
                         {{ $company->email }}
                     </a>
                 </div>
+                <div class="flex md:hidden">
+                    <a href="tel:{{ $company->phones[0] }}" class="text-gray-600 hover:text-indigo-600 transition-colors duration-200 flex items-center">
+                        <span class="mdi mdi-phone text-indigo-600 mr-1"></span>
+                        {{ $company->phones[0] }}
+                    </a>
+                </div>
                 <div class="flex items-center space-x-4">
                     <span class="text-gray-600 flex items-center">
                         <span class="mdi mdi-clock text-indigo-600 mr-1"></span>
-                        Ежедневно с 8:00 до 22:00
+                        <span class="hidden md:block">Ежедневно с</span> 8:00 до 22:00
                     </span>
                 </div>
             </div>
@@ -63,7 +69,7 @@
                     <span class="mdi mdi-phone mr-1"></span>Контакты
                 </a>
                 <button 
-                    onclick="openCallbackForm()"
+                    @click="openModal('callback')"
                     class="inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 transition-colors duration-200"
                 >
                     Заказать звонок
@@ -72,47 +78,93 @@
 
             <!-- Мобильная кнопка меню -->
             <div class="flex items-center md:hidden">
-                <button @click="isOpen = !isOpen" type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 focus:outline-none transition-colors duration-200" aria-controls="mobile-menu" aria-expanded="false">
+                <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 focus:outline-none transition-colors duration-200" aria-controls="mobile-menu" aria-expanded="false">
                     <span class="sr-only">Открыть меню</span>
-                    <span class="mdi mdi-menu text-2xl" x-show="!isOpen"></span>
-                    <span class="mdi mdi-close text-2xl" x-show="isOpen" style="display: none;"></span>
+                    <span class="mdi mdi-menu text-2xl menu-icon"></span>
+                    <span class="mdi mdi-close text-2xl close-icon hidden"></span>
                 </button>
             </div>
         </div>
     </div>
 
     <!-- Мобильное меню -->
-    <div x-show="isOpen" class="md:hidden" id="mobile-menu" style="display: none;">
-        <div class="pt-2 pb-3 space-y-1">
-            <a href="{{ route('main.about') }}" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 transition-colors duration-200">
-                <span class="mdi mdi-information-outline mr-2"></span>О нас
-            </a>
-            <a href="{{ route('main.certificates') }}" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 transition-colors duration-200">
-                <span class="mdi mdi-certificate mr-2"></span>Сертификаты
-            </a>
-            <div x-data="{ isServicesOpen: false }">
-                <button @click="isServicesOpen = !isServicesOpen" class="w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 transition-colors duration-200">
-                    <span class="mdi mdi-tools mr-2"></span>Услуги
-                    <span class="mdi mdi-chevron-down ml-1 transition-transform duration-200" :class="{ 'transform rotate-180': isServicesOpen }"></span>
+    <div id="mobile-menu" class="fixed inset-0 z-50 bg-white md:hidden transform translate-y-full transition-transform duration-200">
+        <div class="h-full flex flex-col">
+            <!-- Верхняя панель с поиском и кнопкой закрытия -->
+            <div class="p-4 border-b flex items-center justify-between">
+                <div class="flex-1 mr-4">
+                    <form action="?" method="GET" class="relative">
+                        <input type="text" 
+                               name="q" 
+                               placeholder="Поиск по сайту..." 
+                               class="w-full px-4 py-2 pr-10 rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500">
+                        <button type="submit" class="absolute right-3 top-1/2 -translate-y-1/2">
+                            <span class="mdi mdi-magnify text-gray-400"></span>
+                        </button>
+                    </form>
+                </div>
+                <button id="mobile-menu-close" class="p-2 rounded-lg hover:bg-gray-100">
+                    <span class="mdi mdi-close text-2xl"></span>
                 </button>
-                <div x-show="isServicesOpen" class="pl-4" style="display: none;">
-                    @foreach($services as $service)
-                        <a href="{{ route('services.show', $service->slug) }}" class="block px-3 py-2 text-sm font-medium text-gray-600 hover:text-indigo-600 hover:bg-indigo-50 transition-colors duration-200">
-                            {{ $service->name }}
+            </div>
+
+            <!-- Навигационные ссылки -->
+            <div class="flex-1 overflow-y-auto">
+                <nav class="px-4 py-6 space-y-4">
+                    <a href="{{ route('main.about') }}" class="block px-4 py-3 text-lg font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition-colors duration-200">
+                        <span class="mdi mdi-information-outline mr-3"></span>О нас
+                    </a>
+                    <a href="{{ route('main.certificates') }}" class="block px-4 py-3 text-lg font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition-colors duration-200">
+                        <span class="mdi mdi-certificate mr-3"></span>Сертификаты
+                    </a>
+                    <div class="services-dropdown">
+                        <button class="w-full flex items-center justify-between px-4 py-3 text-lg font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition-colors duration-200">
+                            <span class="flex items-center">
+                                <span class="mdi mdi-tools mr-3"></span>Услуги
+                            </span>
+                            <span class="mdi mdi-chevron-down transition-transform duration-200"></span>
+                        </button>
+                        <div class="services-content hidden pl-4 mt-2 space-y-2">
+                            @foreach($services as $service)
+                                <a href="{{ route('services.show', $service->slug) }}" 
+                                   class="block px-4 py-2 text-base text-gray-600 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition-colors duration-200">
+                                    {{ $service->name }}
+                                </a>
+                            @endforeach
+                        </div>
+                    </div>
+                    <a href="{{ route('main.cooperation') }}" class="block px-4 py-3 text-lg font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition-colors duration-200">
+                        <span class="mdi mdi-certificate mr-3"></span>Сотрудничество
+                    </a>
+                    <a href="{{ route('main.contacts') }}" class="block px-4 py-3 text-lg font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition-colors duration-200">
+                        <span class="mdi mdi-phone mr-3"></span>Контакты
+                    </a>
+                </nav>
+            </div>
+
+            <!-- Нижняя панель с контактами -->
+            <div class="border-t p-4 space-y-2">
+                <div class="space-y-2">
+                    @foreach($company->phones as $phone)
+                        <a href="tel:{{ $phone }}" class="block px-4 py-2 text-base text-gray-600 hover:text-indigo-600 rounded-xl transition-colors duration-200">
+                            <span class="mdi mdi-phone text-indigo-600 mr-2"></span>
+                            {{ $phone }}
                         </a>
                     @endforeach
+                    <a href="mailto:{{ $company->emails[0] }}" class="block px-4 py-2 text-base text-gray-600 hover:text-indigo-600 rounded-xl transition-colors duration-200">
+                        <span class="mdi mdi-email text-indigo-600 mr-2"></span>
+                        {{ $company->emails[0] }}
+                    </a>
                 </div>
-            </div>
-            <a href="{{ route('main.contacts') }}" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 transition-colors duration-200">
-                <span class="mdi mdi-phone mr-2"></span>Контакты
-            </a>
-            <div class="px-3 py-2">
+
                 <button 
-                    onclick="openCallbackForm()"
-                    class="w-full inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-xl shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 transition-colors duration-200"
+                    @click="openModal('callback')"
+                    class="w-full flex items-center justify-center px-6 py-3 text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl shadow-sm transition-colors duration-200"
                 >
+                    <span class="mdi mdi-phone-in-talk mr-2"></span>
                     Заказать звонок
                 </button>
+
             </div>
         </div>
     </div>

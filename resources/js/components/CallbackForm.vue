@@ -1,5 +1,9 @@
 <template>
-    <base-modal v-model="isOpen" @update:modelValue="$emit('update:modelValue', $event)">
+    <base-modal 
+        v-model="isOpen" 
+        name="callback"
+        @update:modelValue="handleModelValue"
+    >
         <template #header>
             Заказать звонок
         </template>
@@ -11,7 +15,7 @@
                     type="text" 
                     id="name" 
                     v-model="form.name"
-                    class="mt-1 block w-full rounded-xl border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                    class="mt-1 block w-full rounded-xl border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 px-4"
                     :class="{ 'border-red-300': errors.name }"
                     required
                 >
@@ -24,7 +28,7 @@
                     type="tel" 
                     id="phone" 
                     v-model="form.phone"
-                    class="mt-1 block w-full rounded-xl border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                    class="mt-1 block w-full rounded-xl border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 px-4"
                     :class="{ 'border-red-300': errors.phone }"
                     required
                 >
@@ -36,7 +40,7 @@
                 <select 
                     id="time" 
                     v-model="form.time"
-                    class="mt-1 block w-full rounded-xl border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                    class="mt-1 block w-full rounded-xl border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 px-4"
                     :class="{ 'border-red-300': errors.time }"
                 >
                     <option value="">Выберите время</option>
@@ -53,7 +57,7 @@
                     id="comment" 
                     v-model="form.comment"
                     rows="3"
-                    class="mt-1 block w-full rounded-xl border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                    class="mt-1 block w-full rounded-xl border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 px-4"
                 ></textarea>
             </div>
 
@@ -86,7 +90,7 @@
                 {{ loading ? 'Отправка...' : 'Заказать звонок' }}
             </button>
             <button 
-                @click="$emit('update:modelValue', false)"
+                @click="closeModal"
                 type="button"
                 class="mt-3 inline-flex w-full justify-center rounded-xl bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
             >
@@ -97,56 +101,95 @@
 </template>
 
 <script>
-import BaseModal from './BaseModal.vue'
+import { ref, computed } from 'vue';
+import { useAppStore } from '../store/AppStore';
+import BaseModal from './BaseModal.vue';
+import * as yup from 'yup';
 
 export default {
     name: 'CallbackForm',
     components: {
         BaseModal
     },
-    props: {
-        modelValue: {
-            type: Boolean,
-            required: true
-        }
-    },
-    data() {
-        return {
-            isOpen: this.modelValue,
-            loading: false,
-            form: {
+    setup() {
+        const appStore = useAppStore();
+        const loading = ref(false);
+        const errors = ref({});
+
+        const form = ref({
+            name: '',
+            phone: '',
+            time: '',
+            comment: '',
+            privacy: false
+        });
+
+        const isOpen = computed(() => appStore.isModalOpen('callback'));
+
+        const resetForm = () => {
+            form.value = {
                 name: '',
                 phone: '',
                 time: '',
                 comment: '',
                 privacy: false
-            },
-            errors: {}
-        }
-    },
-    watch: {
-        modelValue(val) {
-            this.isOpen = val
-        }
-    },
-    methods: {
-        async submitForm() {
-            this.loading = true
-            this.errors = {}
+            };
+            errors.value = {};
+        };
+
+        const handleModelValue = (value) => {
+            if (!value) {
+                appStore.closeModal('callback');
+                resetForm();
+            }
+        };
+
+        const closeModal = () => {
+            appStore.closeModal('callback');
+            resetForm();
+        };
+
+        const validationSchema = yup.object().shape({
+            name: yup.string().required('Имя обязательно для заполнения'),
+            phone: yup.string().required('Телефон обязателен для заполнения'),
+            time: yup.string().required('Выберите удобное время для звонка'),
+            privacy: yup.boolean().oneOf([true], 'Необходимо согласие на обработку данных')
+        });
+
+        const submitForm = async () => {
+            if (loading.value) return;
+
+            loading.value = true;
+            errors.value = {};
 
             try {
-                const response = await axios.post('/api/callback', this.form)
-                this.$emit('update:modelValue', false)
-                // Показываем уведомление об успехе
-                this.$emit('success', 'Заявка успешно отправлена')
-            } catch (error) {
-                if (error.response?.data?.errors) {
-                    this.errors = error.response.data.errors
+                await validationSchema.validate(form.value, { abortEarly: false });
+                // Здесь будет логика отправки формы
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                closeModal();
+                appStore.showToast('success', 'Форма успешно отправлена');
+            } catch (validationError) {
+                if (validationError.inner) {
+                    validationError.inner.forEach(err => {
+                        appStore.showToast('error', err.message);
+                    });
+                } else {
+                    this.appStore.showToast('error', 'Произошла ошибка при валидации формы');
                 }
             } finally {
-                this.loading = false
+                loading.value = false;
             }
-        }
+        };
+
+        return {
+            form,
+            loading,
+            errors,
+            isOpen,
+            submitForm,
+            closeModal,
+            handleModelValue
+        };
     }
 }
 </script>
