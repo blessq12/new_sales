@@ -36,8 +36,11 @@
         <div class="flex justify-between h-16">
             <div class="flex items-center">
                 <a href="{{ route('main.index') }}" class="flex-shrink-0 flex items-center">
-                    <img src="https://via.placeholder.com/50" alt="Логотип" class="h-8 w-auto">
-                    <span class="ml-2 text-xl font-bold text-gray-900">{{ $company->name }}</span>
+                    <img src="{{ Storage::disk('assets')->url('images/logo.png') }}" alt="Логотип" class="h-8 w-auto">
+                    <div class="block">
+                        <span class="ml-2 text-xl font-bold text-gray-900 block leading-none">{{ $company->name }}</span>
+                        <span class="ml-2 text-sm text-gray-400 block leading-none" style="font-size: 10px;">работаем с 2009 года</span>
+                    </div>
                 </a>
             </div>
             
@@ -62,9 +65,14 @@
                     </button>
                     <div id="services-dropdown" class="max-h-[500px] overflow-y-auto absolute right-0 w-64 mt-2 bg-white rounded-xl shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 border border-gray-100">
                         <div class="py-2">
+                            <a href="{{ route('services') }}" class="flex items-center px-4 py-2 text-sm">
+                                <div class="text-center bg-indigo-50 rounded-xl px-2 py-1 w-full hover:bg-indigo-600 hover:text-white transition-colors duration-200">
+                                    Все услуги
+                                </div>
+                            </a>
                             @foreach($services as $service)
                                 <a href="{{ route('services.show', $service->slug) }}" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600">
-                                    <span class="mdi mdi-check text-indigo-600 mr-2 opacity-0 transition-opacity duration-200 hover:opacity-100"></span>
+                                    <span class="mdi mdi-check text-indigo-600 mr-2 opacity-1 transition-opacity duration-200 hover:opacity-100"></span>
                                     {{ $service->name }}
                                 </a>
                             @endforeach
@@ -134,9 +142,6 @@
                             @endforeach
                         </div>
                     </div>
-                    <a href="{{ route('main.cooperation') }}" class="block px-4 py-3 text-lg font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition-colors duration-200">
-                        <span class="mdi mdi-handshake mr-3"></span>Сотрудничество
-                    </a>
                     <a href="{{ route('main.contacts') }}" class="block px-4 py-3 text-lg font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition-colors duration-200">
                         <span class="mdi mdi-phone mr-3"></span>Контакты
                     </a>

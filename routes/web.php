@@ -9,7 +9,7 @@ Route::controller(\App\Http\Controllers\MainController::class)->group(function (
     Route::get('/certificates', 'certificates')->name('main.certificates');
     Route::get('/contacts', 'contacts')->name('main.contacts');
     Route::get('/privacy', 'privacy')->name('main.privacy');
-    Route::get('/cooperation', 'cooperation')->name('main.cooperation');
+    Route::get('/gallery', 'gallery')->name('main.gallery');
 });
 
 Route::controller(\App\Http\Controllers\ServiceController::class)->group(function () {
@@ -19,4 +19,8 @@ Route::controller(\App\Http\Controllers\ServiceController::class)->group(functio
 
 Route::prefix('api')->group(function () {
     require __DIR__ . '/api.php';
+});
+
+Route::get('/test', function () {
+    Telegram::sendMessage('asdasdasd', 'callback');
 });

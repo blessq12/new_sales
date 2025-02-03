@@ -17,9 +17,9 @@ export default {
         const form = ref({
             name: '',
             phone: '',
-            time: '',
             comment: '',
-            privacy: false
+            agree: true,
+            type: 'callback'
         });
 
         const isOpen = computed(() => appStore.isModalOpen('callback'));
@@ -28,9 +28,9 @@ export default {
             form.value = {
                 name: '',
                 phone: '',
-                time: '',
                 comment: '',
-                privacy: false
+                agree: true,
+                type: 'callback'
             };
             errors.value = {};
         };
@@ -50,8 +50,7 @@ export default {
         const validationSchema = yup.object().shape({
             name: yup.string().required('Имя обязательно для заполнения'),
             phone: yup.string().required('Телефон обязателен для заполнения'),
-            time: yup.string().required('Выберите удобное время для звонка'),
-            privacy: yup.boolean().oneOf([true], 'Необходимо согласие на обработку данных')
+            agree: yup.boolean().oneOf([true], 'Необходимо согласие на обработку данных')
         });
 
         const submitForm = async () => {
@@ -61,12 +60,22 @@ export default {
             errors.value = {};
 
             try {
-                await validationSchema.validate(form.value, { abortEarly: false }).then(()=>{
-                    axios.post('/api/callback', form.value).then(()=>{
+                await validationSchema.validate(form.value, { abortEarly: false }).then(() => {
+                    const requestData = {
+                        type: form.value.type,
+                        data: {
+                            name: form.value.name,
+                            phone: form.value.phone,
+                            agree: form.value.agree,
+                            comment: form.value.comment
+                        }
+                    };
+                    axios.post('/api/user-requests/store', requestData).then((res) => {
                         closeModal();
-                        appStore.showToast('success', 'Форма успешно отправлена');
-                    }).catch((error)=>{
-                        appStore.showToast('error', 'Произошла ошибка при отправке формы');
+                        appStore.showToast('success', 'Форма успешно отправлена. Мы свяжемся с вами в указанное время.');
+                    }).catch((error) => {
+                        console.log(error);
+                        appStore.showToast('error', 'Произошла ошибка при отправке формы. Попробуйте позже.');
                     });
                 });
             } catch (validationError) {
@@ -133,21 +142,6 @@ export default {
             </div>
 
             <div>
-                <label for="time" class="block text-sm font-medium text-gray-700">Удобное время для звонка</label>
-                <select 
-                    id="time" 
-                    v-model="form.time"
-                    class="mt-1 block w-full rounded-xl border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 px-4"
-                    :class="{ 'border-red-300': errors.time }"
-                >
-                    <option value="">Выберите время</option>
-                    <option value="morning">Утро (9:00 - 12:00)</option>
-                    <option value="afternoon">День (12:00 - 17:00)</option>
-                    <option value="evening">Вечер (17:00 - 21:00)</option>
-                </select>
-            </div>
-
-            <div>
                 <label for="comment" class="block text-sm font-medium text-gray-700">Комментарий</label>
                 <textarea 
                     id="comment" 
@@ -161,15 +155,14 @@ export default {
                 <div class="flex h-5 items-center">
                     <input 
                         type="checkbox" 
-                        id="privacy" 
-                        v-model="form.privacy"
+                        id="agree" 
+                        v-model="form.agree"
                         class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                        :class="{ 'border-red-300': errors.privacy }"
                         required
                     >
                 </div>
                 <div class="ml-3 text-sm">
-                    <label for="privacy" class="font-medium text-gray-700">Согласие на обработку персональных данных</label>
+                    <label for="agree" class="font-medium text-gray-700">Согласие на обработку персональных данных</label>
                 </div>
             </div>
         </form>

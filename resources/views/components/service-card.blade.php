@@ -21,6 +21,7 @@
             <div class="flex items-baseline">
                 <span class="mr-1 text-sm text-gray-500">{{ $service->prefix }}</span>
                 <span class="text-2xl font-bold text-indigo-600">{{ $service->price }}</span>
+                <span class="text-sm text-gray-500"> ₽</span>
             </div>
             <a href="{{ route('services.show', $service->slug) }}" 
                class="inline-flex items-center rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">

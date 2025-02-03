@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Routing\Router;
-use App\Admin\Controllers\CompanyController;
 
 Admin::routes();
 
@@ -16,4 +15,6 @@ Route::group([
     $router->resource('companies', CompanyController::class);
     $router->resource('company-legals', CompanyLegalController::class);
     $router->resource('services', ServiceController::class);
+    $router->resource('user-requests', UserRequestController::class);
+    $router->resource('reviews', ReviewController::class);
 });

@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\Api\SearchController;
 use App\Http\Controllers\Api\ReviewController;
+use App\Http\Controllers\Api\UserRequestController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,13 +28,11 @@ Route::post('/reviews', [ServiceController::class, 'storeReview']);
 
 Route::get('/search', [SearchController::class, 'search']);
 
-Route::post('/callback', function (Request $request) {
-    return response()->json([
-        'message' => 'Callback received',
-        'data' => $request->all()
-    ]);
-});
-
 Route::controller(ReviewController::class)->group(function () {
     Route::post('/reviews/store', 'store');
+});
+
+Route::controller(UserRequestController::class)->group(function () {
+    Route::post('/user-requests/store', 'store');
+    Route::post('/user-requests/contact-form', 'contactForm');
 });

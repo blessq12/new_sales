@@ -4,8 +4,11 @@
             <!-- О компании -->
             <div class="space-y-4">
                 <div class="flex items-center">
-                    <img src="https://via.placeholder.com/50" alt="Логотип" class="h-8 w-auto">
-                    <span class="ml-2 text-xl font-bold text-white">{{ $company->name }}</span>
+                    <img src="{{ Storage::disk('assets')->url('images/logo.png') }}" alt="Логотип" class="h-8 w-auto">
+                    <div class="block">
+                        <span class="ml-2 text-xl font-bold text-white block leading-none">{{ $company->name }}</span>
+                        <span class="ml-2 text-sm text-gray-400 block leading-none">работаем с 2009 года</span>
+                    </div>
                 </div>
                 <p class="text-sm text-gray-400">{{ $company->description }}</p>
                 <div class="space-y-2">
@@ -67,11 +70,6 @@
                     <li>
                         <a href="{{ route('services') }}" class="text-gray-400 hover:text-white transition-colors duration-200">
                             <span class="mdi mdi-tools mr-2"></span>Услуги
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('main.contacts') }}" class="text-gray-400 hover:text-white transition-colors duration-200">
-                            <span class="mdi mdi-handshake mr-2"></span>Сотрудничество
                         </a>
                     </li>
                     <li>

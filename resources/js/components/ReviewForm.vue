@@ -20,7 +20,7 @@ export default {
             service_id: '',
             rating: 0,
             message: '',
-            agree_to_process_personal_data: false
+            agree_to_process_personal_data: true
         });
 
         const isOpen = computed(() => appStore.isModalOpen('review'));

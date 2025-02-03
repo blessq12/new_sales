@@ -60,47 +60,10 @@
                         <p class="mx-auto mt-2 max-w-xl text-center text-lg leading-8 text-gray-300">
                             Оставьте заявку, и мы свяжемся с вами в ближайшее время
                         </p>
-                        <form action="?" method="POST" class="mx-auto mt-10 max-w-md">
-                            @csrf
-                            <input type="hidden" name="service_id" value="{{ $service->id }}">
-                            <div class="grid grid-cols-1 gap-x-8 gap-y-6">
-                                <div>
-                                    <label for="name" class="block text-sm font-semibold leading-6 text-white">Ваше имя</label>
-                                    <div class="mt-2.5">
-                                        <input type="text" 
-                                               name="name" 
-                                               id="name" 
-                                               required
-                                               class="block w-full rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6">
-                                    </div>
-                                </div>
-                                <div>
-                                    <label for="phone" class="block text-sm font-semibold leading-6 text-white">Телефон</label>
-                                    <div class="mt-2.5">
-                                        <input type="tel" 
-                                               name="phone" 
-                                               id="phone" 
-                                               required
-                                               class="block w-full rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6">
-                                    </div>
-                                </div>
-                                <div>
-                                    <label for="message" class="block text-sm font-semibold leading-6 text-white">Сообщение</label>
-                                    <div class="mt-2.5">
-                                        <textarea name="message" 
-                                                  id="message" 
-                                                  rows="4" 
-                                                  class="block w-full rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"></textarea>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="mt-8 flex justify-center">
-                                <button type="submit" 
-                                        class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                                    Отправить заявку
-                                </button>
-                            </div>
-                        </form>
+                        <service-form 
+                            :service-id="{{ $service->id }}"
+                            service-name="{{ $service->name }}"
+                        ></service-form>
                         <svg viewBox="0 0 1024 1024" class="absolute left-1/2 top-1/2 -z-10 h-[64rem] w-[64rem] -translate-x-1/2 [mask-image:radial-gradient(closest-side,white,transparent)]" aria-hidden="true">
                             <circle cx="512" cy="512" r="512" fill="url(#827591b1-ce8c-4110-b064-7cb85a0b1217)" fill-opacity="0.7" />
                             <defs>

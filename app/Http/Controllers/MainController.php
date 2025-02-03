@@ -43,4 +43,8 @@ class MainController extends Controller
     {
         return view('main.privacy');
     }
+    public function gallery()
+    {
+        return view('main.gallery');
+    }
 }
