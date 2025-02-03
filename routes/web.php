@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Facades\Telegram;
 
 Route::controller(\App\Http\Controllers\MainController::class)->group(function () {
     Route::get('/', 'index')->name('main.index');

@@ -13,16 +13,7 @@
     ></x-hero-banner>
 
     <!-- Поиск -->
-    <div class="mx-auto max-w-7xl px-6 lg:px-8 py-12">
-        <div class="relative">
-            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                <span class="mdi mdi-magnify text-gray-400 text-xl"></span>
-            </div>
-            <input type="text" 
-                   class="block w-full rounded-xl border-0 py-4 pl-12 pr-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                   placeholder="Поиск услуги...">
-        </div>
-    </div>
+    <search-component type="desktop"></search-component>
 
     <!-- Список услуг -->
     <div class="mx-auto max-w-7xl px-6 lg:px-8 pb-24">
@@ -32,7 +23,6 @@
             @endforeach
         </div>
     </div>
-
     <!-- CTA секция -->
     <div class="relative isolate overflow-hidden bg-gray-900 py-16 sm:py-24 lg:py-32">
         <div class="mx-auto max-w-7xl px-6 lg:px-8">
@@ -43,7 +33,10 @@
                         Оставьте заявку на нашем сайте, и мы свяжемся с вами в течение 15 минут. Мы готовы помочь вам найти решение, которое соответствует вашим потребностям.
                     </p>
                     <div class="mt-6 flex max-w-md gap-x-4">
-                        <button class="flex-none rounded-xl bg-indigo-500 px-8 py-4 text-base font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 transition-all duration-200">
+                        <button 
+                            @click="openModal('callback')"
+                            class="flex-none rounded-xl bg-indigo-500 px-8 py-4 text-base font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 transition-all duration-200"
+                        >
                             Оставить заявку
                         </button>
                     </div>

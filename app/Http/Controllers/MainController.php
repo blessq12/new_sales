@@ -16,6 +16,7 @@ class MainController extends Controller
     {
         return view('main.index', [
             'services' => \App\Models\Service::limit(10)->orderBy('created_at', 'desc')->get(),
+            'reviews' => \App\Models\Review::where('is_approved', true)->limit(6)->orderBy('created_at', 'desc')->get(),
         ]);
     }
     public function about()
@@ -27,7 +28,7 @@ class MainController extends Controller
         $doc_dir = public_path('assets/images/docs');
         $files = scandir($doc_dir);
         $files = array_filter($files, function ($file) {
-            return $file !== '.' && $file !== '..';
+            return $file !== '.' && $file !== '..' && $file !== '.DS_Store';
         });
 
         return view('main.certificates', [

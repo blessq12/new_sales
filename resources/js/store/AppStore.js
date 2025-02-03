@@ -14,13 +14,15 @@ export const useAppStore = defineStore('app', {
             callback: false,
             review: false
         },
-        
-        // Состояние куки
-        cookieConsent: localStorage.getItem('cookieConsent') === 'true'
+        lastSearchQuery: null,
+        cookieConsent: localStorage.getItem('cookieConsent') === 'true',
+        mobileMenu: false
     }),
 
     actions: {
-        // Управление модальными окнами
+        toggleMobileMenu() {
+            this.mobileMenu = !this.mobileMenu;
+        },
         openModal(modalName) {
             if (this.modals.hasOwnProperty(modalName)) {
                 this.activeModal = modalName;
@@ -54,17 +56,17 @@ export const useAppStore = defineStore('app', {
         },
         showToast(type, message) {
             toast[type](message);
+        },
+
+        async search(query) {
+            const response = await axios.get('/api/search', { params: { q: query } });
+            return response.data;
         }
     },
 
     getters: {
-        // Получение активного модального окна
         currentModal: (state) => state.activeModal,
-        
-        // Проверка, открыто ли какое-либо модальное окно
         hasOpenModal: (state) => Object.values(state.modals).some(isOpen => isOpen),
-        
-        // Получение состояния куки
         hasCookieConsent: (state) => state.cookieConsent
     }
 });

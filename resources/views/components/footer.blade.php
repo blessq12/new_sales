@@ -4,7 +4,7 @@
             <!-- О компании -->
             <div class="space-y-4">
                 <div class="flex items-center">
-                    <img src="{{ Storage::disk('assets')->url('images/logo-white.svg') }}" alt="Логотип" class="h-8 w-auto">
+                    <img src="https://via.placeholder.com/50" alt="Логотип" class="h-8 w-auto">
                     <span class="ml-2 text-xl font-bold text-white">{{ $company->name }}</span>
                 </div>
                 <p class="text-sm text-gray-400">{{ $company->description }}</p>

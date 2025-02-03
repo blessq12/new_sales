@@ -36,7 +36,7 @@
         <div class="flex justify-between h-16">
             <div class="flex items-center">
                 <a href="{{ route('main.index') }}" class="flex-shrink-0 flex items-center">
-                    <img src="{{ Storage::disk('assets')->url('images/logo.svg') }}" alt="Логотип" class="h-8 w-auto">
+                    <img src="https://via.placeholder.com/50" alt="Логотип" class="h-8 w-auto">
                     <span class="ml-2 text-xl font-bold text-gray-900">{{ $company->name }}</span>
                 </a>
             </div>
@@ -50,11 +50,17 @@
                     <span class="mdi mdi-certificate mr-1"></span>Сертификаты
                 </a>
                 <div class="relative group">
-                    <button class="text-gray-700 group hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium inline-flex items-center transition-colors duration-200">
+                    <button 
+                        class="text-gray-700 group hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium inline-flex items-center transition-colors duration-200"
+                        onclick="{
+                            document.getElementById('services-dropdown').classList.toggle('opacity-0');
+                            document.getElementById('services-dropdown').classList.toggle('invisible');
+                        }"
+                        >
                         <span class="mdi mdi-tools mr-1"></span>Услуги
                         <span class="mdi mdi-chevron-down ml-1 text-gray-400 group-hover:text-indigo-600 transition-transform duration-200 group-hover:rotate-180"></span>
                     </button>
-                    <div class="absolute right-0 w-64 mt-2 bg-white rounded-xl shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 border border-gray-100">
+                    <div id="services-dropdown" class="max-h-[500px] overflow-y-auto absolute right-0 w-64 mt-2 bg-white rounded-xl shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 border border-gray-100">
                         <div class="py-2">
                             @foreach($services as $service)
                                 <a href="{{ route('services.show', $service->slug) }}" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600">
@@ -77,8 +83,8 @@
             </div>
 
             <!-- Мобильная кнопка меню -->
-            <div class="flex items-center md:hidden">
-                <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 focus:outline-none transition-colors duration-200" aria-controls="mobile-menu" aria-expanded="false">
+            <div class="flex items-center md:hidden"> 
+                <button id="mobile-menu-button" @click="toggleMobileMenu()" class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 focus:outline-none transition-colors duration-200" aria-controls="mobile-menu" aria-expanded="false">
                     <span class="sr-only">Открыть меню</span>
                     <span class="mdi mdi-menu text-2xl menu-icon"></span>
                     <span class="mdi mdi-close text-2xl close-icon hidden"></span>
@@ -88,22 +94,14 @@
     </div>
 
     <!-- Мобильное меню -->
-    <div id="mobile-menu" class="fixed inset-0 z-50 bg-white md:hidden transform translate-y-full transition-transform duration-200">
+    <div v-if="appStore.mobileMenu" class="fixed inset-0 z-50 bg-white md:hidden transform transition-transform duration-200" style="translate-y: 0;">
         <div class="h-full flex flex-col">
             <!-- Верхняя панель с поиском и кнопкой закрытия -->
             <div class="p-4 border-b flex items-center justify-between">
                 <div class="flex-1 mr-4">
-                    <form action="?" method="GET" class="relative">
-                        <input type="text" 
-                               name="q" 
-                               placeholder="Поиск по сайту..." 
-                               class="w-full px-4 py-2 pr-10 rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500">
-                        <button type="submit" class="absolute right-3 top-1/2 -translate-y-1/2">
-                            <span class="mdi mdi-magnify text-gray-400"></span>
-                        </button>
-                    </form>
+                    <search-component type="mobile"></search-component>
                 </div>
-                <button id="mobile-menu-close" class="p-2 rounded-lg hover:bg-gray-100">
+                <button id="mobile-menu-close" @click="toggleMobileMenu" class="p-2 rounded-lg hover:bg-gray-100">
                     <span class="mdi mdi-close text-2xl"></span>
                 </button>
             </div>
@@ -118,7 +116,10 @@
                         <span class="mdi mdi-certificate mr-3"></span>Сертификаты
                     </a>
                     <div class="services-dropdown">
-                        <button class="w-full flex items-center justify-between px-4 py-3 text-lg font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition-colors duration-200">
+                        <button 
+                            class="w-full flex items-center justify-between px-4 py-3 text-lg font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition-colors duration-200"
+                            onclick="document.querySelector('.services-content').classList.toggle('hidden')"
+                        >
                             <span class="flex items-center">
                                 <span class="mdi mdi-tools mr-3"></span>Услуги
                             </span>
@@ -134,7 +135,7 @@
                         </div>
                     </div>
                     <a href="{{ route('main.cooperation') }}" class="block px-4 py-3 text-lg font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition-colors duration-200">
-                        <span class="mdi mdi-certificate mr-3"></span>Сотрудничество
+                        <span class="mdi mdi-handshake mr-3"></span>Сотрудничество
                     </a>
                     <a href="{{ route('main.contacts') }}" class="block px-4 py-3 text-lg font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition-colors duration-200">
                         <span class="mdi mdi-phone mr-3"></span>Контакты

@@ -66,7 +66,7 @@
                                  alt="Сертификат" 
                                  class="h-full w-full object-cover object-center transition-transform duration-300 group-hover:scale-105">
                             <!-- Оверлей при наведении -->
-                            <div class="absolute inset-0 bg-black bg-opacity-0 transition-opacity duration-300 group-hover:bg-opacity-30 flex items-center justify-center">
+                            <div class="absolute inset-0 bg-transparent bg-opacity-0 transition-opacity duration-300 group-hover:bg-opacity-30 flex items-center justify-center">
                                 <a href="{{ Storage::disk('assets')->url('/images/docs/'.$file) }}" 
                                    target="_blank" 
                                    class="rounded-full bg-white p-3 opacity-0 transform translate-y-4 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0">

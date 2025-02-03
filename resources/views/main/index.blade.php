@@ -14,11 +14,11 @@
         </div>
 
         <div class="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:py-40 lg:px-8">
-            <div class="mx-auto max-w-2xl lg:mx-0">
-                <h1 class="text-4xl font-bold tracking-tight text-white sm:text-6xl lg:text-7xl">
+            
+                <h1 class="text-4xl font-bold tracking-tight text-white sm:text-6xl lg:text-7xl max-w-full lg:max-w-[75%]">
                     Ваши сантехнические проблемы - наша забота!
                 </h1>
-                <p class="mt-6 text-lg leading-8 text-gray-300">
+                <p class="mt-6 text-lg leading-8 text-gray-300 ">
                     Качественные услуги сантехников в Томске - мы здесь, чтобы помочь!
                 </p>
                 <p class="mt-4 text-xl text-gray-300">
@@ -38,7 +38,7 @@
                     <a href="{{ route('main.contacts') }}" class="rounded-xl px-6 py-3 text-lg font-semibold text-white ring-1 ring-inset ring-white/30 hover:ring-white/60 transition-all duration-200 hover:scale-105 mb-4 md:mb-0 block md:inline-block">
                         Контакты
                     </a>
-                </div>
+                
             </div>
         </div>
     </div>
@@ -122,73 +122,47 @@
                         class="inline-flex items-center px-4 py-2 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200"
                     >
                         <span class="mdi mdi-plus-circle mr-2"></span>
-                        Оставить отзыв
+                        @if($reviews->isEmpty())
+                            Оставите первый отзыв о нас
+                        @else
+                            Оставить отзыв
+                        @endif
                     </button>
                 </div>
             </div>
 
             <div class="mx-auto mt-16 grid max-w-4xl grid-cols-1 grid-rows-1 gap-6 text-sm leading-6 text-gray-900 sm:mt-20 sm:grid-cols-3 xl:mx-0 xl:max-w-none xl:grid-cols-3">
-                @php
-                    $reviews = [
-                        [
-                            'name' => 'Анна Петрова',
-                            'date' => '15.01.2025',
-                            'rating' => 5,
-                            'text' => 'Отличная работа! Мастер пришел вовремя, быстро определил проблему и устранил течь. Очень довольна качеством работы и профессионализмом.',
-                            'service' => 'Устранение протечки',
-                            'avatar' => 'https://images.unsplash.com/photo-1494790108377-be9c29b29330'
-                        ],
-                        [
-                            'name' => 'Михаил Иванов',
-                            'date' => '20.01.2025',
-                            'rating' => 5,
-                            'text' => 'Заказывал установку водонагревателя. Сделали всё аккуратно, быстро и по разумной цене. Уже год прошел - всё работает отлично!',
-                            'service' => 'Установка водонагревателя',
-                            'avatar' => 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d'
-                        ],
-                        [
-                            'name' => 'Елена Сидорова',
-                            'date' => '25.01.2025',
-                            'rating' => 5,
-                            'text' => 'Обратилась по поводу замены смесителя. Мастер приехал с полным набором инструментов, работу выполнил качественно. Очень довольна результатом!',
-                            'service' => 'Замена смесителя',
-                            'avatar' => 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80'
-                        ],
-                    ];
-                @endphp
-
                 @foreach($reviews as $review)
                     <div class="rounded-2xl bg-white p-6 ring-1 ring-gray-200 hover:shadow-md transition-all duration-200">
                         <div class="flex items-center gap-x-2 mb-4">
-                            <img class="h-12 w-12 flex-none rounded-full bg-gray-50 object-cover" src="{{ $review['avatar'] }}" alt="{{ $review['name'] }}">
+                            {{-- <img class="h-12 w-12 flex-none rounded-full bg-gray-50 object-cover" src="{{ $review['avatar'] }}" alt="{{ $review['name'] }}"> --}}
                             <div>
-                                <div class="font-semibold text-gray-900">{{ $review['name'] }}</div>
-                                <div class="text-gray-600">{{ $review['date'] }}</div>
+                                <div class="font-semibold text-gray-900">{{ $review->name }}</div>
+                                <div class="text-gray-600">{{ $review->created_at->format('d.m.Y') }}</div>
                             </div>
                         </div>
 
                         <div class="flex items-center mb-2">
-                            @for($i = 0; $i < $review['rating']; $i++)
+                            @for($i = 0; $i < $review->rating; $i++)
                                 <span class="mdi mdi-star text-yellow-400"></span>
                             @endfor
                         </div>
 
                         <div class="text-sm text-gray-900 mb-4">
-                            <span class="font-semibold">Услуга:</span> {{ $review['service'] }}
+                            <span class="font-semibold">Услуга:</span> {{ $review->service->name }}
                         </div>
 
                         <blockquote class="text-gray-600 italic">
-                            "{{ $review['text'] }}"
+                            "{{ mb_strimwidth($review->message, 0, 100, '...') }}"
                         </blockquote>
                     </div>
                 @endforeach
-            </div>
-
-            <div class="mt-16 flex justify-center">
+                </div>
+            {{-- <div class="mt-16 flex justify-center">
                 <a href="javascript:void(0)" class="rounded-xl bg-indigo-600 px-6 py-3 text-lg font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-all duration-200 hover:scale-105">
                     Смотреть все отзывы
                 </a>
-            </div>
+            </div> --}}
         </div>
     </section>
 
