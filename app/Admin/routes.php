@@ -17,4 +17,5 @@ Route::group([
     $router->resource('services', ServiceController::class);
     $router->resource('user-requests', UserRequestController::class);
     $router->resource('reviews', ReviewController::class);
+    $router->resource('galleries', GalleryController::class);
 });
