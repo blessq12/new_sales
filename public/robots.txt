@@ -1,2 +1,4 @@
 User-agent: *
 Disallow:
+
+Sitemap: https://new-sales.ru/sitemap.xml

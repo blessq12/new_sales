@@ -9,6 +9,24 @@
     <meta name="yandex" content="index, follow">
     <meta name="google" content="notranslate">
     <meta name="keywords" content="@yield('keywords')">
+    <meta name="description" content="@yield('description')">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:title" content="@yield('title')">
+    <meta property="og:description" content="@yield('description')">
+    <meta property="og:image" content="@yield('og_image', Storage::disk('assets')->url('images/banner.png'))">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="{{ url()->current() }}">
+    <meta property="twitter:title" content="@yield('title')">
+    <meta property="twitter:description" content="@yield('description')">
+    <meta property="twitter:image" content="@yield('og_image', Storage::disk('assets')->url('images/banner.png'))">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="{{ url()->current() }}">
 
     <!-- Аналитика -->
     <script type="text/javascript">
@@ -120,6 +138,8 @@
         'resources/js/app.js'
         ])
 </head>
+    <x-json-ld type="Organization" />
+    <x-json-ld type="WebPage" />
 <body class="font-sans antialiased">
     <div id="app">
         <x-header />

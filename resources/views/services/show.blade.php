@@ -60,7 +60,7 @@
                         <p class="mx-auto mt-2 max-w-xl text-center text-lg leading-8 text-gray-300">
                             Оставьте заявку, и мы свяжемся с вами в ближайшее время
                         </p>
-                        <service-form 
+                        <service-form
                             :service-id="{{ $service->id }}"
                             service-name="{{ $service->name }}"
                         ></service-form>
@@ -85,8 +85,8 @@
                                 @foreach($relatedServices as $relatedService)
                                     <div class="relative isolate flex flex-col gap-8 lg:flex-row">
                                         <div class="relative aspect-[16/9] sm:aspect-[2/1] lg:aspect-square lg:w-64 lg:shrink-0">
-                                            <img src="{{ Storage::disk('uploads')->url($relatedService->image) }}" 
-                                                alt="{{ $relatedService->name }}" 
+                                            <img src="{{ Storage::disk('uploads')->url($relatedService->image) }}"
+                                                alt="{{ $relatedService->name }}"
                                                 class="absolute inset-0 h-full w-full rounded-2xl bg-gray-50 object-cover">
                                             <div class="absolute inset-0 rounded-2xl ring-1 ring-inset ring-gray-900/10"></div>
                                         </div>
