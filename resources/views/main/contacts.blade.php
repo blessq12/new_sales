@@ -5,7 +5,6 @@
 
 @section('content')
     <x-hero-banner
-        :image="'https://www.sales-tomsk.ru/images/dest/bg3.jpg'"
         title="Контакты"
         description='Контакты компании ООО "Салес"'
         :breadcrumbs="[

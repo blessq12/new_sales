@@ -106,14 +106,14 @@
                         @foreach($company->legals as $legal)
                             <span>{{ $legal->inn }} </span>
                         @endforeach
-                        
+
                         </p>
                 </div>
                 <div class="flex flex-wrap gap-4 md:justify-end text-sm">
                     <a href="{{ route('main.privacy') }}" class="text-gray-400 hover:text-white transition-colors duration-200">
                         Политика конфиденциальности
                     </a>
-                    <a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">
+                    <a href="{{ route('main.agreement') }}" class="text-gray-400 hover:text-white transition-colors duration-200">
                         Пользовательское соглашение
                     </a>
                 </div>

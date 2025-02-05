@@ -15,7 +15,7 @@ class HeroBanner extends Component
         public array $breadcrumbs = [],
         public string $title = 'Не установлен',
         public string $description = 'Не установлен',
-        public string $image = 'https://via.placeholder.com/600x400'
+        public string $image = '/assets/images/banner.png'
     ) {
         //
     }

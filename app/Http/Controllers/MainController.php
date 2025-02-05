@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 
 class MainController extends Controller
 {
-
     public function __construct()
     {
         \View::share('company', \App\Models\Company::first());
@@ -45,6 +44,12 @@ class MainController extends Controller
     }
     public function gallery()
     {
-        return view('main.gallery');
+        return view('main.gallery', [
+            'gallery' => \App\Models\Gallery::where('is_active', true)->first(),
+        ]);
+    }
+    public function agreement()
+    {
+        return view('main.agreement');
     }
 }

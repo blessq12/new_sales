@@ -49,8 +49,7 @@ class GalleryController extends AdminController
             ->uniqueName()
             ->pathColumn('image_path')
             ->move('galleries')
-            ->removable()
-            ->rules('required');
+            ->removable();
         return $form;
     }
 }

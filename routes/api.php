@@ -24,7 +24,6 @@ Route::controller(\App\Http\Controllers\Api\RawConntroller::class)->prefix('raw'
 });
 
 Route::get('/services', [ServiceController::class, 'list']);
-Route::post('/reviews', [ServiceController::class, 'storeReview']);
 
 Route::get('/search', [SearchController::class, 'search']);
 

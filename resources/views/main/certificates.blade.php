@@ -5,7 +5,6 @@
 
 @section('content')
     <x-hero-banner
-        :image="'https://www.sales-tomsk.ru/images/dest/bg3.jpg'"
         title="Сертификаты"
         description='Сертификаты компании ООО "Салес"'
         :breadcrumbs="[
@@ -62,13 +61,13 @@
                 @foreach ($files as $file)
                     <div class="group relative overflow-hidden rounded-2xl bg-white shadow-md transition-all duration-300 hover:shadow-xl">
                         <div class="aspect-h-4 aspect-w-3 relative">
-                            <img src="{{ Storage::disk('assets')->url('/images/docs/'.$file) }}" 
-                                 alt="Сертификат" 
+                            <img src="{{ Storage::disk('assets')->url('/images/docs/'.$file) }}"
+                                 alt="Сертификат"
                                  class="h-full w-full object-cover object-center transition-transform duration-300 group-hover:scale-105">
                             <!-- Оверлей при наведении -->
                             <div class="absolute inset-0 bg-transparent bg-opacity-0 transition-opacity duration-300 group-hover:bg-opacity-30 flex items-center justify-center">
-                                <a href="{{ Storage::disk('assets')->url('/images/docs/'.$file) }}" 
-                                   target="_blank" 
+                                <a href="{{ Storage::disk('assets')->url('/images/docs/'.$file) }}"
+                                   target="_blank"
                                    class="rounded-full bg-white p-3 opacity-0 transform translate-y-4 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0">
                                     <span class="mdi mdi-magnify text-xl text-gray-900"></span>
                                 </a>
@@ -91,7 +90,7 @@
                     Мы готовы помочь вам с любыми задачами. Наши специалисты обеспечат качественное выполнение работ в срок.
                 </p>
                 <div class="mt-10 flex items-center justify-center gap-x-6">
-                    <a href="{{ route('main.contacts') }}" 
+                    <a href="{{ route('main.contacts') }}"
                        class="rounded-md bg-white px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">
                         Связаться с нами
                     </a>

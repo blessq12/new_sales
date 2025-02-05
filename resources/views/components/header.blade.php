@@ -45,12 +45,15 @@
             </div>
             
             <!-- Десктопное меню -->
-            <div class="hidden md:flex md:items-center md:space-x-6">
-                <a href="{{ route('main.about') }}" class="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 flex items-center">
-                    <span class="mdi mdi-information-outline mr-1"></span>О нас
+            <div class="hidden md:flex md:items-center md:space-x-3">
+                <a href="{{ route('main.about') }}" class="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+                    О нас
                 </a>
-                <a href="{{ route('main.certificates') }}" class="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 flex items-center">
-                    <span class="mdi mdi-certificate mr-1"></span>Сертификаты
+                <a href="{{ route('main.certificates') }}" class="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+                    Сертификаты
+                </a>
+                <a href="{{ route('main.gallery') }}" class="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+                    Галерея
                 </a>
                 <div class="relative group">
                     <button 
@@ -60,8 +63,8 @@
                             document.getElementById('services-dropdown').classList.toggle('invisible');
                         }"
                         >
-                        <span class="mdi mdi-tools mr-1"></span>Услуги
-                        <span class="mdi mdi-chevron-down ml-1 text-gray-400 group-hover:text-indigo-600 transition-transform duration-200 group-hover:rotate-180"></span>
+                        Услуги
+                        <span class="ml-1 text-gray-400 group-hover:text-indigo-600 transition-transform duration-200 group-hover:rotate-180">▼</span>
                     </button>
                     <div id="services-dropdown" class="max-h-[500px] overflow-y-auto absolute right-0 w-64 mt-2 bg-white rounded-xl shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 border border-gray-100">
                         <div class="py-2">
@@ -72,15 +75,14 @@
                             </a>
                             @foreach($services as $service)
                                 <a href="{{ route('services.show', $service->slug) }}" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600">
-                                    <span class="mdi mdi-check text-indigo-600 mr-2 opacity-1 transition-opacity duration-200 hover:opacity-100"></span>
                                     {{ $service->name }}
                                 </a>
                             @endforeach
                         </div>
                     </div>
                 </div>
-                <a href="{{ route('main.contacts') }}" class="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 flex items-center">
-                    <span class="mdi mdi-phone mr-1"></span>Контакты
+                <a href="{{ route('main.contacts') }}" class="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+                    Контакты
                 </a>
                 <button 
                     @click="openModal('callback')"
@@ -118,20 +120,21 @@
             <div class="flex-1 overflow-y-auto">
                 <nav class="px-4 py-6 space-y-4">
                     <a href="{{ route('main.about') }}" class="block px-4 py-3 text-lg font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition-colors duration-200">
-                        <span class="mdi mdi-information-outline mr-3"></span>О нас
+                        О нас
                     </a>
                     <a href="{{ route('main.certificates') }}" class="block px-4 py-3 text-lg font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition-colors duration-200">
-                        <span class="mdi mdi-certificate mr-3"></span>Сертификаты
+                        Сертификаты
+                    </a>
+                    <a href="{{ route('main.gallery') }}" class="block px-4 py-3 text-lg font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition-colors duration-200">
+                        Галерея
                     </a>
                     <div class="services-dropdown">
                         <button 
                             class="w-full flex items-center justify-between px-4 py-3 text-lg font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition-colors duration-200"
                             onclick="document.querySelector('.services-content').classList.toggle('hidden')"
                         >
-                            <span class="flex items-center">
-                                <span class="mdi mdi-tools mr-3"></span>Услуги
-                            </span>
-                            <span class="mdi mdi-chevron-down transition-transform duration-200"></span>
+                            <span>Услуги</span>
+                            <span>▼</span>
                         </button>
                         <div class="services-content hidden pl-4 mt-2 space-y-2">
                             @foreach($services as $service)
@@ -143,7 +146,7 @@
                         </div>
                     </div>
                     <a href="{{ route('main.contacts') }}" class="block px-4 py-3 text-lg font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition-colors duration-200">
-                        <span class="mdi mdi-phone mr-3"></span>Контакты
+                        Контакты
                     </a>
                 </nav>
             </div>

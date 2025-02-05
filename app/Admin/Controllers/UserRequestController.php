@@ -26,6 +26,7 @@ class UserRequestController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new UserRequest);
+        $grid->model()->orderBy('id', 'desc');
 
         $grid->column('id', __('ID'))->sortable();
         $grid->column('type', __('Тип запроса'))->display(function ($val) {

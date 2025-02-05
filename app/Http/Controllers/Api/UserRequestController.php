@@ -32,6 +32,7 @@ class UserRequestController extends Controller
             isset($data['phone']) ? 'Телефон: ' . $data['phone'] : null,
             isset($data['agree']) ? 'Согласие на обработку: ' . ($data['agree'] == true ? 'Да' : 'Нет') : null,
             isset($data['comment']) ? 'Сообщение: ' . $data['comment'] : null,
+            isset($data['message']) ? 'Сообщение: ' . $data['message'] : null,
             isset($data['service_name']) ? 'Услуга: ' . $data['service_name'] : null,
         ];
 

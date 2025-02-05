@@ -2,7 +2,6 @@
 @section('title', 'Профессиональные сантехники в Томске - Ваш надежный помощник!')
 @section('description', 'Ищете качественные услуги сантехников в Томске? Мы предлагаем профессиональные решения для вашего дома. Звоните: 226-224')
 @section('content')
-    
     <!-- Hero секция -->
     <div class="relative isolate overflow-hidden">
         <img src="{{ Storage::disk('assets')->url('images/bg1.jpg') }}" alt="Background" class="absolute inset-0 -z-10 h-full w-full object-cover">
@@ -14,7 +13,7 @@
         </div>
 
         <div class="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:py-40 lg:px-8">
-            
+
                 <h1 class="text-4xl font-bold tracking-tight text-white sm:text-6xl lg:text-7xl max-w-full lg:max-w-[75%]">
                     Ваши сантехнические проблемы - наша забота!
                 </h1>
@@ -22,14 +21,14 @@
                     Качественные услуги сантехников в Томске - мы здесь, чтобы помочь!
                 </p>
                 <p class="mt-4 text-xl text-gray-300">
-                    Звоните нам: 
+                    Звоните нам:
                     <a href="tel:{{ $company->phones[0] }}" class="font-bold text-white hover:text-indigo-400 transition-colors">
                         {{ $company->phones[0] }}
                     </a>
                 </p>
                 <div class="mt-10 block md:flex items-center gap-x-6">
-                    <a 
-                        href="javascript:void(0)" 
+                    <a
+                        href="javascript:void(0)"
                         class="rounded-xl bg-indigo-600 px-6 py-3 text-lg font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-all duration-200 hover:scale-105 mb-4 md:mb-0 block md:inline-block"
                         @click="openModal('callback')"
                     >
@@ -38,7 +37,7 @@
                     <a href="{{ route('main.contacts') }}" class="rounded-xl px-6 py-3 text-lg font-semibold text-white ring-1 ring-inset ring-white/30 hover:ring-white/60 transition-all duration-200 hover:scale-105 mb-4 md:mb-0 block md:inline-block">
                         Контакты
                     </a>
-                
+
             </div>
         </div>
     </div>
@@ -117,7 +116,7 @@
                     Более 1000 довольных клиентов доверяют нам свои сантехнические работы
                 </p>
                 <div class="mt-6">
-                    <button 
+                    <button
                         @click="openModal('review')"
                         class="inline-flex items-center px-4 py-2 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200"
                     >
@@ -171,7 +170,7 @@
         <div class="absolute -top-80 left-[max(6rem,33%)] -z-10 transform-gpu blur-3xl sm:left-1/2 md:top-20 lg:ml-20 xl:top-3 xl:ml-56" aria-hidden="true">
             <div class="aspect-[801/1036] w-[50.0625rem] bg-gradient-to-tr from-indigo-500 to-purple-500 opacity-30"></div>
         </div>
-        
+
         <div class="mx-auto max-w-7xl px-6 lg:px-8">
             <div class="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
                 <div class="lg:pr-8 lg:pt-4">
@@ -222,18 +221,18 @@
                                     </li>
                                     @endforeach
                                 </ul>
-                                    
+
                                 </dd>
                             </div>
                         </dl>
                     </div>
                 </div>
-                
-                <iframe src="https://yandex.ru/map-widget/v1/?ll=84.980994%2C56.503963&mode=whatshere&whatshere%5Bpoint%5D=84.980976%2C56.503885&whatshere%5Bzoom%5D=17&z=17.14" 
+
+                <iframe src="https://yandex.ru/map-widget/v1/?ll=84.980994%2C56.503963&mode=whatshere&whatshere%5Bpoint%5D=84.980976%2C56.503885&whatshere%5Bzoom%5D=17&z=17.14"
                     class="w-[48rem] max-w-none rounded-xl shadow-xl ring-1 ring-gray-400/10 sm:w-[57rem] md:-ml-4 lg:-ml-0 block md:hidden" width="600" height="300"
                     frameborder="0"
                 ></iframe>
-                <iframe src="https://yandex.ru/map-widget/v1/?ll=84.980994%2C56.503963&mode=whatshere&whatshere%5Bpoint%5D=84.980976%2C56.503885&whatshere%5Bzoom%5D=17&z=17.14" 
+                <iframe src="https://yandex.ru/map-widget/v1/?ll=84.980994%2C56.503963&mode=whatshere&whatshere%5Bpoint%5D=84.980976%2C56.503885&whatshere%5Bzoom%5D=17&z=17.14"
                     class="w-[48rem] max-w-none rounded-xl shadow-xl ring-1 ring-gray-400/10 sm:w-[57rem] md:-ml-4 lg:-ml-0 hidden md:block" width="1500" height="900"
                     frameborder="0"
                 ></iframe>

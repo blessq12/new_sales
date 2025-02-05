@@ -4,7 +4,6 @@
 
 @section('content')
     <x-hero-banner
-        image="https://images.ctfassets.net/ihx0a8chifpc/GTlzd4xkx4LmWsG1Kw1BB/ad1834111245e6ee1da4372f1eb5876c/placeholder.com-1280x720.png?w=1920&q=60&fm=webp"
         title="Услуги"
         description="Узнайте о наших услугах, которые помогут решить ваши задачи и достичь результатов. Выберите подходящее решение для вас."
         :breadcrumbs="[
@@ -33,7 +32,7 @@
                         Оставьте заявку на нашем сайте, и мы свяжемся с вами в течение 15 минут. Мы готовы помочь вам найти решение, которое соответствует вашим потребностям.
                     </p>
                     <div class="mt-6 flex max-w-md gap-x-4">
-                        <button 
+                        <button
                             @click="openModal('callback')"
                             class="flex-none rounded-xl bg-indigo-500 px-8 py-4 text-base font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 transition-all duration-200"
                         >

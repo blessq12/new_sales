@@ -16,21 +16,15 @@ class CompanySeeder extends Seeder
             'name' => 'Салес',
             'description' => 'Услуги сантехника в Томске. Все виды сантехнических работ, любой сложности и объема.',
             'logo' => 'https://sales-tom.ru/wp-content/uploads/2024/09/logo-sales-tom.png',
-            'addresses' => json_encode([
+            'addresses' => [
                 'Иркутский проезд, 1, Октябрьский район, Томск 634003',
                 'пл. Ленина, 6, Томск 634021'
-            ]),
-            'phones' => json_encode(['+7 (3822) 226-224', '+7 (906) 199-39-33']),
-            'emails' => json_encode(['sales-tom@yandex.ru']),
+            ],
+            'phones' => ['+7 (3822) 226-224', '+7 (906) 199-39-33'],
+            'emails' => ['sales-tom@yandex.ru'],
             'website' => 'https://sales-tom.ru',
-            'serviceAreas' => json_encode([
-                'Кировский район',
-                'Октябрьский район',
-                'Ленинский район',
-                'Академгородок',
-                'Советский район'
-            ]),
-            'suburbs' => json_encode([
+            'serviceAreas' => ['Кировский район', 'Октябрьский район', 'Ленинский район', 'Академгородок', 'Советский район'],
+            'suburbs' => [
                 'Тимирязево',
                 'Зональный',
                 'Черная речка',
@@ -63,8 +57,8 @@ class CompanySeeder extends Seeder
                 'Богашёво',
                 'Синий Утёс',
                 'Коларово'
-            ]),
-            'socials' => json_encode([
+            ],
+            'socials' => [
                 'instagram' => [
                     'url' => 'https://www.instagram.com/sedoidead/',
                     'icon' => 'fab fa-instagram',
@@ -95,7 +89,7 @@ class CompanySeeder extends Seeder
                     'icon' => 'fab fa-twitter',
                     'title' => 'Twitter'
                 ]
-            ]),
+            ],
         ]);
     }
 }

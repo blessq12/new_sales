@@ -5,7 +5,6 @@
 
 @section('content')
     <x-hero-banner
-        :image="'https://www.sales-tomsk.ru/images/dest/bg3.jpg'"
         :title="'О нас'"
         :description="'Узнайте о нашей компании, миссии и ценностях. Мы предоставляем высококачественные решения для удовлетворения потребностей клиентов.'"
         :breadcrumbs="[
@@ -169,7 +168,7 @@
                     Мы готовы помочь вам с любыми задачами. Наши специалисты обеспечат качественное выполнение работ в срок.
                 </p>
                 <div class="mt-10 flex items-center justify-center gap-x-6">
-                    <a href="{{ route('main.contacts') }}" 
+                    <a href="{{ route('main.contacts') }}"
                        class="rounded-md bg-white px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">
                         Связаться с нами
                     </a>

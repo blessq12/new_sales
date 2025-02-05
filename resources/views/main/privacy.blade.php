@@ -4,11 +4,9 @@
 @section('description', 'Политика конфиденциальности')
 
 @section('content')
-    <x-hero-banner 
-        :image="asset('images/hero-banner.jpg')"
-        title="Политика в отношении обработки персональных данных" 
-        description="Настоящая политика обработки персональных данных составлена в соответствии с требованиями Федерального закона от 27.07.2006. № 152-ФЗ «О персональных данных»." 
-        image="https://via.placeholder.com/1920x1080"
+    <x-hero-banner
+        title="Политика в отношении обработки персональных данных"
+        description="Настоящая политика обработки персональных данных составлена в соответствии с требованиями Федерального закона от 27.07.2006. № 152-ФЗ «О персональных данных»."
         :breadcrumbs="[
             ['title' => 'Политика конфиденциальности', 'url' => route('main.privacy')]
         ]"
@@ -156,7 +154,7 @@
                 Свяжитесь с нами для уточнения деталей.
             </h2>
             <div class="mt-10 flex items-center gap-x-6 lg:mt-0 lg:flex-shrink-0">
-                <a href="{{ route('main.contacts') }}" 
+                <a href="{{ route('main.contacts') }}"
                    class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                     Связаться с нами
                 </a>
