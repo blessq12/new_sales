@@ -10,7 +10,11 @@ class Telegram
     public function __construct()
     {
         $this->token = env('TELEGRAM_BOT_TOKEN');
-        $this->chatId = env('TELEGRAM_CHAT_ID_DEV');
+        if (env('APP_ENV') === 'prod') {
+            $this->chatId = env('TELEGRAM_CHAT_ID');
+        } else {
+            $this->chatId = env('TELEGRAM_CHAT_ID_DEV');
+        }
     }
 
     public function sendMessage($message, $type = 'info')
