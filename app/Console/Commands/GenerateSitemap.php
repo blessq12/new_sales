@@ -25,12 +25,43 @@ class GenerateSitemap extends Command
             ->setPriority(1.0));
 
         Service::all()->each(function (Service $service) use ($sitemap) {
-            $sitemap->add(Url::create("/services/{$service->slug}")
+            $sitemap->add(Url::create("/{$service->slug}")
                 ->setLastModificationDate($service->updated_at)
                 ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
                 ->setPriority(0.8));
         });
-
+        Url::create('/services')
+            ->setLastModificationDate(Carbon::now())
+            ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
+            ->setPriority(0.8);
+        Url::create('/')
+            ->setLastModificationDate(Carbon::now())
+            ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
+            ->setPriority(1.0);
+        Url::create('/about')
+            ->setLastModificationDate(Carbon::now())
+            ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
+            ->setPriority(0.8);
+        Url::create('/contacts')
+            ->setLastModificationDate(Carbon::now())
+            ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
+            ->setPriority(0.8);
+        Url::create('/privacy')
+            ->setLastModificationDate(Carbon::now())
+            ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
+            ->setPriority(0.8);
+        Url::create('/gallery')
+            ->setLastModificationDate(Carbon::now())
+            ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
+            ->setPriority(0.8);
+        Url::create('/agreement')
+            ->setLastModificationDate(Carbon::now())
+            ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
+            ->setPriority(0.8);
+        Url::create('/certificates')
+            ->setLastModificationDate(Carbon::now())
+            ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
+            ->setPriority(0.8);
 
         $sitemap->writeToFile(public_path('sitemap.xml'));
 
