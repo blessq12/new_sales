@@ -22,7 +22,7 @@ class ServiceController extends AdminController
         $grid->column('price', __('Цена'))->display(function ($value) {
             return $this->prefix . ' ' . $value;
         });
-        $grid->column('slug', __('Слаг'));
+        $grid->column('slug', __('Слаг'))->editable();
 
         $grid->column('created_at', __('Создано'))->display(function ($value) {
             return \Carbon\Carbon::parse($value)->format('d.m.Y H:i');
@@ -50,7 +50,7 @@ class ServiceController extends AdminController
     protected function form()
     {
         $form = new Form(new Service);
-        $form->display('slug', __('Слаг'));
+        $form->text('slug', __('Слаг'));
         $form->text('name', __('Название'))->required();
         $form->hidden('description', __('Описание'));
         $form->image('image', __('Изображение'))
@@ -69,7 +69,7 @@ class ServiceController extends AdminController
         $form->display('updated_at', __('Обновлено'));
 
         $form->saving(function (Form $form) {
-            $form->slug = Str::slug($form->name);
+            // $form->slug = Str::slug($form->name);
             $form->description = Str::limit(
                 strip_tags($form->content),
                 160
