@@ -17,7 +17,7 @@ Route::controller(\App\Http\Controllers\MainController::class)->group(function (
 
 Route::controller(\App\Http\Controllers\ServiceController::class)->group(function () {
     Route::get('/services', 'services')->name('services');
-    Route::get('/services/{slug}', 'show')->name('services.show');
+    Route::get('/{slug}', 'show')->name('services.show');
 });
 
 Route::prefix('api')->group(function () {
