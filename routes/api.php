@@ -6,7 +6,7 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\Api\SearchController;
 use App\Http\Controllers\Api\ReviewController;
 use App\Http\Controllers\Api\UserRequestController;
-
+use App\Http\Controllers\Api\SiteMapController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -34,4 +34,8 @@ Route::controller(ReviewController::class)->group(function () {
 Route::controller(UserRequestController::class)->group(function () {
     Route::post('/user-requests/store', 'store');
     Route::post('/user-requests/contact-form', 'contactForm');
+});
+
+Route::controller(SiteMapController::class)->prefix('sitemap')->group(function () {
+    Route::get('/generate', 'generate');
 });

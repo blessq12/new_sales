@@ -1,103 +1,241 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
     <url>
-        <loc>http://localhost:8000</loc>
-        <lastmod>2025-02-05T16:10:32+00:00</lastmod>
-
-            </url>
+        <loc>http://127.0.0.1:8000</loc>
+        <lastmod>2025-03-12</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>1.0</priority>
+    </url>
     <url>
-        <loc>http://localhost:8000/services/ustanovka-i-zamena-vodoscetcikov</loc>
-        <lastmod>2025-02-05T11:03:57+00:00</lastmod>
-
-            </url>
+        <loc>http://127.0.0.1:8000/about</loc>
+        <lastmod>2025-03-12</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>1.0</priority>
+    </url>
     <url>
-        <loc>http://localhost:8000/services/ustanovka-i-zamena-unitazainstalliacii</loc>
-        <lastmod>2025-02-05T11:05:03+00:00</lastmod>
-
-            </url>
+        <loc>http://127.0.0.1:8000/certificates</loc>
+        <lastmod>2025-03-12</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>1.0</priority>
+    </url>
     <url>
-        <loc>http://localhost:8000/services/montaz-i-zamena-radiatorovbatareipolotencesusitelei</loc>
-        <lastmod>2025-02-05T11:06:11+00:00</lastmod>
-
-            </url>
+        <loc>http://127.0.0.1:8000/contacts</loc>
+        <lastmod>2025-03-12</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>1.0</priority>
+    </url>
     <url>
-        <loc>http://localhost:8000/services/narashhivanie-i-procistka-batareiradiatorov</loc>
-        <lastmod>2025-02-05T11:06:53+00:00</lastmod>
-
-            </url>
+        <loc>http://127.0.0.1:8000/privacy</loc>
+        <lastmod>2025-03-12</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>1.0</priority>
+    </url>
     <url>
-        <loc>http://localhost:8000/services/ustanovka-posudomoecnyx-i-stiralnyx-masin</loc>
-        <lastmod>2025-02-05T11:09:38+00:00</lastmod>
-
-            </url>
+        <loc>http://127.0.0.1:8000/gallery</loc>
+        <lastmod>2025-03-12</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>1.0</priority>
+    </url>
     <url>
-        <loc>http://localhost:8000/services/udalenie-zasorov-v-tomske</loc>
-        <lastmod>2025-02-05T11:10:23+00:00</lastmod>
-
-            </url>
+        <loc>http://127.0.0.1:8000/agreement</loc>
+        <lastmod>2025-03-12</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>1.0</priority>
+    </url>
     <url>
-        <loc>http://localhost:8000/services/razvodka-trub-montaz-grebenki</loc>
-        <lastmod>2025-02-05T11:10:58+00:00</lastmod>
-
-            </url>
+        <loc>http://127.0.0.1:8000/services</loc>
+        <lastmod>2025-03-12</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>1.0</priority>
+    </url>
     <url>
-        <loc>http://localhost:8000/services/ustanovka-vann-rakovin-i-dusevyx-kabin</loc>
-        <lastmod>2025-02-05T11:17:06+00:00</lastmod>
-
-            </url>
+        <loc>http://127.0.0.1:8000/ustanovka-i-zamena-vodoscetcikov</loc>
+        <lastmod>2025-02-05 11:03:57</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+        <image:image>
+            <image:loc>http://localhost:8000/uploads/services/618e96910e1e14ce20eeba7043ced984.jpg</image:loc>
+            <image:title/>
+        </image:image>
+    </url>
     <url>
-        <loc>http://localhost:8000/services/montaz-tocek-vodosnabzeniia</loc>
-        <lastmod>2025-02-05T11:47:05+00:00</lastmod>
-
-            </url>
+        <loc>http://127.0.0.1:8000/ustanovka-i-zamena-unitazainstalliacii</loc>
+        <lastmod>2025-02-05 11:05:03</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+        <image:image>
+            <image:loc>http://localhost:8000/uploads/services/83b9b5c3fff03d09b54e26c11223e9f6.jpg</image:loc>
+            <image:title/>
+        </image:image>
+    </url>
     <url>
-        <loc>http://localhost:8000/services/montaz-i-zamena-stoiaka-vodosnabzeniia</loc>
-        <lastmod>2025-02-05T11:47:39+00:00</lastmod>
-
-            </url>
+        <loc>http://127.0.0.1:8000/montaz-i-zamena-radiatorovbatareipolotencesusitelei</loc>
+        <lastmod>2025-02-05 11:06:11</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+        <image:image>
+            <image:loc>http://localhost:8000/uploads/services/15e3f5aa115db7bb63149242ad70330d.jpg</image:loc>
+            <image:title/>
+        </image:image>
+    </url>
     <url>
-        <loc>http://localhost:8000/services/zamena-i-montaz-kanalizacii</loc>
-        <lastmod>2025-02-05T11:48:16+00:00</lastmod>
-
-            </url>
+        <loc>http://127.0.0.1:8000/narashhivanie-i-procistka-batareiradiatorov</loc>
+        <lastmod>2025-02-05 11:06:53</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+        <image:image>
+            <image:loc>http://localhost:8000/uploads/services/36a532db91dec04d98d29a78c893b1e4.jpg</image:loc>
+            <image:title/>
+        </image:image>
+    </url>
     <url>
-        <loc>http://localhost:8000/services/obviazka-kotla-otopleniia</loc>
-        <lastmod>2025-02-05T11:50:10+00:00</lastmod>
-
-            </url>
+        <loc>http://127.0.0.1:8000/ustanovka-posudomoecnyx-i-stiralnyx-masin</loc>
+        <lastmod>2025-02-05 11:09:38</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+        <image:image>
+            <image:loc>http://localhost:8000/uploads/services/b4ee44cd8b991e00c70b7b8239c50de1.jpg</image:loc>
+            <image:title/>
+        </image:image>
+    </url>
     <url>
-        <loc>http://localhost:8000/services/ustanovka-i-zamena-vozduxootvodcika</loc>
-        <lastmod>2025-02-05T11:50:37+00:00</lastmod>
-
-            </url>
+        <loc>http://127.0.0.1:8000/udalenie-zasorov-v-tomske</loc>
+        <lastmod>2025-02-05 11:10:23</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+        <image:image>
+            <image:loc>http://localhost:8000/uploads/services/a41067ffe2d8bd496dd4e5d8f4010a30.jpg</image:loc>
+            <image:title/>
+        </image:image>
+    </url>
     <url>
-        <loc>http://localhost:8000/services/ustanovka-i-zamena-cirkuliacionnogo-nasosa</loc>
-        <lastmod>2025-02-05T11:51:07+00:00</lastmod>
-
-            </url>
+        <loc>http://127.0.0.1:8000/razvodka-trub-montaz-grebenki</loc>
+        <lastmod>2025-02-05 11:10:58</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+        <image:image>
+            <image:loc>http://localhost:8000/uploads/services/b09d315a20055227da32f9cad951d040.jpg</image:loc>
+            <image:title/>
+        </image:image>
+    </url>
     <url>
-        <loc>http://localhost:8000/services/ustanovka-i-zamena-gruppy-bezopasnosti</loc>
-        <lastmod>2025-02-05T11:52:21+00:00</lastmod>
-
-            </url>
+        <loc>http://127.0.0.1:8000/ustanovka-vann-rakovin-i-dusevyx-kabin</loc>
+        <lastmod>2025-02-05 11:17:06</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+        <image:image>
+            <image:loc>http://localhost:8000/uploads/services/9595ab1a217360683ed2158acc1ae2c9.jpg</image:loc>
+            <image:title/>
+        </image:image>
+    </url>
     <url>
-        <loc>http://localhost:8000/services/obviazka-teploobmennika-v-bane</loc>
-        <lastmod>2025-02-05T11:52:51+00:00</lastmod>
-
-            </url>
+        <loc>http://127.0.0.1:8000/montaz-tocek-vodosnabzeniia</loc>
+        <lastmod>2025-02-05 11:47:05</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+        <image:image>
+            <image:loc>http://localhost:8000/uploads/services/244d5e6d98faeaee149cded2b6e0f615.jpg</image:loc>
+            <image:title/>
+        </image:image>
+    </url>
     <url>
-        <loc>http://localhost:8000/services/stroblenie-sten-pod-truby</loc>
-        <lastmod>2025-02-05T11:53:38+00:00</lastmod>
-
-            </url>
+        <loc>http://127.0.0.1:8000/montaz-i-zamena-stoiaka-vodosnabzeniia</loc>
+        <lastmod>2025-02-05 11:47:39</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+        <image:image>
+            <image:loc>http://localhost:8000/uploads/services/3fce669960f548703b933d10bb764212.jpg</image:loc>
+            <image:title/>
+        </image:image>
+    </url>
     <url>
-        <loc>http://localhost:8000/services/ustanovka-i-zamena-smesitelia</loc>
-        <lastmod>2025-02-05T11:54:19+00:00</lastmod>
-
-            </url>
+        <loc>http://127.0.0.1:8000/zamena-i-montaz-kanalizacii</loc>
+        <lastmod>2025-02-05 11:48:16</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+        <image:image>
+            <image:loc>http://localhost:8000/uploads/services/3990fecebf6da98638444d56c8601362.jpg</image:loc>
+            <image:title/>
+        </image:image>
+    </url>
     <url>
-        <loc>http://localhost:8000/services/ustanovka-vodonagrevatelia</loc>
-        <lastmod>2025-02-05T11:54:47+00:00</lastmod>
-
-            </url>
+        <loc>http://127.0.0.1:8000/obviazka-kotla-otopleniia</loc>
+        <lastmod>2025-02-05 11:50:10</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+        <image:image>
+            <image:loc>http://localhost:8000/uploads/services/4b76307051652869d12f2f53a12a3519.jpg</image:loc>
+            <image:title/>
+        </image:image>
+    </url>
+    <url>
+        <loc>http://127.0.0.1:8000/ustanovka-i-zamena-vozduxootvodcika</loc>
+        <lastmod>2025-02-05 11:50:37</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+        <image:image>
+            <image:loc>http://localhost:8000/uploads/services/2d82c5c52dc155649132d1d842f85f8d.jpg</image:loc>
+            <image:title/>
+        </image:image>
+    </url>
+    <url>
+        <loc>http://127.0.0.1:8000/ustanovka-i-zamena-cirkuliacionnogo-nasosa</loc>
+        <lastmod>2025-02-05 11:51:07</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+        <image:image>
+            <image:loc>http://localhost:8000/uploads/services/dfea5b2f4ad99c2f9e28c2ae577294b4.jpg</image:loc>
+            <image:title/>
+        </image:image>
+    </url>
+    <url>
+        <loc>http://127.0.0.1:8000/ustanovka-i-zamena-gruppy-bezopasnosti</loc>
+        <lastmod>2025-02-05 11:52:21</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+        <image:image>
+            <image:loc>http://localhost:8000/uploads/services/850041447ab57d7b1178a51e777ba606.jpg</image:loc>
+            <image:title/>
+        </image:image>
+    </url>
+    <url>
+        <loc>http://127.0.0.1:8000/obviazka-teploobmennika-v-bane</loc>
+        <lastmod>2025-02-05 11:52:51</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+        <image:image>
+            <image:loc>http://localhost:8000/uploads/services/010d5dd0042b6dc86077e4aa773a006a.jpg</image:loc>
+            <image:title/>
+        </image:image>
+    </url>
+    <url>
+        <loc>http://127.0.0.1:8000/stroblenie-sten-pod-truby</loc>
+        <lastmod>2025-02-05 11:53:38</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+        <image:image>
+            <image:loc>http://localhost:8000/uploads/services/3fdc994b1bbc3fdf52574e080f2d3a50.jpg</image:loc>
+            <image:title/>
+        </image:image>
+    </url>
+    <url>
+        <loc>http://127.0.0.1:8000/ustanovka-i-zamena-smesitelia</loc>
+        <lastmod>2025-02-05 11:54:19</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+        <image:image>
+            <image:loc>http://localhost:8000/uploads/services/cfca91b165372e8013461af552e0c600.jpg</image:loc>
+            <image:title/>
+        </image:image>
+    </url>
+    <url>
+        <loc>http://127.0.0.1:8000/ustanovka-vodonagrevatelia</loc>
+        <lastmod>2025-02-05 11:54:47</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+        <image:image>
+            <image:loc>http://localhost:8000/uploads/services/56ffbb9d9ec0d25163a64bbc88722563.jpg</image:loc>
+            <image:title/>
+        </image:image>
+    </url>
 </urlset>
