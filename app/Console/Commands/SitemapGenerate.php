@@ -51,6 +51,6 @@ class SitemapGenerate extends Command
         }
 
         $result = SiteMap::generate();
-        return response()->json(['message' => $result]);
+        \Log::info('Sitemap generated');
     }
 }
