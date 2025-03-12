@@ -1,26 +1,31 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Console\Commands;
 
-use App\Http\Controllers\Controller;
+use Illuminate\Console\Command;
 use App\Facades\SiteMap;
 use Illuminate\Support\Facades\Storage;
 
-class SiteMapController extends Controller
+class SitemapGenerate extends Command
 {
     /**
-     * Генерация sitemap.xml
-     * @return \Illuminate\Http\JsonResponse
-     * @throws \Exception
+     * The name and signature of the console command.
      *
-     * Для генерации sitemap.xml необходимо добавить URL и изображения в массив $urls
-     * Методы для добавления URL и изображений в массив $urls:
-     * addUrl($url, $lastmod, $changefreq, $priority, $images = [])
-     * addImage($url, $title)
-     *
+     * @var string
      */
+    protected $signature = 'app:sitemap-generate';
 
-    public function generate()
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'Command description';
+
+    /**
+     * Execute the console command.
+     */
+    public function handle()
     {
         $routes = [
             (object)['route' => route('main.index'), 'lastmod' => date('Y-m-d'), 'changefreq' => 'yearly', 'priority' => '1.0'],

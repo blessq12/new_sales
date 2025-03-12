@@ -3,4 +3,4 @@
 
 use Illuminate\Support\Facades\Schedule;
 
-Schedule::command('app:test')->everyFiveSeconds();
+Schedule::command('sitemap:generate')->dailyAt('00:00');
