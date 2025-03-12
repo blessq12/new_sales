@@ -46,7 +46,7 @@ class SitemapGenerate extends Command
 
         foreach ($services as $service) {
             SiteMap::addUrl(route('services.show', $service->slug), $service->updated_at, 'monthly', '0.8', [
-                ['loc' => Storage::disk('uploads')->url($service->image), 'title' => $service->title]
+                ['loc' => Storage::disk('uploads')->url($service->image), 'title' => $service->name]
             ]);
         }
 
