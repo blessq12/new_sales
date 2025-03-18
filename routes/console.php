@@ -3,4 +3,4 @@
 
 use Illuminate\Support\Facades\Schedule;
 
-Schedule::command('sitemap:generate')->dailyAt('00:00');
+Schedule::command('app:sitemap-generate')->dailyAt('00:00');
