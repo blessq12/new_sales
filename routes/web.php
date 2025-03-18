@@ -20,10 +20,6 @@ Route::controller(\App\Http\Controllers\ServiceController::class)->group(functio
     Route::get('/{slug}', 'show')->name('services.show');
 });
 
-Route::prefix('api')->group(function () {
-    require __DIR__ . '/api.php';
-});
-
-Route::get('/test', function () {
+Route::get('/test/tg', function () {
     Telegram::sendMessage('asdasdasd', 'callback');
 });
