@@ -10,7 +10,7 @@ class ReviewController extends Controller
     public function index()
     {
         return view('reviews.index', [
-            'reviews' => Review::paginate(10),
+            'reviews' => \App\Models\Review::where('is_approved', true)->orderBy('created_at', 'desc')->paginate(10),
         ]);
     }
 }
