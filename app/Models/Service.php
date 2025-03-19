@@ -12,4 +12,9 @@ class Service extends Model
     {
         return $this->hasMany(Order::class, 'service_id', 'id');
     }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class, 'service_id', 'id');
+    }
 }

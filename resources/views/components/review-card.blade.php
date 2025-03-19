@@ -28,7 +28,11 @@
         "{{ mb_strimwidth($review->message, 0, 100, '...') }}"
     </blockquote>
 
-    <!-- Добавление предложения для агрегирования цены -->
+    <span itemprop="aggregateRating" itemscope itemtype="https://schema.org/AggregateRating">
+        <meta itemprop="ratingValue" content="5">
+        <meta itemprop="reviewCount" content="{{ $review->service->reviews->count() }}">
+    </span>
+
     <div itemprop="offers" itemscope itemtype="https://schema.org/Offer">
         <meta itemprop="priceCurrency" content="RUB">
         <meta itemprop="price" content="{{ $review->service->price }}">
