@@ -1,7 +1,6 @@
 <div class="rounded-2xl bg-white p-6 ring-1 ring-gray-200 hover:shadow-md transition-all duration-200" itemscope
     itemtype="http://schema.org/Review">
     <div class="flex items-center gap-x-2 mb-4">
-        {{-- <img class="h-12 w-12 flex-none rounded-full bg-gray-50 object-cover" src="{{ $review['avatar'] }}" alt="{{ $review['name'] }}"> --}}
         <div>
             <div itemprop="author" itemscope itemtype="http://schema.org/Person">
                 <span class="font-semibold text-gray-900" itemprop="name">{{ $review->name }}</span>
@@ -20,7 +19,7 @@
 
     <div class="text-sm text-gray-900 mb-4">
         <span class="font-semibold">Услуга:</span>
-        <span itemprop="itemReviewed" itemscope itemtype="https://schema.org/Product">
+        <span itemprop="itemReviewed" itemscope itemtype="https://schema.org/Service">
             <span itemprop="name">{{ $review->service->name }}</span>
         </span>
     </div>
