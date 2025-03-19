@@ -21,12 +21,16 @@
         <span class="font-semibold">Услуга:</span>
         <span itemprop="itemReviewed" itemscope itemtype="https://schema.org/Product">
             <span itemprop="name">{{ $review->service->name }}</span>
+            <meta itemprop="url" content="{{ route('services.show', $review->service->slug) }}">
+            <meta itemprop="image" content="{{ Storage::disk('uploads')->url($review->service->image) }}">
+
             <span itemprop="aggregateRating" itemscope itemtype="https://schema.org/AggregateRating">
                 <meta itemprop="ratingValue" content="5">
                 <meta itemprop="reviewCount" content="{{ $review->service->reviews->count() }}">
             </span>
 
             <div itemprop="offers" itemscope itemtype="https://schema.org/Offer">
+                <meta itemprop="availability" content="in stock">
                 <meta itemprop="priceCurrency" content="RUB">
                 <meta itemprop="price" content="{{ $review->service->price }}">
             </div>
