@@ -1,30 +1,34 @@
 @props(['type' => 'Organization'])
 
-@if($type === 'Organization')
-<script type="application/ld+json">
-{
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "{{ config('app.name') }}",
-    "url": "{{ url('/') }}",
-    "logo": "{{ Storage::disk('assets')->url('images/logo.png') }}",
-    "contactPoint": {
-        "@type": "ContactPoint",
-        "telephone": "{{ config('company.phone') }}",
-        "contactType": "customer service"
+@if ($type === 'Organization')
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "{{ $company->name }}",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "{{ $company->address }}",
+        "addressLocality": "{{ $company->city }}",
+        "addressRegion": "{{ $company->region }}",
+        "postalCode": "{{ $company->postal_code }}",
+        "addressCountry": "RU"
+      },
+      "telephone": "{{ $company->phones[0] }}",
+      "openingHours": "Mo-Su 09:00-18:00",
+      "priceRange": "₽"
     }
-}
-</script>
+    </script>
 @endif
 
-@if($type === 'WebPage')
-<script type="application/ld+json">
-{
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    "name": "@yield('title')",
-    "description": "@yield('description')",
-    "url": "{{ url()->current() }}"
-}
-</script>
+@if ($type === 'WebPage')
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "@yield('title')",
+        "description": "@yield('description')",
+        "url": "{{ url()->current() }}",
+    }
+    </script>
 @endif

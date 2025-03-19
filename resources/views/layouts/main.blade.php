@@ -11,7 +11,6 @@
     <meta name="google" content="notranslate">
     <meta name="keywords" content="@yield('keywords')">
     <meta name="description" content="@yield('description')">
-
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ url()->current() }}">
@@ -172,11 +171,9 @@
 <body class="font-sans antialiased">
     <div id="app">
         <x-header />
-
         <main>
             @yield('content')
         </main>
-
         <x-footer />
         <callback-form></callback-form>
         <review-form></review-form>
