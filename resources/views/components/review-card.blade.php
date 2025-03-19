@@ -21,14 +21,16 @@
         <span class="font-semibold">Услуга:</span>
         <span itemprop="itemReviewed" itemscope itemtype="https://schema.org/Service">
             <span itemprop="name">{{ $review->service->name }}</span>
-            <div itemprop="offers" itemscope itemtype="https://schema.org/Offer">
-                <meta itemprop="priceCurrency" content="RUB">
-                <meta itemprop="price" content="{{ $review->service->price }}">
-            </div>
         </span>
     </div>
 
     <blockquote class="text-gray-600 italic" itemprop="reviewBody">
         "{{ mb_strimwidth($review->message, 0, 100, '...') }}"
     </blockquote>
+
+    <!-- Добавляем информацию о предложении, если это необходимо -->
+    <div itemprop="offers" itemscope itemtype="https://schema.org/Offer">
+        <meta itemprop="priceCurrency" content="RUB">
+        <meta itemprop="price" content="{{ $review->service->price }}">
+    </div>
 </div>
