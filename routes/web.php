@@ -1,9 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Facades\Telegram;
 
-
+/**
+ * Web Routes
+ */
 
 Route::controller(\App\Http\Controllers\MainController::class)->group(function () {
     Route::get('/', 'index')->name('main.index');
@@ -15,11 +16,11 @@ Route::controller(\App\Http\Controllers\MainController::class)->group(function (
     Route::get('/agreement', 'agreement')->name('main.agreement');
 });
 
+Route::controller(\App\Http\Controllers\ReviewController::class)->group(function () {
+    Route::get('/reviews', 'index')->name('reviews.index');
+});
+
 Route::controller(\App\Http\Controllers\ServiceController::class)->group(function () {
     Route::get('/services', 'services')->name('services');
     Route::get('/{slug}', 'show')->name('services.show');
-});
-
-Route::get('/test/tg', function () {
-    Telegram::sendMessage('asdasdasd', 'callback');
 });

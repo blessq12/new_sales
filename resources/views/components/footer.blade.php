@@ -12,7 +12,7 @@
                 </div>
                 <p class="text-sm text-gray-400">{{ $company->description }}</p>
                 <div class="space-y-2">
-                    @foreach($company->addresses as $address)
+                    @foreach ($company->addresses as $address)
                         <p class="flex items-start text-sm text-gray-400">
                             <span class="mdi mdi-map-marker text-indigo-400 mr-2 mt-1"></span>
                             {{ $address }}
@@ -27,8 +27,9 @@
                 <div class="space-y-4">
                     <div>
                         <p class="text-white font-medium mb-2">Телефоны:</p>
-                        @foreach($company->phones as $phone)
-                            <a href="tel:{{ $phone }}" class="block text-gray-400 hover:text-white transition-colors duration-200">
+                        @foreach ($company->phones as $phone)
+                            <a href="tel:{{ $phone }}"
+                                class="block text-gray-400 hover:text-white transition-colors duration-200">
                                 <span class="mdi mdi-phone text-indigo-400 mr-2"></span>
                                 {{ $phone }}
                             </a>
@@ -36,8 +37,9 @@
                     </div>
                     <div>
                         <p class="text-white font-medium mb-2">Email:</p>
-                        @foreach($company->emails as $email)
-                            <a href="mailto:{{ $email }}" class="block text-gray-400 hover:text-white transition-colors duration-200">
+                        @foreach ($company->emails as $email)
+                            <a href="mailto:{{ $email }}"
+                                class="block text-gray-400 hover:text-white transition-colors duration-200">
                                 <span class="mdi mdi-email text-indigo-400 mr-2"></span>
                                 {{ $email }}
                             </a>
@@ -58,26 +60,35 @@
                 <h3 class="text-indigo-400 font-semibold text-lg">Навигация</h3>
                 <ul class="space-y-2">
                     <li>
-                        <a href="{{ route('main.about') }}" class="text-gray-400 hover:text-white transition-colors duration-200">
+                        <a href="{{ route('main.about') }}"
+                            class="text-gray-400 hover:text-white transition-colors duration-200">
                             <span class="mdi mdi-information mr-2"></span>О нас
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('main.certificates') }}" class="text-gray-400 hover:text-white transition-colors duration-200">
+                        <a href="{{ route('main.certificates') }}"
+                            class="text-gray-400 hover:text-white transition-colors duration-200">
                             <span class="mdi mdi-certificate mr-2"></span>Сертификаты
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('services') }}" class="text-gray-400 hover:text-white transition-colors duration-200">
+                        <a href="{{ route('services') }}"
+                            class="text-gray-400 hover:text-white transition-colors duration-200">
                             <span class="mdi mdi-tools mr-2"></span>Услуги
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('main.contacts') }}" class="text-gray-400 hover:text-white transition-colors duration-200">
+                        <a href="{{ route('main.contacts') }}"
+                            class="text-gray-400 hover:text-white transition-colors duration-200">
                             <span class="mdi mdi-phone mr-2"></span>Контакты
                         </a>
                     </li>
-
+                    <li>
+                        <a href="{{ route('reviews.index') }}"
+                            class="text-gray-400 hover:text-white transition-colors duration-200">
+                            <span class="mdi mdi-comment mr-2"></span>Отзывы
+                        </a>
+                    </li>
                 </ul>
             </div>
 
@@ -85,8 +96,9 @@
             <div class="space-y-4">
                 <h3 class="text-indigo-400 font-semibold text-lg">Мы в соцсетях</h3>
                 <div class="grid grid-cols-2 gap-4">
-                    @foreach($company->socials as $social)
-                        <a href="{{ $social['url'] }}" class="flex items-center text-gray-400 hover:text-white transition-colors duration-200">
+                    @foreach ($company->socials as $social)
+                        <a href="{{ $social['url'] }}"
+                            class="flex items-center text-gray-400 hover:text-white transition-colors duration-200">
                             <span class="mdi mdi-{{ strtolower($social['icon']) }} text-indigo-400 mr-2"></span>
                             {{ $social['title'] }}
                         </a>
@@ -103,17 +115,19 @@
                 <div class="text-sm text-gray-400">
                     <p>&copy; {{ date('Y') }} {{ $company->name }}. Все права защищены.</p>
                     <p class="mt-1 flex space-x-2">ИНН: &nbsp;
-                        @foreach($company->legals as $legal)
+                        @foreach ($company->legals as $legal)
                             <span>{{ $legal->inn }} </span>
                         @endforeach
 
-                        </p>
+                    </p>
                 </div>
                 <div class="flex flex-wrap gap-4 md:justify-end text-sm">
-                    <a href="{{ route('main.privacy') }}" class="text-gray-400 hover:text-white transition-colors duration-200">
+                    <a href="{{ route('main.privacy') }}"
+                        class="text-gray-400 hover:text-white transition-colors duration-200">
                         Политика конфиденциальности
                     </a>
-                    <a href="{{ route('main.agreement') }}" class="text-gray-400 hover:text-white transition-colors duration-200">
+                    <a href="{{ route('main.agreement') }}"
+                        class="text-gray-400 hover:text-white transition-colors duration-200">
                         Пользовательское соглашение
                     </a>
                 </div>
