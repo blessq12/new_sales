@@ -28,7 +28,7 @@
         "@type": "WebPage",
         "name": "@yield('title')",
         "description": "@yield('description')",
-        "url": "{{ url()->current() }}",
+        "url": "{{ url()->current() }}"
     }
     </script>
 @endif
