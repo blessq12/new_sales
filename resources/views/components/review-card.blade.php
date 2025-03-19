@@ -20,9 +20,7 @@
 
     <div class="text-sm text-gray-900 mb-4">
         <span class="font-semibold">Услуга:</span>
-        <span itemprop="itemReviewed" itemscope itemtype="http://schema.org/Product">
-            <span itemprop="name">{{ $review->service->name }}</span>
-        </span>
+        <span>{{ $review->service->name }}</span>
     </div>
 
     <blockquote class="text-gray-600 italic" itemprop="reviewBody">
