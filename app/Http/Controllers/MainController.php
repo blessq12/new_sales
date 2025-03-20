@@ -48,6 +48,10 @@ class MainController extends Controller
             'gallery' => \App\Models\Gallery::where('is_active', true)->first(),
         ]);
     }
+    public function cooperation()
+    {
+        return view('main.cooperation');
+    }
     public function agreement()
     {
         return view('main.agreement');

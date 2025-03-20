@@ -102,7 +102,7 @@
                 </a>
                 <button @click="openModal('callback')"
                     class="inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 transition-colors duration-200">
-                    Заказать звонок
+                    Оставить заявку
                 </button>
             </div>
 
@@ -196,7 +196,7 @@
                 <button @click="openModal('callback')"
                     class="w-full flex items-center justify-center px-6 py-3 text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl shadow-sm transition-colors duration-200">
                     <span class="mdi mdi-phone-in-talk mr-2"></span>
-                    Заказать звонок
+                    Оставить заявку
                 </button>
 
             </div>

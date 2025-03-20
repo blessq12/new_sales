@@ -84,6 +84,12 @@
                         </a>
                     </li>
                     <li>
+                        <a href="{{ route('main.cooperation') }}"
+                            class="text-gray-400 hover:text-white transition-colors duration-200">
+                            <span class="mdi mdi-handshake mr-2"></span>Сотрудничество
+                        </a>
+                    </li>
+                    <li>
                         <a href="{{ route('reviews.index') }}"
                             class="text-gray-400 hover:text-white transition-colors duration-200">
                             <span class="mdi mdi-comment mr-2"></span>Отзывы

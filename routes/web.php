@@ -11,6 +11,9 @@ Route::controller(\App\Http\Controllers\MainController::class)->group(function (
     Route::get('/about', 'about')->name('main.about');
     Route::get('/certificates', 'certificates')->name('main.certificates');
     Route::get('/contacts', 'contacts')->name('main.contacts');
+
+    Route::get('/cooperation', 'cooperation')->name('main.cooperation');
+
     Route::get('/privacy', 'privacy')->name('main.privacy');
     Route::get('/gallery', 'gallery')->name('main.gallery');
     Route::get('/agreement', 'agreement')->name('main.agreement');
