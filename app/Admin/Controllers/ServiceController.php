@@ -18,13 +18,8 @@ class ServiceController extends AdminController
         $grid->column('id', __('ID'));
         $grid->column('image', __('Изображение'))->image('', 100, 100);
         $grid->column('name', __('Название'));
-        $grid->column('prefix', __('Префикс'))->editable();
+        $grid->column('prefix', __('Префикс'));
         $grid->column('price', __('Цена'))->editable();
-        $grid->column('slug', __('Слаг'))->editable();
-
-        $grid->column('created_at', __('Создано'))->display(function ($value) {
-            return \Carbon\Carbon::parse($value)->format('d.m.Y H:i');
-        });
         $grid->column('updated_at', __('Обновлено'))->display(function ($value) {
             return \Carbon\Carbon::parse($value)->format('d.m.Y H:i');
         });
