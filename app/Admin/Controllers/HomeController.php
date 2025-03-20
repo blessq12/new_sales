@@ -3,32 +3,22 @@
 namespace App\Admin\Controllers;
 
 use App\Http\Controllers\Controller;
-use Encore\Admin\Controllers\Dashboard;
-use Encore\Admin\Layout\Column;
 use Encore\Admin\Layout\Content;
-use Encore\Admin\Layout\Row;
+use App\Facades\YaMetrika;
 
 class HomeController extends Controller
 {
     public function index(Content $content)
     {
+
+        $services = \App\Models\Service::all();
+        $orders = \App\Models\Order::all();
+        $users = \App\Models\User::all();
+        $reviews = \App\Models\Review::all();
+        $metrics = YaMetrika::getMetrics();
+
         return $content
-            ->title('Dashboard')
-            ->description('Description...')
-            ->row(Dashboard::title())
-            ->row(function (Row $row) {
-
-                $row->column(4, function (Column $column) {
-                    $column->append(Dashboard::environment());
-                });
-
-                $row->column(4, function (Column $column) {
-                    $column->append(Dashboard::extensions());
-                });
-
-                $row->column(4, function (Column $column) {
-                    $column->append(Dashboard::dependencies());
-                });
-            });
+            ->title('Сводка')
+            ->row(view('admin.home', compact('services', 'orders', 'users', 'reviews', 'metrics'))->render());
     }
 }

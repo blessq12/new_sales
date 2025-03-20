@@ -7,6 +7,7 @@ use App\Models\Review;
 use Illuminate\Support\ServiceProvider;
 use App\Services\Telegram;
 use App\Services\SiteMapService;
+use App\Services\YandexMetrikaService;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -21,6 +22,10 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->singleton('sitemap', function ($app) {
             return new SiteMapService();
+        });
+
+        $this->app->singleton('ya-metrika', function ($app) {
+            return new YandexMetrikaService();
         });
     }
 

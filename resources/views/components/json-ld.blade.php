@@ -11,7 +11,7 @@
         "streetAddress": "{{ $company->address }}",
         "addressLocality": "{{ $company->city }}",
         "addressRegion": "{{ $company->region }}",
-        "postalCode": "{{ $company->postal_code }}",
+        "postalCode": "634021",
         "addressCountry": "RU"
       },
       "telephone": "{{ $company->phones[0] }}",

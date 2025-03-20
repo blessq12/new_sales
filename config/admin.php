@@ -16,7 +16,7 @@ return [
     | login page.
     |
     */
-    'name' => 'Laravel-admin',
+    'name' => 'Sales tomsk',
 
     /*
     |--------------------------------------------------------------------------
@@ -27,7 +27,7 @@ return [
     | `img` tag, eg '<img src="http://logo-url" alt="Admin logo">'.
     |
     */
-    'logo' => '<b>Laravel</b> admin',
+    'logo' => '<b>Sales</b> tomsk',
 
     /*
     |--------------------------------------------------------------------------
@@ -39,7 +39,7 @@ return [
     | '<img src="http://logo-url" alt="Admin logo">'.
     |
     */
-    'logo-mini' => '<b>La</b>',
+    'logo-mini' => '<b>Sales</b>',
 
     /*
     |--------------------------------------------------------------------------
@@ -62,11 +62,8 @@ return [
     |
     */
     'route' => [
-
         'prefix' => env('ADMIN_ROUTE_PREFIX', 'admin'),
-
         'namespace' => 'App\\Admin\\Controllers',
-
         'middleware' => ['web', 'admin'],
     ],
 
@@ -116,29 +113,23 @@ return [
     'auth' => [
 
         'controller' => App\Admin\Controllers\AuthController::class,
-
         'guard' => 'admin',
-
         'guards' => [
             'admin' => [
                 'driver'   => 'session',
                 'provider' => 'admin',
             ],
         ],
-
         'providers' => [
             'admin' => [
                 'driver' => 'eloquent',
                 'model'  => Encore\Admin\Auth\Database\Administrator::class,
             ],
         ],
-
         // Add "remember me" to login form
         'remember' => true,
-
         // Redirect to the specified URI when user is not authorized.
         'redirect_to' => 'auth/login',
-
         // The URIs that should be excluded from authorization.
         'excepts' => [
             'auth/login',
@@ -156,10 +147,8 @@ return [
     |
     */
     'upload' => [
-
         // Disk in `config/filesystem.php`.
         'disk' => 'admin',
-
         // Image and file upload path under the disk above.
         'directory' => [
             'image' => 'images',
@@ -176,26 +165,20 @@ return [
     |
     */
     'database' => [
-
         // Database connection for following tables.
         'connection' => '',
-
         // User tables and model.
         'users_table' => 'admin_users',
         'users_model' => Encore\Admin\Auth\Database\Administrator::class,
-
         // Role table and model.
         'roles_table' => 'admin_roles',
         'roles_model' => Encore\Admin\Auth\Database\Role::class,
-
         // Permission table and model.
         'permissions_table' => 'admin_permissions',
         'permissions_model' => Encore\Admin\Auth\Database\Permission::class,
-
         // Menu table and model.
         'menu_table' => 'admin_menu',
         'menu_model' => Encore\Admin\Auth\Database\Menu::class,
-
         // Pivot table for table above.
         'operation_log_table'    => 'admin_operation_log',
         'user_permissions_table' => 'admin_user_permissions',
@@ -213,14 +196,11 @@ return [
     |
     */
     'operation_log' => [
-
         'enable' => true,
-
         /*
          * Only logging allowed methods in the list
          */
         'allowed_methods' => ['GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'CONNECT', 'OPTIONS', 'TRACE', 'PATCH'],
-
         /*
          * Routes that will not log to database.
          *
@@ -238,14 +218,12 @@ return [
     |--------------------------------------------------------------------------
     */
     'check_route_permission' => true,
-
     /*
     |--------------------------------------------------------------------------
     | Indicates whether to check menu roles.
     |--------------------------------------------------------------------------
     */
     'check_menu_roles'       => true,
-
     /*
     |--------------------------------------------------------------------------
     | User default avatar
@@ -254,8 +232,7 @@ return [
     | Set a default avatar for newly created users.
     |
     */
-    'default_avatar' => '/vendor/laravel-admin/AdminLTE/dist/img/user2-160x160.jpg',
-
+    'default_avatar' => '/vendor/user.png',
     /*
     |--------------------------------------------------------------------------
     | Admin map field provider
@@ -265,7 +242,6 @@ return [
     |
     */
     'map_provider' => 'google',
-
     /*
     |--------------------------------------------------------------------------
     | Application Skin
@@ -280,7 +256,7 @@ return [
     |    "skin-red", "skin-red-light", "skin-black", "skin-black-light".
     |
     */
-    'skin' => env('ADMIN_SKIN', 'skin-black'),
+    'skin' => env('ADMIN_SKIN', 'skin-blue'),
 
     /*
     |--------------------------------------------------------------------------

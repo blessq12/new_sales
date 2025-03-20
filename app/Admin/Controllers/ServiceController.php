@@ -63,10 +63,10 @@ class ServiceController extends AdminController
             ->required();
         $form->text('prefix', __('Префикс'));
         $form->text('price', __('Цена'))->required();
-        $form->textarea('content', __('Контент страницы'))->addElementClass('content-editor');
+        $form->textarea('content', __('Контент'))->setElementClass('editor-mce form-control content');
 
-        $form->display('created_at', __('Создано'));
-        $form->display('updated_at', __('Обновлено'));
+        $form->hidden('created_at', __('Создано'));
+        $form->hidden('updated_at', __('Обновлено'));
 
         $form->saving(function (Form $form) {
             // $form->slug = Str::slug($form->name);
