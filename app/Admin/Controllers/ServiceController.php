@@ -14,6 +14,12 @@ class ServiceController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new Service);
+
+        $grid->filter(function ($filter) {
+            $filter->like('name', __('Название'));
+            $filter->like('price', __('Цена'));
+        });
+
         $grid->model()->orderBy('id', 'desc');
         $grid->column('id', __('ID'));
         $grid->column('image', __('Изображение'))->image('', 100, 100);
