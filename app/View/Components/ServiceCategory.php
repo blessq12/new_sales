@@ -6,13 +6,14 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class Header extends Component
+class ServiceCategory extends Component
 {
     /**
      * Create a new component instance.
      */
-    public function __construct()
-    {
+    public function __construct(
+        public \App\Models\ServiceCategory $category
+    ) {
         //
     }
 
@@ -21,16 +22,6 @@ class Header extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.header');
-    }
-
-    public function categories()
-    {
-        return \App\Models\ServiceCategory::orderBy('order', 'asc')->get();
-    }
-
-    public function company()
-    {
-        return \App\Models\Company::first();
+        return view('components.service-category');
     }
 }

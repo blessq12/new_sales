@@ -44,5 +44,11 @@ class AppServiceProvider extends ServiceProvider
                 "Сообщение: " . mb_strimwidth($review->message, 0, 20, "..."),
             ], 'success');
         });
+
+        \App\Models\ServiceCategory::creating(function ($category) {
+            $category->slug = \Illuminate\Support\Str::slug($category->name);
+            $category->status = 'inactive';
+            $category->order = \App\Models\ServiceCategory::max('id') + 1;
+        });
     }
 }

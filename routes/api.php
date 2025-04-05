@@ -5,7 +5,7 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\Api\SearchController;
 use App\Http\Controllers\Api\ReviewController;
 use App\Http\Controllers\Api\UserRequestController;
-
+use App\Http\Controllers\Api\RawController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -16,11 +16,6 @@ use App\Http\Controllers\Api\UserRequestController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-
-Route::controller(\App\Http\Controllers\Api\RawConntroller::class)->prefix('raw')->group(function () {
-    Route::get('/get-services', 'getServices');
-    Route::get('/get-company-data', 'getCompanyData');
-});
 
 Route::get('/services', [ServiceController::class, 'list']);
 

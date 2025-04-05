@@ -16,9 +16,9 @@ class HomeController extends Controller
         $users = \App\Models\User::all();
         $reviews = \App\Models\Review::all();
         $metrics = YaMetrika::getMetrics();
-
+        $categories = \App\Models\ServiceCategory::all();
         return $content
             ->title('Сводка')
-            ->row(view('admin.home', compact('services', 'orders', 'users', 'reviews', 'metrics'))->render());
+            ->row(view('admin.home', compact('services', 'orders', 'users', 'reviews', 'metrics', 'categories'))->render());
     }
 }

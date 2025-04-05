@@ -39,4 +39,11 @@ class ServiceController extends Controller
         // TODO: Сохранение отзыва
         return response()->json(['message' => 'Спасибо за ваш отзыв!']);
     }
+
+    public function category($slug)
+    {
+        return view('services.category', [
+            'category' => \App\Models\ServiceCategory::where('slug', $slug)->firstOrFail(),
+        ]);
+    }
 }

@@ -13,6 +13,16 @@
             </div>
         </div>
 
+        <div class="stats-card services">
+            <div class="stats-icon">
+                <i class="fas fa-tools"></i>
+            </div>
+            <div class="stats-info">
+                <h3>Категории услуг</h3>
+                <p class="stats-number">{{ $categories->count() }}</p>
+            </div>
+        </div>
+
         <div class="stats-card orders">
             <div class="stats-icon">
                 <i class="fas fa-shopping-cart"></i>
@@ -132,7 +142,7 @@
 
     .stats-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
         gap: 1.5rem;
     }
 
@@ -141,6 +151,7 @@
         border-radius: 12px;
         padding: 1.5rem;
         display: flex;
+        flex: 1;
         align-items: center;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         transition: transform 0.2s ease, box-shadow 0.2s ease;

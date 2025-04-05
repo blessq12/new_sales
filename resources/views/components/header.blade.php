@@ -83,10 +83,11 @@
                                     Все услуги
                                 </div>
                             </a>
-                            @foreach ($services as $service)
-                                <a href="{{ route('services.show', $service->slug) }}"
-                                    class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600">
-                                    {{ $service->name }}
+                            @foreach ($categories as $category)
+                                <a href="{{ route('services.category', $category->slug) }}"
+                                    class="flex items-center justify-between px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600">
+                                    <span>{{ $category->name }}</span>
+                                    <span class="bg-indigo-600 text-gray-50 text-xs rounded-full px-2 py-1 ml-2">{{ $category->services->count() }}</span>
                                 </a>
                             @endforeach
                         </div>
@@ -157,10 +158,10 @@
                             <span>▼</span>
                         </button>
                         <div class="services-content hidden pl-4 mt-2 space-y-2">
-                            @foreach ($services as $service)
-                                <a href="{{ route('services.show', $service->slug) }}"
+                            @foreach ($categories as $category)
+                                <a href="{{ route('services.category', $category->slug) }}"
                                     class="block px-4 py-2 text-base text-gray-600 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition-colors duration-200">
-                                    {{ $service->name }}
+                                    {{ $category->name }}
                                 </a>
                             @endforeach
                         </div>

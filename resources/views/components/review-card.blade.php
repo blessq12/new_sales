@@ -21,7 +21,10 @@
         <span class="font-semibold">Услуга:</span>
         <span itemprop="itemReviewed" itemscope itemtype="https://schema.org/Product">
             <span itemprop="name">{{ $review->service->name }}</span>
-            <meta itemprop="url" content="{{ route('services.show', $review->service->slug) }}">
+            <meta itemprop="url" content="{{ route('services.show', [
+                'category' => $review->service->category->slug,
+                'slug' => $review->service->slug
+            ]) }}">
             <meta itemprop="image" content="{{ Storage::disk('uploads')->url($review->service->image) }}">
 
             <span itemprop="aggregateRating" itemscope itemtype="https://schema.org/AggregateRating">

@@ -18,11 +18,15 @@ class ServiceController extends AdminController
         $grid->filter(function ($filter) {
             $filter->like('name', __('Название'));
             $filter->like('price', __('Цена'));
+            $filter->like('service_category_id', __('Категория'))->select(\App\Models\ServiceCategory::all()->pluck('name', 'id'));
         });
 
         $grid->model()->orderBy('id', 'desc');
         $grid->column('id', __('ID'));
         $grid->column('image', __('Изображение'))->image('', 100, 100);
+        $grid->column('service_category_id', __('Категория'))->display(function ($value) {
+            return \App\Models\ServiceCategory::find($value)->name ?? 'Без категории';
+        });
         $grid->column('name', __('Название'));
         $grid->column('prefix', __('Префикс'));
         $grid->column('price', __('Цена'))->editable();
@@ -51,6 +55,7 @@ class ServiceController extends AdminController
         $form = new Form(new Service);
         $form->text('slug', __('Слаг'));
         $form->text('name', __('Название'))->required();
+        $form->select('service_category_id', __('Категория'))->options(\App\Models\ServiceCategory::all()->pluck('name', 'id'))->required();
         $form->hidden('description', __('Описание'));
         $form->image('image', __('Изображение'))
             ->uniqueName()
@@ -68,11 +73,13 @@ class ServiceController extends AdminController
         $form->hidden('updated_at', __('Обновлено'));
 
         $form->saving(function (Form $form) {
-            // $form->slug = Str::slug($form->name);
-            $form->description = Str::limit(
-                strip_tags($form->content),
-                160
-            );
+            $form->slug = Str::slug($form->name);
+            if ($form->content) {
+                $form->description = Str::limit(
+                    strip_tags($form->content),
+                    160
+                );
+            }
         });
         return $form;
     }
