@@ -19,12 +19,12 @@
     "css": [
       "assets/app-Wop0iDy9.css"
     ],
-    "file": "assets/app-BSuXtJHZ.js",
+    "file": "assets/app-x6ogS6ma.js",
     "isEntry": true,
     "src": "resources/js/app.js"
   },
   "resources/sass/app.scss": {
-    "file": "assets/app-BgOUhwLg.css",
+    "file": "assets/app-BFuraK2l.css",
     "isEntry": true,
     "src": "resources/sass/app.scss"
   }
