@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
  * Web Routes
  */
 
-// include_once __DIR__ . '/redirects.php';
+include_once __DIR__ . '/redirects.php';
 
 Route::controller(\App\Http\Controllers\MainController::class)->group(function () {
     Route::get('/', 'index')->name('main.index');
