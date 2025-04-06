@@ -8,6 +8,11 @@ class Service extends Model
 {
     protected $fillable = ['name', 'slug', 'description', 'content', 'image', 'price', 'prefix'];
 
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
     public function orders()
     {
         return $this->hasMany(Order::class, 'service_id', 'id');

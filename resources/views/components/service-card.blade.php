@@ -27,7 +27,10 @@
                     <span class="text-2xl font-bold text-indigo-600" itemprop="price">{{ $service->price }}</span>
                 </span>
             </div>
-            <a href="{{ route('services.show', $service->slug) }}"
+            <a href="{{ route('services.show', [
+                'category' => $service->category->slug,
+                'slug' => $service->slug
+            ]) }}"
                 class="inline-flex items-center rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                 <span>Подробнее</span>
                 <span class="mdi mdi-arrow-right ml-2"></span>

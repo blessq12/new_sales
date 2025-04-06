@@ -15,6 +15,11 @@ class ServiceCategory extends Model
         'order'
     ];
 
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
     public function services()
     {
         return $this->hasMany(Service::class);

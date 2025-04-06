@@ -4,9 +4,17 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Service;
+use App\Models\ServiceCategory;
+use App\Models\Company;
 
 class ServiceController extends Controller
 {
+
+    public function __construct()
+    {
+        \Illuminate\Support\Facades\View::share('company', Company::first());
+    }
+
     public function services()
     {
         return view('services.index', [
@@ -14,10 +22,13 @@ class ServiceController extends Controller
         ]);
     }
 
-    public function show($slug)
+    public function show(ServiceCategory $category, Service $slug)
     {
+        $slug->increment('views');
         return view('services.show', [
-            'service' => Service::where('slug', $slug)->firstOrFail(),
+            'service' => $slug,
+            'category' => $category,
+            'categories' => ServiceCategory::all(),
         ]);
     }
 
@@ -43,7 +54,8 @@ class ServiceController extends Controller
     public function category($slug)
     {
         return view('services.category', [
-            'category' => \App\Models\ServiceCategory::where('slug', $slug)->firstOrFail(),
+            'category' => ServiceCategory::where('slug', $slug)->firstOrFail(),
+            'categories' => ServiceCategory::all(),
         ]);
     }
 }
