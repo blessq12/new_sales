@@ -23,6 +23,7 @@ class ServiceController extends AdminController
 
         $grid->model()->orderBy('id', 'desc');
         $grid->column('id', __('ID'));
+        $grid->column('slug', __('Слаг'))->editable();
         $grid->column('image', __('Изображение'))->image('', 100, 100);
         $grid->column('service_category_id', __('Категория'))->display(function ($value) {
             return \App\Models\ServiceCategory::find($value)->name ?? 'Без категории';
