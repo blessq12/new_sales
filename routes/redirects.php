@@ -20,4 +20,4 @@ Route::redirect('/ustanovka-gruppy-bezopasnosti', 'https://sales-tomsk.ru/otople
 Route::redirect('/obvyazka-teploobmennika-banya', 'https://sales-tomsk.ru/otoplenie-i-teplosnabzenie/obviazka-teploobmennika-v-bane', 301);
 Route::redirect('/shtroblenie-pod-truby', 'https://sales-tomsk.ru/dopolnitelnye-raboty/stroblenie-sten-pod-truby', 301);
 Route::redirect('/ustanovka-vodonagrevatelya', 'https://sales-tomsk.ru/ustanovka-santexniki/ustanovka-vodonagrevatelia', 301);
-Route::redirect('/ustanovka-i-zamena-smesitelia', 'https://sales-tomsk.ru/ustanovka-santexniki/ustanovka-i-zamena-smesitelia', 301);
+Route::redirect('/ustanovka-zamena-smesitelya', 'https://sales-tomsk.ru/ustanovka-santexniki/ustanovka-i-zamena-smesitelia', 301);
