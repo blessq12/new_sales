@@ -7,6 +7,7 @@ use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
+use Encore\Admin\Widgets\Table;
 
 class ServiceCategoryController extends AdminController
 {
@@ -16,8 +17,27 @@ class ServiceCategoryController extends AdminController
     {
         $grid = new Grid(new ServiceCategory());
         $grid->column('id', __('ID'))->sortable();
-        $grid->column('order', __('Порядок'))->editable()->sortable();
+        // $grid->column('order', __('Порядок'))->editable()->sortable();
         $grid->column('status', __('Статус'))->switch();
+        $grid->column('services_count', __('Услуги'))->display(function ($value) {
+            return $this->services->count() . ' услуг';
+        })->modal('Услуги', function ($value) {
+            $services = $this->services()->get(['id', 'name', 'slug', 'prefix', 'price']);
+            $services = $services->map(function ($service) {
+                return [
+                    'id' => $service->id,
+                    'name' => $service->name,
+                    'price' => $service->prefix . ' ' . $service->price,
+                    'slug' => '<a href="' . env('APP_URL') . '/admin/services/' . $service->id . '/edit"><i class="fa fa-edit"></i></a>' . ' ' . '<a href="' . env('APP_URL') . '/admin/services/' . $service->id . '" class="ms-2"><i class="fa fa-eye"></i></a>' . ' ' . '<a href="' . env('APP_URL') . '/admin/services/create" class="ms-2"><i class="fa fa-plus"></i></a>',
+                ];
+            });
+            return new Table([
+                'id' => __('ID'),
+                'name' => __('Название'),
+                'price' => __('Цена'),
+                'slug' => __('Действие'),
+            ], $services->toArray());
+        });
         $grid->column('image', __('Изображение'))->image('', 100, 100);
         $grid->column('name', __('Название'));
         $grid->column('slug', __('Ссылка'));
