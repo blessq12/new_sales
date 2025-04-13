@@ -34,7 +34,7 @@
                                 <h4 class="text-lg font-semibold leading-7 py-2 text-indigo-600">Категория</h4>
                                 <span>{{ $service->category->name }}</span>
                             </div>
-                        </div>
+                        </div>8
                     </div>
 
                     <div class="">
@@ -44,7 +44,8 @@
                                 {!! $service->content !!}
                             @endif
                         </div>
-                        <div class="mt-16">
+
+                        <div class="mt-16 mb-16">
                             <div
                                 class="relative isolate overflow-hidden bg-gray-900 px-4 py-24 shadow-2xl sm:rounded-3xl sm:px-24 rounded-xl">
                                 <h2
