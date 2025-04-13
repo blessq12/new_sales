@@ -25,7 +25,7 @@
                 <div class="lg:col-span-2">
 
                     <div class="mx-auto pt-24 sm:pt-32 mb-8">
-                        <div class="grid grid-cols-2 gap-x-8 gap-y-16 lg:grid-cols-2">
+                        <div class="grid grid-cols-2 gap-8 lg:grid-cols-2">
                             <div class="rounded-2xl bg-gray-50 p-4 flex items-center justify-between gap-4">
                                 <h4 class="text-lg font-semibold leading-7 py-2 text-indigo-600">Цена</h4>
                                 <span>{{ $service->prefix }} <b>{{ $service->price }}</b> руб.</span>
