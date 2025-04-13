@@ -41,8 +41,9 @@ class ServiceCategoryController extends AdminController
     protected function form()
     {
         $form = new Form(new ServiceCategory());
+        $form->display('slug', __('Ссылка'));
         $form->text('name', __('Название'));
-        $form->text('slug', __('Ссылка'));
+        $form->textarea('description', __('Описание'));
         $form->image('image', __('Изображение'))
             ->uniqueName()
             ->move('service_categories')
@@ -51,7 +52,7 @@ class ServiceCategoryController extends AdminController
             '1' => 'Активный',
             '0' => 'Неактивный',
         ])->default('1');
-        $form->number('order', __('Порядок'))->default(function ($form) {
+        $form->text('order', __('Порядок'))->default(function ($form) {
             return ServiceCategory::max('order') + 1;
         });
 

@@ -56,6 +56,7 @@ class ServiceController extends AdminController
         $form = new Form(new Service);
         $form->text('slug', __('Слаг'));
         $form->text('name', __('Название'))->required();
+
         $form->select('service_category_id', __('Категория'))->options(\App\Models\ServiceCategory::all()->pluck('name', 'id'))->required();
         $form->hidden('description', __('Описание'));
         $form->image('image', __('Изображение'))
