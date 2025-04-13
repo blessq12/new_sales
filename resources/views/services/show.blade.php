@@ -34,7 +34,11 @@
                                 <h4 class="text-lg font-semibold leading-7 py-2 text-indigo-600">Категория</h4>
                                 <span>{{ $service->category->name }}</span>
                             </div>
-                        </div>8
+                            <div class="rounded-2xl bg-gray-50 p-4 flex items-center justify-between gap-4">
+                                <h4 class="text-lg font-semibold leading-7 py-2 text-indigo-600">Просмотров страницы</h4>
+                                <span>{{ $service->views }}</span>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="">
