@@ -46,7 +46,9 @@ class AppServiceProvider extends ServiceProvider
         });
 
         \App\Models\ServiceCategory::creating(function ($category) {
-            $category->slug = \Illuminate\Support\Str::slug($category->name);
+            if (empty($category->slug)) {
+                $category->slug = \Illuminate\Support\Str::slug($category->name);
+            }
             $category->status = 'inactive';
             $category->order = \App\Models\ServiceCategory::max('id') + 1;
         });

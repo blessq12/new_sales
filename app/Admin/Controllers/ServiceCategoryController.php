@@ -57,7 +57,9 @@ class ServiceCategoryController extends AdminController
         });
 
         $form->saved(function ($form) {
-            $form->model()->slug = \Illuminate\Support\Str::slug($form->name);
+            if (empty($form->model()->slug)) {
+                $form->model()->slug = \Illuminate\Support\Str::slug($form->name);
+            }
             $form->model()->save();
         });
         return $form;
