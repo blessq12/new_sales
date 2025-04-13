@@ -42,7 +42,7 @@
                     </div>
 
                     <div class="">
-                        <h4 class="text-lg font-semibold leading-7 text-indigo-600 px-8 mb-4">Основная информация</h4>
+                        <h4 class="text-xl font-semibold leading-7 text-indigo-600 px-8 mb-4">Основная информация</h4>
                         <div class="rounded-2xl bg-gray-50 p-8 mb-8">
                             @if ($service->content)
                                 {!! $service->content !!}
