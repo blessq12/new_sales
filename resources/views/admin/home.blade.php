@@ -52,7 +52,7 @@
                 </div>
                 <div class="analytics-info">
                     <h4>Посетители</h4>
-                    <p class="analytics-number">{{ $metrics->todayVisits }}</p>
+                    <p class="analytics-number">{{ $metrics->visits }}</p>
                     <span class="analytics-label">визитов сегодня</span>
                 </div>
             </div>
@@ -63,7 +63,7 @@
                 </div>
                 <div class="analytics-info">
                     <h4>Уникальные посетители</h4>
-                    <p class="analytics-number">{{ $metrics->todayUsers }}</p>
+                    <p class="analytics-number">{{ $metrics->users }}</p>
                     <span class="analytics-label">пользователей сегодня</span>
                 </div>
             </div>
@@ -74,19 +74,8 @@
                 </div>
                 <div class="analytics-info">
                     <h4>Просмотры</h4>
-                    <p class="analytics-number">{{ $metrics->todayPageviews }}</p>
+                    <p class="analytics-number">{{ $metrics->pageviews }}</p>
                     <span class="analytics-label">просмотров страниц</span>
-                </div>
-            </div>
-
-            <div class="analytics-card">
-                <div class="analytics-icon">
-                    <i class="fas fa-user-plus"></i>
-                </div>
-                <div class="analytics-info">
-                    <h4>Новые посетители</h4>
-                    <p class="analytics-number">{{ $metrics->todayPercentNewVisitors }}%</p>
-                    <span class="analytics-label">от общего числа</span>
                 </div>
             </div>
 
@@ -96,7 +85,7 @@
                 </div>
                 <div class="analytics-info">
                     <h4>Отказы</h4>
-                    <p class="analytics-number">{{ $metrics->todayBounceRate }}%</p>
+                    <p class="analytics-number">{{ $metrics->bounce_rate }}%</p>
                     <span class="analytics-label">показатель отказов</span>
                 </div>
             </div>
@@ -107,7 +96,7 @@
                 </div>
                 <div class="analytics-info">
                     <h4>Глубина просмотра</h4>
-                    <p class="analytics-number">{{ $metrics->todayPageDepth }}</p>
+                    <p class="analytics-number">{{ $metrics->page_depth }}</p>
                     <span class="analytics-label">страниц за визит</span>
                 </div>
             </div>
@@ -118,7 +107,7 @@
                 </div>
                 <div class="analytics-info">
                     <h4>Время на сайте</h4>
-                    <p class="analytics-number">{{ $metrics->todayAvgVisitDurationSeconds }}</p>
+                    <p class="analytics-number">{{ $metrics->avg_time_on_site }}</p>
                     <span class="analytics-label">среднее время визита</span>
                 </div>
             </div>

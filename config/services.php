@@ -35,4 +35,12 @@ return [
         ],
     ],
 
+    'yandex' => [
+        'token' => env('YANDEX_METRIKA_TOKEN'),
+    ],
+
+    'telegram' => [
+        'token' => env('TELEGRAM_BOT_TOKEN'),
+        'chat_id' => env('TELEGRAM_CHAT_ID'),
+    ],
 ];

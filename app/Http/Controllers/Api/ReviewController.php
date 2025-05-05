@@ -20,6 +20,18 @@ class ReviewController extends Controller
 
         $review = Review::create($request->all());
 
+        if (!$review->save()) {
+            return response()->json(['error' => 'Failed to save review'], 500);
+        }
+
+        (new \App\Services\Telegram\TelegramMessageService())->sendMessage([
+            '👤 Новый отзыв от: ' . $review->name . "\n",
+
+            'Услуга: ' . $review->service->name,
+            '🌟 Оценка: ' . $review->rating,
+            '📝 Сообщение: ' . $review->message,
+        ], 'event');
+
         return response()->json($review);
     }
 }

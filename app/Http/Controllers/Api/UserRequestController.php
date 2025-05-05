@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Facades\Telegram;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\UserRequest;
@@ -14,18 +13,24 @@ class UserRequestController extends Controller
         $request->validate([
             'type' => 'required',
         ]);
+
         $data = $request->data;
+
         $userRequest = UserRequest::create([
             'type' => $request->type,
             'data' => $data
         ]);
 
         if (!$userRequest->save()) {
-            Telegram::sendMessage('Произошла ошибка при сохранении данных заявки', 'alert');
             return response()->json([
                 'message' => 'Произошла ошибка при сохранении данных',
             ], 500);
         }
+
+        $messageHeaderData = [
+            '👤 Новый запрос на услугу',
+            '🔍 Тип: ' . $request->type,
+        ];
 
         $messageData = [
             isset($data['name']) ? 'Имя: ' . $data['name'] : null,
@@ -38,7 +43,10 @@ class UserRequestController extends Controller
 
         $messageData = array_filter($messageData);
 
-        Telegram::sendMessage($messageData, $request->type);
+        (new \App\Services\Telegram\TelegramMessageService())->sendMessage(
+            array_merge($messageHeaderData, $messageData),
+            'contact'
+        );
 
         return response()->json([
             'message' => 'Запрос успешно зарегистрирован',
@@ -47,8 +55,15 @@ class UserRequestController extends Controller
 
     public function contactForm(Request $request)
     {
+
         $request->validate([
             'type' => 'required',
+            'data' => 'required',
+            'data.name' => 'required',
+            'data.phone' => 'required',
+            'data.email' => 'required',
+            'data.message' => 'required',
+            'data.subject' => 'required',
         ]);
 
         $data = $request->data;
@@ -58,12 +73,19 @@ class UserRequestController extends Controller
             'data' => $data
         ]);
 
+
         if (!$userRequest->save()) {
-            Telegram::sendMessage('Произошла ошибка при сохранении данных заявки', 'alert');
             return response()->json([
                 'message' => 'Произошла ошибка при сохранении данных',
             ], 500);
         }
+
+
+        $messageHeaderData = [
+            '👤 Новый запрос на обратную связь',
+            'Страница: Контакты',
+            '🔍 Тип: ' . $request->type . "\n",
+        ];
 
         $messageData = [
             isset($data['name']) ? 'Имя: ' . $data['name'] : null,
@@ -73,8 +95,11 @@ class UserRequestController extends Controller
             isset($data['subject']) ? 'Тема: ' . $data['subject'] : null,
         ];
 
-        $messageData = array_filter($messageData);
-        Telegram::sendMessage($messageData, $request->type);
+        (new \App\Services\Telegram\TelegramMessageService())->sendMessage(
+            array_merge($messageHeaderData, $messageData),
+            'order'
+        );
+
         return response()->json([
             'message' => 'Запрос успешно зарегистрирован',
         ]);

@@ -2,9 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 
-/**
- * Web Routes
- */
 
 include_once __DIR__ . '/redirects.php';
 

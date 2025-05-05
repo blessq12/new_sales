@@ -5,7 +5,6 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\Api\SearchController;
 use App\Http\Controllers\Api\ReviewController;
 use App\Http\Controllers\Api\UserRequestController;
-use App\Http\Controllers\Api\RawController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -17,6 +16,8 @@ use App\Http\Controllers\Api\RawController;
 |
 */
 
+
+
 Route::get('/services', [ServiceController::class, 'list']);
 
 Route::get('/search', [SearchController::class, 'search']);
@@ -26,6 +27,6 @@ Route::controller(ReviewController::class)->prefix('reviews')->group(function ()
 });
 
 Route::controller(UserRequestController::class)->group(function () {
-    Route::post('/user-requests/store', 'store');
     Route::post('/user-requests/contact-form', 'contactForm');
+    Route::post('/user-requests/store', 'store');
 });
