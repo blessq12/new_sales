@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\TelegramChat;
+use Illuminate\Support\Facades\Log;
 
 class TelegramWebhookController extends Controller
 {
@@ -28,8 +29,12 @@ class TelegramWebhookController extends Controller
     {
         $data = $request->all();
 
+        // Логируем входящий вебхук для отладки
+        Log::debug('Telegram Webhook Data: ', $data);
+
+        // Парсинг данных с проверкой
         $this->updateId = $data['update_id'] ?? null;
-        $this->chatId = $data['message']['chat']['id'] ?? $data['callback_query']['message']['chat']['id'] ?? $data['inline_query']['chat']['id'] ?? null;
+        $this->chatId = $this->extractChatId($data);
         $this->userId = $data['message']['from']['id'] ?? $data['callback_query']['from']['id'] ?? $data['inline_query']['from']['id'] ?? null;
         $this->userFirstName = $data['message']['from']['first_name'] ?? $data['callback_query']['from']['first_name'] ?? $data['inline_query']['from']['first_name'] ?? 'друг';
         $this->userLastName = $data['message']['from']['last_name'] ?? $data['callback_query']['from']['last_name'] ?? $data['inline_query']['from']['last_name'] ?? null;
@@ -43,12 +48,22 @@ class TelegramWebhookController extends Controller
         $this->entities = $data['message']['entities'] ?? null;
         $this->media = $this->parseMedia($data['message'] ?? []);
 
-        if (in_array($this->chatId, $this->blacklistedChatIds)) {
+        // Проверка на наличие chat_id
+        if (!$this->chatId) {
+            Log::error('Chat ID is null, skipping processing.', ['data' => $data]);
             return;
         }
 
+        // Проверка на чёрный список
+        if (in_array($this->chatId, $this->blacklistedChatIds)) {
+            Log::info('Chat ID in blacklist: ' . $this->chatId);
+            return;
+        }
+
+        // Сохранение данных в базу
         $this->storeChat();
 
+        // Обработка
         if ($this->callbackData) {
             $this->handleCallback($this->callbackData);
         } elseif ($this->inlineQuery) {
@@ -58,6 +73,14 @@ class TelegramWebhookController extends Controller
         } elseif ($this->messageText || $this->media) {
             $this->handleMessage($this->messageText);
         }
+    }
+
+    private function extractChatId(array $data): ?int
+    {
+        return $data['message']['chat']['id'] ??
+            $data['callback_query']['message']['chat']['id'] ??
+            $data['inline_query']['chat']['id'] ??
+            null;
     }
 
     private function parseMedia(array $message): ?array
@@ -73,21 +96,35 @@ class TelegramWebhookController extends Controller
 
     private function storeChat()
     {
-        TelegramChat::updateOrCreate(
-            ['chat_id' => $this->chatId],
-            [
+        try {
+            TelegramChat::updateOrCreate(
+                ['chat_id' => $this->chatId],
+                [
+                    'user_id' => $this->userId,
+                    'first_name' => $this->userFirstName,
+                    'last_name' => $this->userLastName,
+                    'username' => $this->username,
+                    'chat_type' => $this->chatType,
+                    'last_message' => $this->messageText,
+                    'last_message_id' => $this->messageId,
+                    'media' => $this->media ? json_encode($this->media) : null,
+                    'entities' => $this->entities ? json_encode($this->entities) : null,
+                    'updated_at' => now()
+                ]
+            );
+        } catch (\Exception $e) {
+            Log::error('Failed to store chat: ' . $e->getMessage(), [
+                'chat_id' => $this->chatId,
                 'user_id' => $this->userId,
-                'first_name' => $this->userFirstName,
-                'last_name' => $this->userLastName,
-                'username' => $this->username,
-                'chat_type' => $this->chatType,
-                'last_message' => $this->messageText,
-                'last_message_id' => $this->messageId,
-                'media' => $this->media ? json_encode($this->media) : null,
-                'entities' => $this->entities ? json_encode($this->entities) : null,
-                'updated_at' => now()
-            ]
-        );
+                'data' => [
+                    'first_name' => $this->userFirstName,
+                    'last_name' => $this->userLastName,
+                    'username' => $this->username,
+                    'chat_type' => $this->chatType,
+                    'last_message' => $this->messageText
+                ]
+            ]);
+        }
     }
 
     private function handleCommand($message)
@@ -140,7 +177,6 @@ class TelegramWebhookController extends Controller
 
     private function handleInlineQuery($query)
     {
-        // Здесь можно добавить логику для ответа на инлайн-запросы
         (new \App\Services\Telegram\TelegramMessageService())->sendMessageToChat(
             "Инлайн-запрос от {$this->userFirstName}: $query",
             $this->chatId
