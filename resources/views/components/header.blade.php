@@ -27,7 +27,7 @@
                 <div class="flex items-center space-x-4">
                     <span class="text-gray-600 flex items-center">
                         <span class="mdi mdi-clock text-indigo-600 mr-1"></span>
-                        <span class="hidden md:block">Ежедневно с</span> 8:00 до 22:00
+                        <span class="hidden md:block me-1">Ежедневно с</span> 8:00 до 22:00
                     </span>
                 </div>
             </div>
@@ -50,22 +50,19 @@
             </div>
 
             <!-- Десктопное меню -->
-            <div class="hidden md:flex md:items-center md:space-x-3">
+            <div class="hidden md:flex md:items-center md:space-x-2">
                 <a href="{{ route('main.about') }}"
-                    class="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+                    class="text-gray-700 hover:text-indigo-600 px-2 py-1 rounded-md text-sm font-medium transition-colors duration-200">
                     О нас
                 </a>
-                <a href="{{ route('main.certificates') }}"
-                    class="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
-                    Сертификаты
-                </a>
+
                 <a href="{{ route('main.gallery') }}"
-                    class="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+                    class="text-gray-700 hover:text-indigo-600 px-2 py-1 rounded-md text-sm font-medium transition-colors duration-200">
                     Галерея
                 </a>
                 <div class="relative group">
                     <button
-                        class="text-gray-700 group hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium inline-flex items-center transition-colors duration-200"
+                        class="text-gray-700 group hover:text-indigo-600 px-2 py-1 rounded-md text-sm font-medium inline-flex items-center transition-colors duration-200"
                         onclick="{
                             document.getElementById('services-dropdown').classList.toggle('opacity-0');
                             document.getElementById('services-dropdown').classList.toggle('invisible');
@@ -87,19 +84,28 @@
                                 <a href="{{ route('services.category', $category->slug) }}"
                                     class="flex items-center justify-between px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600">
                                     <span>{{ $category->name }}</span>
-                                    <span class="bg-indigo-600 text-gray-50 text-xs rounded-full px-2 py-1 ml-2">{{ $category->services->count() }}</span>
+                                    <span
+                                        class="bg-indigo-600 text-gray-50 text-xs rounded-full px-2 py-1 ml-2">{{ $category->services->count() }}</span>
                                 </a>
                             @endforeach
                         </div>
                     </div>
                 </div>
                 <a href="{{ route('reviews.index') }}"
-                    class="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+                    class="text-gray-700 hover:text-indigo-600 px-2 py-1 rounded-md text-sm font-medium transition-colors duration-200 ">
                     Отзывы
                 </a>
                 <a href="{{ route('main.contacts') }}"
-                    class="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+                    class="text-gray-700 hover:text-indigo-600 px-2 py-1 rounded-md text-sm font-medium transition-colors duration-200">
                     Контакты
+                </a>
+                <a href="{{ route('main.groheService') }}"
+                    class="text-gray-700 hover:text-indigo-600 px-2 py-1 rounded-md text-sm font-medium transition-colors duration-200 flex items-center">
+                    <div class="block heading-0">
+                        <span class="text-sm font-bold block mb-2.5" style="line-height: 0">GROHE</span>
+                        <span class="text-xs text-gray-400 block heading-0" style="line-height: 0">сервис</span>
+                    </div>
+
                 </a>
                 <button @click="openModal('callback')"
                     class="inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 transition-colors duration-200">
@@ -142,9 +148,9 @@
                         class="block px-4 py-3 text-lg font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition-colors duration-200">
                         О нас
                     </a>
-                    <a href="{{ route('main.certificates') }}"
+                    <a href="{{ route('main.groheService') }}"
                         class="block px-4 py-3 text-lg font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition-colors duration-200">
-                        Сертификаты
+                        Grohe Сервис
                     </a>
                     <a href="{{ route('main.gallery') }}"
                         class="block px-4 py-3 text-lg font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition-colors duration-200">

@@ -31,7 +31,7 @@ class SitemapGenerate extends Command
             (object)['route' => route('main.index'), 'lastmod' => date('Y-m-d'), 'changefreq' => 'yearly', 'priority' => '1.0'],
             (object)['route' => route('main.about'), 'lastmod' => date('Y-m-d'), 'changefreq' => 'yearly', 'priority' => '1.0'],
             (object)['route' => route('main.cooperation'), 'lastmod' => date('Y-m-d'), 'changefreq' => 'monthly', 'priority' => '1.0'],
-            (object)['route' => route('main.certificates'), 'lastmod' => date('Y-m-d'), 'changefreq' => 'yearly', 'priority' => '1.0'],
+            (object)['route' => route('main.groheService'), 'lastmod' => date('Y-m-d'), 'changefreq' => 'yearly', 'priority' => '1.0'],
             (object)['route' => route('main.contacts'), 'lastmod' => date('Y-m-d'), 'changefreq' => 'yearly', 'priority' => '1.0'],
             (object)['route' => route('main.privacy'), 'lastmod' => date('Y-m-d'), 'changefreq' => 'monthly', 'priority' => '1.0'],
             (object)['route' => route('main.gallery'), 'lastmod' => date('Y-m-d'), 'changefreq' => 'monthly', 'priority' => '1.0'],

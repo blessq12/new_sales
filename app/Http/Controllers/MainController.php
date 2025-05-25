@@ -20,9 +20,17 @@ class MainController extends Controller
     }
     public function about()
     {
-        return view('main.about');
+        $doc_dir = public_path('assets/images/docs');
+        $files = scandir($doc_dir);
+        $files = array_filter($files, function ($file) {
+            return $file !== '.' && $file !== '..' && $file !== '.DS_Store';
+        });
+
+        return view('main.about', [
+            'files' => $files,
+        ]);
     }
-    public function certificates()
+    public function groheService()
     {
         $doc_dir = public_path('assets/images/docs');
         $files = scandir($doc_dir);
@@ -30,7 +38,7 @@ class MainController extends Controller
             return $file !== '.' && $file !== '..' && $file !== '.DS_Store';
         });
 
-        return view('main.certificates', [
+        return view('main.grohe', [
             'files' => $files,
         ]);
     }

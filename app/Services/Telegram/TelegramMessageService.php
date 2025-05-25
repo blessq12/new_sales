@@ -23,10 +23,31 @@ class TelegramMessageService extends TelegramService
             $url .= '&message_thread_id=' . $this->getThread($thread);
         }
 
-
         $this->client->post($url, [
             'json' => [
                 'text' => $this->prepareMessage($message)
+            ]
+        ]);
+    }
+
+    public function sendPhoto($message, $filePath, ?string $thread = null)
+    {
+        $url = 'sendPhoto?chat_id=' . $this->chatId . '&parse_mode=HTML';
+        if ($thread && $this->getThread($thread)) {
+            $url .= '&message_thread_id=' . $this->getThread($thread);
+        }
+
+        $this->client->post($url, [
+            'multipart' => [
+                [
+                    'name' => 'photo',
+                    'contents' => fopen($filePath, 'r'),
+                    'filename' => basename($filePath)
+                ],
+                [
+                    'name' => 'caption',
+                    'contents' => $this->prepareMessage($message)
+                ]
             ]
         ]);
     }

@@ -19,9 +19,7 @@ use App\Http\Controllers\Api\UserRequestController;
 
 
 Route::get('/services', [ServiceController::class, 'list']);
-
 Route::get('/search', [SearchController::class, 'search']);
-
 Route::controller(ReviewController::class)->prefix('reviews')->group(function () {
     Route::post('/store', 'store');
 });
@@ -29,4 +27,8 @@ Route::controller(ReviewController::class)->prefix('reviews')->group(function ()
 Route::controller(UserRequestController::class)->group(function () {
     Route::post('/user-requests/contact-form', 'contactForm');
     Route::post('/user-requests/store', 'store');
+});
+
+Route::controller(\App\Http\Controllers\NotificationController::class)->prefix('notifications')->group(function () {
+    Route::post('/send-parts-request', 'sendPartsRequest');
 });

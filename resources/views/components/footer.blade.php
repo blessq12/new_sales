@@ -66,9 +66,9 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('main.certificates') }}"
+                        <a href="{{ route('main.groheService') }}"
                             class="text-gray-400 hover:text-white transition-colors duration-200">
-                            <span class="mdi mdi-certificate mr-2"></span>Сертификаты
+                            <span class="mdi mdi-certificate mr-2"></span>Grohe Сервис
                         </a>
                     </li>
                     <li>

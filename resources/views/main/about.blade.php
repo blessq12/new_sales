@@ -1,41 +1,71 @@
 @extends('layouts.main')
 
 @section('title', 'О нас')
-@section('description', 'Узнайте о нашей компании, миссии и ценностях. Мы предоставляем высококачественные решения для удовлетворения потребностей клиентов.')
+@section('description',
+    'Узнайте о нашей компании, миссии и ценностях. Мы предоставляем высококачественные решения для
+    удовлетворения потребностей клиентов.')
 
 @section('content')
-    <x-hero-banner
-        :title="'О нас'"
-        :description="'Узнайте о нашей компании, миссии и ценностях. Мы предоставляем высококачественные решения для удовлетворения потребностей клиентов.'"
-        :breadcrumbs="[
-            ['title' => 'О нас', 'url' => '/about']
-        ]"
-    ></x-hero-banner>
+    <x-hero-banner :title="'О нас'" :description="'Узнайте о нашей компании, миссии и ценностях. Мы предоставляем высококачественные решения для удовлетворения потребностей клиентов.'" :breadcrumbs="[['title' => 'О нас', 'url' => '/about']]"></x-hero-banner>
 
-    <!-- История компании -->
-    <div class="relative isolate overflow-hidden bg-white py-24 sm:py-32">
-        <div class="mx-auto max-w-7xl px-6 lg:px-8">
-            <div class="mx-auto max-w-2xl lg:mx-0">
-                <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">История ООО "Салес"</h2>
-                <div class="relative mt-16">
-                    <figure class="border-l border-indigo-600 pl-8">
-                        <blockquote class="text-xl font-semibold leading-8 tracking-tight text-gray-900">
-                            <p>"Я Сидякин Алексей Викторович, директор компании ООО "Салес". Хотелось бы вам рассказать историю о том, как я пришёл к своему бизнесу..."</p>
+    <div class="relative isolate overflow-hidden bg-gradient-to-b from-gray-50 to-white py-24 sm:py-32">
+        <div class="absolute inset-0">
+            <div class="absolute inset-y-0 right-0 w-1/2 bg-gradient-to-l from-indigo-50 to-transparent"></div>
+        </div>
+        <div class="relative mx-auto max-w-7xl px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="relative">
+                    <h2 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl mb-6">История ООО "Салес"</h2>
+                    <div class="space-y-6">
+                        <blockquote class="text-xl font-medium leading-8 text-gray-900 border-l-4 border-indigo-600 pl-6">
+                            <p>"Я Сидякин Алексей Викторович, директор компании ООО "Салес". За 15 лет мы прошли путь от
+                                небольшой команды до одного из ведущих предприятий в области сантехнических услуг."</p>
                         </blockquote>
-                        <figcaption class="mt-8 flex gap-x-4">
-                            <img src="https://www.sales-tomsk.ru/images/dest/photo.jpg" alt="Директор компании" class="mt-1 h-12 w-12 flex-none rounded-full bg-gray-50 object-cover">
-                            <div class="text-sm leading-6">
-                                <div class="font-semibold text-gray-900">Алексей Сидякин</div>
-                                <div class="text-gray-600">Директор ООО "Салес"</div>
+                        <div class="prose prose-lg prose-indigo">
+                            <p class="text-gray-600">Под моим руководством компания достигла значительных успехов в
+                                предоставлении
+                                высококачественных услуг по прочистке канализаций и сантехническим работам. Мы
+                                гордимся тем, что помогаем нашим клиентам решать их проблемы быстро и эффективно.
+                            </p>
+                        </div>
+                        <div class="grid grid-cols-2 gap-6 mt-8">
+                            <div class="text-center">
+                                <div class="text-3xl font-bold text-indigo-600">15+</div>
+                                <div class="text-sm text-gray-600 mt-1">Лет опыта</div>
                             </div>
-                        </figcaption>
-                    </figure>
+                            <div class="text-center">
+                                <div class="text-3xl font-bold text-indigo-600">5000+</div>
+                                <div class="text-sm text-gray-600 mt-1">Довольных клиентов</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="relative lg:ml-12">
+                    <div class="aspect-[4/5] relative">
+                        <img src="/assets/images/director.jpeg" alt="Директор компании"
+                            class="absolute inset-0 w-full h-full object-cover rounded-2xl shadow-2xl">
+                        <div class="absolute inset-0 ring-1 ring-inset ring-gray-900/10 rounded-2xl"></div>
+                    </div>
+                    <div class="absolute -bottom-6 -left-6 bg-white rounded-2xl shadow-xl p-6 max-w-sm">
+                        <div class="flex items-center space-x-4">
+                            <div class="rounded-full bg-indigo-600/10 p-3">
+                                <svg class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M16.5 18.75h-9m9 0a3 3 0 013 3h-15a3 3 0 013-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M7.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0a7.454 7.454 0 01-.982-3.172M9.497 14.25a7.454 7.454 0 00.981-3.172M5.25 4.236c-.982.143-1.954.317-2.916.52A6.003 6.003 0 007.73 9.728M5.25 4.236V4.5c0 2.108.966 3.99 2.48 5.228M5.25 4.236V2.721C7.456 2.41 9.71 2.25 12 2.25c2.291 0 4.545.16 6.75.47v1.516M7.73 9.728a6.726 6.726 0 002.748 1.35m8.272-6.842V4.5c0 2.108-.966 3.99-2.48 5.228m2.48-5.492a46.32 46.32 0 012.916.52 6.003 6.003 0 01-5.395 4.972m0 0a6.726 6.726 0 01-2.749 1.35m0 0a6.772 6.772 0 01-3.044 0" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-gray-900">Образование</h3>
+                                <p class="text-sm text-gray-600">Томский Политехнический Университет</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- История успеха -->
     <div class="bg-white py-24 sm:py-32">
         <div class="mx-auto max-w-7xl px-6 lg:px-8">
             <div class="mx-auto grid max-w-2xl grid-cols-1 gap-8 lg:mx-0 lg:max-w-none lg:grid-cols-3">
@@ -44,7 +74,9 @@
                         <time datetime="2008" class="text-sm leading-6 text-gray-600">2008</time>
                         <h3 class="mt-4 text-lg font-semibold leading-8 tracking-tight text-gray-900">Начало пути</h3>
                         <p class="mt-4 text-base leading-7 text-gray-600">
-                            В 2008 году, закончив Томский Политехнический Университет, я задался вопросом: где? как? и за сколько? Работать. Как и у всех специалистов, магистров выпускающихся из университета, у меня была полная уверенность, что нас с руками и ногами должны расхватывать по компаниям.
+                            В 2008 году, закончив Томский Политехнический Университет, я задался вопросом: где? как? и за
+                            сколько? Работать. Как и у всех специалистов, магистров выпускающихся из университета, у меня
+                            была полная уверенность, что нас с руками и ногами должны расхватывать по компаниям.
                         </p>
                     </div>
                     <div class="flex items-center gap-x-4 mt-8">
@@ -59,7 +91,9 @@
                         <time datetime="2008" class="text-sm leading-6 text-gray-600">2008-2009</time>
                         <h3 class="mt-4 text-lg font-semibold leading-8 tracking-tight text-gray-900">Поиск своего пути</h3>
                         <p class="mt-4 text-base leading-7 text-gray-600">
-                            Работодатели проявляют особые требования к своим рабочим. У них должен быть опыт, знания, умения, практика те которые нужны сегодня! Да и те которые по большому счёту в университетах не предоставляют!
+                            Работодатели проявляют особые требования к своим рабочим. У них должен быть опыт, знания,
+                            умения, практика те которые нужны сегодня! Да и те которые по большому счёту в университетах не
+                            предоставляют!
                         </p>
                     </div>
                     <div class="flex items-center gap-x-4 mt-8">
@@ -74,7 +108,8 @@
                         <time datetime="2023" class="text-sm leading-6 text-gray-600">Сегодня</time>
                         <h3 class="mt-4 text-lg font-semibold leading-8 tracking-tight text-gray-900">ООО "Салес"</h3>
                         <p class="mt-4 text-base leading-7 text-gray-600">
-                            Сегодня ООО "Салес" - это профессиональная команда специалистов, предоставляющая качественные услуги в Томске и области. Мы гордимся нашей репутацией и постоянно развиваемся.
+                            Сегодня ООО "Салес" - это профессиональная команда специалистов, предоставляющая качественные
+                            услуги в Томске и области. Мы гордимся нашей репутацией и постоянно развиваемся.
                         </p>
                     </div>
                     <div class="flex items-center gap-x-4 mt-8">
@@ -83,6 +118,36 @@
                         <div class="h-px flex-auto bg-gray-100"></div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="bg-gray-50 pt-24 sm:pt-32">
+        <div class="mx-auto max-w-7xl px-6 lg:px-8lg:mx-0 mb-10">
+            <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Наши сертификаты</h2>
+            <p class="mt-6 text-lg leading-8 text-gray-600">
+                Сертификаты, которые мы представляем, являются не только подтверждением качества нашей продукции, но и
+                свидетельством нашего профессионализма и приверженности высоким стандартам.
+            </p>
+        </div>
+        <div class="mx-auto max-w-7xl px-6 lg:px-8">
+            <div class="mx-auto grid max-w-2xl grid-cols-1 gap-8 sm:grid-cols-3 lg:mx-0 lg:max-w-none lg:grid-cols-6">
+                @foreach ($files as $file)
+                    <div
+                        class="group relative overflow-hidden rounded-2xl bg-white shadow-md transition-all duration-300 hover:shadow-xl">
+                        <div class="aspect-h-4 aspect-w-3 relative min-h-60"
+                            style="background-image: url('{{ Storage::disk('assets')->url('/images/docs/' . $file) }}'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+                            <div
+                                class="bg-black/10 absolute inset-0 flex items-center justify-center group-hover:bg-black/30 transition-all duration-300">
+                                <a href="{{ Storage::disk('assets')->url('/images/docs/' . $file) }}" target="_blank"
+                                    class="rounded-full bg-white px-2 py-1 title-underline transform transition-all duration-300 group-hover:scale-150">
+                                    <i class="mdi mdi-eye text-xl text-gray-900"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
             </div>
         </div>
     </div>
@@ -127,7 +192,8 @@
                 </div>
                 <div class="rounded-2xl bg-white p-8 shadow-md">
                     <h3 class="text-lg font-semibold leading-8 tracking-tight text-gray-900">Проверенные мастера</h3>
-                    <p class="mt-4 text-base leading-7 text-gray-600">Все работы выполняют проверенные мастера с опытом работы.</p>
+                    <p class="mt-4 text-base leading-7 text-gray-600">Все работы выполняют проверенные мастера с опытом
+                        работы.</p>
                 </div>
                 <div class="rounded-2xl bg-white p-8 shadow-md">
                     <h3 class="text-lg font-semibold leading-8 tracking-tight text-gray-900">Бесплатный выезд</h3>
@@ -147,7 +213,8 @@
                 </div>
                 <div class="rounded-2xl bg-white p-8 shadow-md">
                     <h3 class="text-lg font-semibold leading-8 tracking-tight text-gray-900">Консультация</h3>
-                    <p class="mt-4 text-base leading-7 text-gray-600">Консультация бесплатно. Звонить с 8.00 до 23.00 без выходных.</p>
+                    <p class="mt-4 text-base leading-7 text-gray-600">Консультация бесплатно. Звонить с 8.00 до 23.00 без
+                        выходных.</p>
                 </div>
                 <div class="rounded-2xl bg-white p-8 shadow-md">
                     <h3 class="text-lg font-semibold leading-8 tracking-tight text-gray-900">Связь</h3>
@@ -156,36 +223,5 @@
             </div>
         </div>
     </div>
-
-    <!-- CTA секция -->
-    <div class="bg-white">
-        <div class="mx-auto max-w-7xl py-24 sm:px-6 sm:py-32 lg:px-8">
-            <div class="relative isolate overflow-hidden bg-gray-900 px-6 py-24 text-center shadow-2xl sm:rounded-3xl sm:px-16">
-                <h2 class="mx-auto max-w-2xl text-3xl font-bold tracking-tight text-white sm:text-4xl">
-                    Начните работать с нами сегодня
-                </h2>
-                <p class="mx-auto mt-6 max-w-xl text-lg leading-8 text-gray-300">
-                    Мы готовы помочь вам с любыми задачами. Наши специалисты обеспечат качественное выполнение работ в срок.
-                </p>
-                <div class="mt-10 flex items-center justify-center gap-x-6">
-                    <a href="{{ route('main.contacts') }}"
-                       class="rounded-md bg-white px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">
-                        Связаться с нами
-                    </a>
-                    <a href="{{ route('services') }}" class="text-sm font-semibold leading-6 text-white">
-                        Наши услуги <span aria-hidden="true">→</span>
-                    </a>
-                </div>
-                <svg viewBox="0 0 1024 1024" class="absolute left-1/2 top-1/2 -z-10 h-[64rem] w-[64rem] -translate-x-1/2 [mask-image:radial-gradient(closest-side,white,transparent)]" aria-hidden="true">
-                    <circle cx="512" cy="512" r="512" fill="url(#827591b1-ce8c-4110-b064-7cb85a0b1217)" fill-opacity="0.7" />
-                    <defs>
-                        <radialGradient id="827591b1-ce8c-4110-b064-7cb85a0b1217">
-                            <stop stop-color="#7775D6" />
-                            <stop offset="1" stop-color="#E935C1" />
-                        </radialGradient>
-                    </defs>
-                </svg>
-            </div>
-        </div>
-    </div>
+    <x-front-cta />
 @endsection

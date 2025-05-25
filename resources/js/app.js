@@ -4,16 +4,21 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-import './bootstrap';
-import { createApp } from 'vue';
-import { createPinia } from 'pinia';
-import { modalMixin } from './mixins/modal';
-import { mobileMenuMixin } from './mixins/mobileMenu';
-import { useAppStore } from './store/AppStore';
-import { vMaska } from "maska/vue"
-
+import { vMaska } from "maska/vue";
+import { createPinia } from "pinia";
+import { createApp } from "vue";
+import { useToast } from "vue-toast-notification";
+import "vue-toast-notification/dist/theme-sugar.css";
+import "./bootstrap";
+import { mobileMenuMixin } from "./mixins/mobileMenu";
+import { modalMixin } from "./mixins/modal";
+import { useAppStore } from "./store/AppStore";
 
 const pinia = createPinia();
+const toast = useToast({
+    position: "top-right",
+    duration: 3000,
+});
 
 /**
  * Next, we will create a fresh Vue application instance. You may then begin
@@ -25,15 +30,14 @@ const app = createApp({
     setup() {
         const appStore = useAppStore();
         return { appStore };
-    }
+    },
 });
 
 app.use(pinia);
-app.directive('maska', vMaska);
+app.directive("maska", vMaska);
 app.mixin(modalMixin);
 app.mixin(mobileMenuMixin);
-
-
+app.config.globalProperties.$toast = toast;
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -42,9 +46,17 @@ app.mixin(mobileMenuMixin);
  * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
  */
 
-Object.entries(import.meta.glob('./**/*.vue', { eager: true })).forEach(([path, definition]) => {
-    app.component(path.split('/').pop().replace(/\.\w+$/, ''), definition.default);
-});
+Object.entries(import.meta.glob("./**/*.vue", { eager: true })).forEach(
+    ([path, definition]) => {
+        app.component(
+            path
+                .split("/")
+                .pop()
+                .replace(/\.\w+$/, ""),
+            definition.default
+        );
+    }
+);
 
 /**
  * Finally, we will attach the application instance to a HTML element with
@@ -52,4 +64,4 @@ Object.entries(import.meta.glob('./**/*.vue', { eager: true })).forEach(([path, 
  * scaffolding. Otherwise, you will need to add an element yourself.
  */
 
-app.mount('#app');
+app.mount("#app");
