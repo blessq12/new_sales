@@ -11,10 +11,7 @@ class TelegramWebhookService extends TelegramService
 
     public function setWebhook()
     {
-        $this->client->post('setWebhook', [
-            'json' => ['url' => 'https://api.telegram.org/bot' . $this->token . '/setWebhook'],
-        ]);
-
+        $this->client->get('setWebhook?url=' . env('TELEGRAM_WEBHOOK_URL'));
         return $this->client->get('getWebhookInfo');
     }
 }

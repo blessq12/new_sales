@@ -12,12 +12,13 @@ class TelegramWebhookController extends Controller
     public function webhookHandler(Request $request)
     {
         $data = $request->all();
-
         $message = $data['message']['text'];
         $this->chatId = $data['message']['chat']['id'];
 
         if (str_starts_with($message, '/')) {
             $this->handleCommand($message);
+        } else {
+            $this->handleMessage($message);
         }
     }
     private function handleCommand($message)
@@ -39,5 +40,9 @@ class TelegramWebhookController extends Controller
     private function handleDefaultCommand()
     {
         (new \App\Services\Telegram\TelegramMessageService())->sendMessageToChat('Я не знаю этой команды. Пожалуйста, используйте /start для начала работы.', $this->chatId);
+    }
+    private function handleMessage($message)
+    {
+        (new \App\Services\Telegram\TelegramMessageService())->sendMessageToChat('Пока что я не понимаю, что ты мне пишешь.', $this->chatId);
     }
 }
