@@ -52,6 +52,13 @@ class TelegramMessageService extends TelegramService
         ]);
     }
 
+    public function sendMessageToChat($message, $chatId)
+    {
+        $this->client->get('sendMessage?chat_id=' . $chatId . '&parse_mode=HTML', [
+            'json' => ['text' => $this->prepareMessage($message)]
+        ]);
+    }
+
     public function getThread($thread)
     {
         if (isset($this->threads[$thread])) {
