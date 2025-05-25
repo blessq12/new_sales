@@ -9,12 +9,13 @@ class TelegramWebhookController extends Controller
 {
     private $chatId;
 
-    public function webhook(Request $request)
+    public function webhookHandler(Request $request)
     {
         $data = $request->all();
 
         $message = $data['message']['text'];
-        $chatId = $data['message']['chat']['id'];
+        $this->chatId = $data['message']['chat']['id'];
+
         if (str_starts_with($message, '/')) {
             $this->handleCommand($message);
         }

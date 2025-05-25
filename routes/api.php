@@ -34,5 +34,5 @@ Route::controller(\App\Http\Controllers\NotificationController::class)->prefix('
 });
 
 Route::controller(\App\Http\Controllers\Api\TelegramWebhookController::class)->prefix('telegram')->group(function () {
-    Route::post('/webhook', 'webhook');
+    Route::post('/webhook', 'webhookHandler');
 });
