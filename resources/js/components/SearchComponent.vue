@@ -1,7 +1,7 @@
 <script>
 // types [mobile, desktop]
-import { useAppStore } from "../store/AppStore";
 import { mapStores } from "pinia";
+import { useAppStore } from "../store/AppStore";
 
 export default {
     props: {
@@ -79,14 +79,15 @@ export default {
                                         <p class="text-sm text-gray-600">
                                             {{ result.description }}
                                         </p>
-                                        <button
+                                        <a
                                             class="mt-1 text-blue-500 rounded hover:text-blue-600 hover:underline text-sm"
+                                            :href="result.url"
                                         >
                                             перейти
                                             <span
                                                 class="mdi mdi-chevron-right"
                                             ></span>
-                                        </button>
+                                        </a>
                                     </div>
                                 </li>
                             </ul>
@@ -140,12 +141,13 @@ export default {
                                 <p class="text-sm text-gray-600">
                                     {{ result.description }}
                                 </p>
-                                <button
+                                <a
+                                    :href="result.url"
                                     class="mt-1 text-blue-500 rounded hover:text-blue-600 hover:underline text-sm"
                                 >
                                     Перейти на страницу
                                     <span class="mdi mdi-chevron-right"></span>
-                                </button>
+                                </a>
                             </div>
                         </li>
                     </ul>

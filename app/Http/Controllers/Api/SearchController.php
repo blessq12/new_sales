@@ -20,6 +20,7 @@ class SearchController extends Controller
                 'slug' => $service->slug,
                 'description' => Str::limit(strip_tags($service->description), 35),
                 'image' => '/uploads/' . $service->image,
+                'url' => route('services.show', ['category' => $service->category->slug, 'slug' => $service->slug]),
             ];
         });
         return response()->json(['services' => $services]);

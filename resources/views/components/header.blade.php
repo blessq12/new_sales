@@ -1,5 +1,4 @@
 <nav class="bg-white shadow-sm sticky top-0 z-50">
-    <!-- Верхняя панель с контактами -->
     <div class="bg-gray-50 border-b">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-10 text-sm">
@@ -126,12 +125,10 @@
         </div>
     </div>
 
-    <!-- Мобильное меню -->
     <div v-if="appStore.mobileMenu"
         class="fixed inset-0 z-50 bg-white md:hidden transform transition-transform duration-200"
         style="translate-y: 0;">
         <div class="h-full flex flex-col">
-            <!-- Верхняя панель с поиском и кнопкой закрытия -->
             <div class="p-4 border-b flex items-center justify-between">
                 <div class="flex-1 mr-4">
                     <search-component type="mobile"></search-component>
@@ -141,7 +138,6 @@
                 </button>
             </div>
 
-            <!-- Навигационные ссылки -->
             <div class="flex-1 overflow-y-auto">
                 <nav class="px-4 py-6 space-y-4">
                     <a href="{{ route('main.about') }}"
@@ -183,7 +179,6 @@
                 </nav>
             </div>
 
-            <!-- Нижняя панель с контактами -->
             <div class="border-t p-4 space-y-2">
                 <div class="space-y-2">
                     @foreach ($company->phones as $phone)

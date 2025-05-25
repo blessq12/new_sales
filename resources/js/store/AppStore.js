@@ -1,22 +1,21 @@
-import { defineStore, acceptHMRUpdate } from 'pinia';
-import { useToast } from 'vue-toast-notification';
-import 'vue-toast-notification/dist/theme-sugar.css';
+import { acceptHMRUpdate, defineStore } from "pinia";
+import { useToast } from "vue-toast-notification";
+import "vue-toast-notification/dist/theme-sugar.css";
 const toast = useToast({
-    position: 'top-right',
+    position: "top-right",
     duration: 3000,
 });
 
-export const useAppStore = defineStore('app', {
+export const useAppStore = defineStore("app", {
     state: () => ({
-        // Модальные окна
         activeModal: null,
         modals: {
             callback: false,
-            review: false
+            review: false,
         },
         lastSearchQuery: null,
-        cookieConsent: localStorage.getItem('cookieConsent') === 'true',
-        mobileMenu: false
+        cookieConsent: localStorage.getItem("cookieConsent") === "true",
+        mobileMenu: false,
     }),
 
     actions: {
@@ -38,7 +37,7 @@ export const useAppStore = defineStore('app', {
         },
 
         closeAllModals() {
-            Object.keys(this.modals).forEach(key => {
+            Object.keys(this.modals).forEach((key) => {
                 this.modals[key] = false;
             });
             this.activeModal = null;
@@ -47,7 +46,7 @@ export const useAppStore = defineStore('app', {
         // Управление куки
         acceptCookies() {
             this.cookieConsent = true;
-            localStorage.setItem('cookieConsent', 'true');
+            localStorage.setItem("cookieConsent", "true");
         },
 
         // Проверка состояния модального окна
@@ -59,16 +58,19 @@ export const useAppStore = defineStore('app', {
         },
 
         async search(query) {
-            const response = await axios.get('/api/search', { params: { q: query } });
+            const response = await axios.get("/api/search", {
+                params: { q: query },
+            });
             return response.data;
-        }
+        },
     },
 
     getters: {
         currentModal: (state) => state.activeModal,
-        hasOpenModal: (state) => Object.values(state.modals).some(isOpen => isOpen),
-        hasCookieConsent: (state) => state.cookieConsent
-    }
+        hasOpenModal: (state) =>
+            Object.values(state.modals).some((isOpen) => isOpen),
+        hasCookieConsent: (state) => state.cookieConsent,
+    },
 });
 
 if (import.meta.hot) {
