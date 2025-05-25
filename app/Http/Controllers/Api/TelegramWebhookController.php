@@ -10,6 +10,9 @@ class TelegramWebhookController extends Controller
     public function webhook(Request $request)
     {
         $data = $request->all();
-        (new \App\Services\Telegram\TelegramMessageService())->sendMessage($data);
+        (new \App\Services\Telegram\TelegramMessageService())->sendMessage([
+            'chat_id' => $data['message']['chat']['id'],
+            'text' => $data['message']['text'],
+        ]);
     }
 }
