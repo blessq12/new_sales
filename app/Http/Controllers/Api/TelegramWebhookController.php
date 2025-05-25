@@ -23,7 +23,7 @@ class TelegramWebhookController extends Controller
     private $chatType;
     private $entities;
     private $media;
-    private $blacklistedChatIds = [123456, 789012];
+    private $blacklistedChatIds = [-1002449128308];
 
     public function webhookHandler(Request $request)
     {
@@ -48,22 +48,18 @@ class TelegramWebhookController extends Controller
         $this->entities = $data['message']['entities'] ?? null;
         $this->media = $this->parseMedia($data['message'] ?? []);
 
-        // Проверка на наличие chat_id
         if (!$this->chatId) {
             Log::error('Chat ID is null, skipping processing.', ['data' => $data]);
             return;
         }
 
-        // Проверка на чёрный список
         if (in_array($this->chatId, $this->blacklistedChatIds)) {
             Log::info('Chat ID in blacklist: ' . $this->chatId);
             return;
         }
 
-        // Сохранение данных в базу
         $this->storeChat();
 
-        // Обработка
         if ($this->callbackData) {
             $this->handleCallback($this->callbackData);
         } elseif ($this->inlineQuery) {
