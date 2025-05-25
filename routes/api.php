@@ -32,3 +32,7 @@ Route::controller(UserRequestController::class)->group(function () {
 Route::controller(\App\Http\Controllers\NotificationController::class)->prefix('notifications')->group(function () {
     Route::post('/send-parts-request', 'sendPartsRequest');
 });
+
+Route::controller(\App\Http\Controllers\Api\TelegramWebhookController::class)->prefix('telegram')->group(function () {
+    Route::post('/webhook', 'webhook');
+});
