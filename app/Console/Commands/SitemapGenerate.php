@@ -37,6 +37,7 @@ class SitemapGenerate extends Command
             (object)['route' => route('main.gallery'), 'lastmod' => date('Y-m-d'), 'changefreq' => 'monthly', 'priority' => '1.0'],
             (object)['route' => route('main.agreement'), 'lastmod' => date('Y-m-d'), 'changefreq' => 'monthly', 'priority' => '1.0'],
             (object)['route' => route('services'), 'lastmod' => date('Y-m-d'), 'changefreq' => 'monthly', 'priority' => '1.0'],
+            (object)['route' => route('services.price'), 'lastmod' => date('Y-m-d'), 'changefreq' => 'monthly', 'priority' => '1.0'],
         ];
 
         $services = \App\Models\Service::all();
