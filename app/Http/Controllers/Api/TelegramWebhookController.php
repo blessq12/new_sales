@@ -28,11 +28,7 @@ class TelegramWebhookController extends Controller
     public function webhookHandler(Request $request)
     {
         $data = $request->all();
-
-        // Логируем входящий вебхук для отладки
         Log::debug('Telegram Webhook Data: ', $data);
-
-        // Парсинг данных с проверкой
         $this->updateId = $data['update_id'] ?? null;
         $this->chatId = $this->extractChatId($data);
         $this->userId = $data['message']['from']['id'] ?? $data['callback_query']['from']['id'] ?? $data['inline_query']['from']['id'] ?? null;

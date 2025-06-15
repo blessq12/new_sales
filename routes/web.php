@@ -23,6 +23,8 @@ Route::controller(\App\Http\Controllers\ReviewController::class)->group(function
 
 Route::controller(\App\Http\Controllers\ServiceController::class)->group(function () {
     Route::get('/services', 'services')->name('services');
+    Route::get('/services/price', 'price')->name('services.price');
+    Route::get('/services/price/download', 'downloadPrice')->name('services.price.download');
     Route::get('/{category}/{slug}', 'show')->name('services.show');
     Route::get('/{category}', 'category')->name('services.category');
 });

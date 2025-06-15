@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Service;
 use App\Models\ServiceCategory;
 use App\Models\Company;
+use Mpdf\Mpdf;
 
 class ServiceController extends Controller
 {
@@ -57,5 +58,27 @@ class ServiceController extends Controller
             'category' => ServiceCategory::where('slug', $slug)->firstOrFail(),
             'categories' => ServiceCategory::all(),
         ]);
+    }
+
+    public function price()
+    {
+        return view('services.price', [
+            'categories' => ServiceCategory::all(),
+        ]);
+    }
+
+    public function downloadPrice()
+    {
+        $mpdf = new Mpdf();
+        $mpdf->WriteHTML(view('services.price.pdf', [
+            'categories' => ServiceCategory::all(),
+            'company' => Company::first(),
+        ])->render());
+
+        $pdfContent = $mpdf->Output('price.pdf', 'S');
+        return response($pdfContent)
+            ->header('Content-Type', 'application/pdf')
+            ->header('Content-Disposition', 'attachment; filename="Прайс-лист ООО Салес на ' . date('d.m.Y') . '.pdf"')
+            ->header('Content-Length', strlen($pdfContent));
     }
 }
