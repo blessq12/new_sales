@@ -16,14 +16,14 @@
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:title" content="@yield('title')">
     <meta property="og:description" content="@yield('description')">
-    <meta property="og:image" content="@yield('og_image', Storage::disk('assets')->url('images/banner.png'))">
+    <meta property="og:image" content="@yield('og_image', '/assets/images/banner.png')">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="{{ url()->current() }}">
     <meta property="twitter:title" content="@yield('title')">
     <meta property="twitter:description" content="@yield('description')">
-    <meta property="twitter:image" content="@yield('og_image', Storage::disk('assets')->url('images/banner.png'))">
+    <meta property="twitter:image" content="@yield('og_image', '/assets/images/banner.png')">
 
     <!-- Canonical URL -->
     <link rel="canonical" href="{{ url()->current() }}">

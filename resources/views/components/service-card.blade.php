@@ -2,7 +2,7 @@
     itemscope itemtype="https://schema.org/Service">
     <!-- Изображение с эффектом масштабирования при наведении -->
     <div class="aspect-w-16 aspect-h-9 overflow-hidden">
-        <img src="{{ Storage::disk('uploads')->url($service->image) }}" alt="{{ $service->name }}"
+        <img src="{{ '/uploads/' . $service->image }}" alt="{{ $service->name }}"
             class="h-48 w-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
             itemprop="image">
     </div>

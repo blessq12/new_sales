@@ -2,7 +2,7 @@
     itemscope itemtype="https://schema.org/Service">
     <!-- Изображение с эффектом масштабирования при наведении -->
     <div class="aspect-w-16 aspect-h-9 overflow-hidden">
-        <img src="{{ Storage::disk('uploads')->url($category->image) }}" alt="{{ $category->name }}"
+        <img src="{{ '/uploads/' . $category->image }}" alt="{{ $category->name }}"
             class="h-48 w-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
             itemprop="image">
     </div>
@@ -24,7 +24,8 @@
                 <span class="mr-1 text-sm text-gray-500 d-flex" itemprop="offers" itemscope
                     itemtype="https://schema.org/Offer">
                     <span class="text-sm text-gray-500 leading-none d-block me-2">Услуг в <br> категории:</span>
-                    <span class="text-2xl font-bold text-indigo-600" itemprop="price">{{ $category->services->count() }}</span>
+                    <span class="text-2xl font-bold text-indigo-600"
+                        itemprop="price">{{ $category->services->count() }}</span>
                 </span>
             </div>
             <a href="{{ route('services.category', $category->slug) }}"

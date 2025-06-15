@@ -7,8 +7,8 @@
     <div itemscope itemtype="https://schema.org/Service">
         <meta itemprop="name" content="{{ $service->name }}">
         <meta itemprop="description" content="{{ $service->description }}">
-        <meta itemprop="image" content="{{ Storage::disk('uploads')->url($service->image) }}">
-        <x-hero-banner :image="Storage::disk('uploads')->url($service->image)" :title="$service->name" :description="$service->description" :breadcrumbs="[
+        <meta itemprop="image" content="{{ '/uploads/' . $service->image }}">
+        <x-hero-banner :image="'/uploads/' . $service->image" :title="$service->name" :description="$service->description" :breadcrumbs="[
             ['title' => 'Услуги', 'url' => route('services')],
             ['title' => $category->name, 'url' => route('services.category', $category->slug)],
             [
@@ -105,8 +105,8 @@
                                     ]) }}"
                                         class="flex items-center gap-4">
                                         <li class="flex items-center gap-4">
-                                            <img src="{{ Storage::disk('uploads')->url($service->image) }}"
-                                                alt="{{ $service->name }}" class="w-16 h-16 rounded-full">
+                                            <img src="{{ '/uploads/' . $service->image }}" alt="{{ $service->name }}"
+                                                class="w-16 h-16 rounded-full">
                                             <div>
                                                 <h4 class="text-sm font-semibold leading-2 text-indigo-600">
                                                     {{ $service->name }}

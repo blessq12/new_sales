@@ -8,7 +8,7 @@
         @page {
             margin: 2cm 1.5cm;
         }
-        
+
         body {
             font-family: DejaVu Sans, sans-serif;
             font-size: 11pt;
@@ -65,7 +65,8 @@
             margin-bottom: 20px;
         }
 
-        th, td {
+        th,
+        td {
             padding: 6px 8px;
             text-align: left;
             border: 1px solid #000;
@@ -106,7 +107,7 @@
 <body>
     <div class="header">
         @if ($company->logo)
-            <img src="{{ Storage::disk('assets')->url('images/logo.png') }}" alt="{{ $company->name }}" class="logo">
+            <img src="{{ '/assets/images/logo.png' }}" alt="{{ $company->name }}" class="logo">
         @endif
         <h1>ПРАЙС-ЛИСТ</h1>
         <div>{{ $company->name ?: 'ООО "Салес"' }}</div>

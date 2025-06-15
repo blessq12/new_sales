@@ -38,7 +38,7 @@
         <div class="flex justify-between h-16">
             <div class="flex items-center">
                 <a href="{{ route('main.index') }}" class="flex-shrink-0 flex items-center">
-                    <img src="{{ Storage::disk('assets')->url('images/logo.png') }}" alt="Логотип" class="h-8 w-auto">
+                    <img src="assets/images/logo.png" alt="{{ $company->name }}" class="h-8 w-auto">
                     <div class="block">
                         <span
                             class="ml-2 text-xl font-bold text-gray-900 block leading-none">{{ $company->name }}</span>

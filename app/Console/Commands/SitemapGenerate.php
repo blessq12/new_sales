@@ -51,7 +51,7 @@ class SitemapGenerate extends Command
                 'slug' => $service->slug,
                 'category' => $service->category->slug
             ]), $service->updated_at, 'monthly', '0.8', [
-                ['loc' => Storage::disk('uploads')->url($service->image), 'title' => $service->name]
+                ['loc' => '/uploads/' . $service->image, 'title' => $service->name]
             ]);
         }
 

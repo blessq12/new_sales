@@ -7,8 +7,7 @@
 @section('content')
     <!-- Hero секция -->
     <div class="relative isolate overflow-hidden">
-        <img src="{{ Storage::disk('assets')->url('images/bg1.jpg') }}" alt="Background"
-            class="absolute inset-0 -z-10 h-full w-full object-cover">
+        <img src="assets/images/bg1.jpg" alt="Background" class="absolute inset-0 -z-10 h-full w-full object-cover">
         <div class="absolute inset-0 bg-gradient-to-r from-black/80 to-black/60 -z-10"></div>
 
         <!-- Декоративный элемент -->

@@ -137,10 +137,10 @@
                     <div
                         class="group relative overflow-hidden rounded-2xl bg-white shadow-md transition-all duration-300 hover:shadow-xl">
                         <div class="aspect-h-4 aspect-w-3 relative min-h-60"
-                            style="background-image: url('{{ Storage::disk('assets')->url('/images/docs/' . $file) }}'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+                            style="background-image: url('{{ '/assets/images/docs/' . $file }}'); background-size: cover; background-position: center; background-repeat: no-repeat;">
                             <div
                                 class="bg-black/10 absolute inset-0 flex items-center justify-center group-hover:bg-black/30 transition-all duration-300">
-                                <a href="{{ Storage::disk('assets')->url('/images/docs/' . $file) }}" target="_blank"
+                                <a href="{{ '/assets/images/docs/' . $file }}" target="_blank"
                                     class="rounded-full bg-white px-2 py-1 title-underline transform transition-all duration-300 group-hover:scale-150">
                                     <i class="mdi mdi-eye text-xl text-gray-900"></i>
                                 </a>
