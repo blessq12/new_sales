@@ -208,9 +208,10 @@ class TelegramWebhookController extends Controller
 
     private function handleAboutCompany()
     {
-        $socials = $this->company->socials->map(function ($social) {
-            return "📱 {$social->title}: {$social->url}";
-        })->implode("\n");
+        $socials = [];
+        foreach ($this->company->socials as $social) {
+            $socials[] = "📱 {$social['title']}: {$social['url']}";
+        }
 
         $response = [
             "ООО {$this->company->name} — лидер в сфере сантехнических услуг с 2000 года",
@@ -219,6 +220,9 @@ class TelegramWebhookController extends Controller
             "Мы в социальных сетях:",
             $socials,
         ];
+
+        $response = array_merge($response, $socials);
+
         (new \App\Services\Telegram\TelegramMessageService())->sendMessageToChat(
             $response,
             $this->chatId,
