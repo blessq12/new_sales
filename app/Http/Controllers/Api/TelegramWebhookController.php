@@ -26,14 +26,12 @@ class TelegramWebhookController extends Controller
     private $blacklistedChatIds = [-1002449128308];
 
     protected $keyboard = [
-        'inline_keyboard' => [
-            [
-                ['text' => 'О компании', 'callback_data' => 'about_company'],
-                ['text' => 'Контакты', 'callback_data' => 'contacts'],
-                ['text' => 'Услуги и цены', 'callback_data' => 'services_and_prices'],
-                ['text' => 'Оставить заявку', 'callback_data' => 'order'],
-            ]
-        ]
+        'keyboard' => [
+            [['text' => 'О компании'], ['text' => 'Контакты']],
+            [['text' => 'Услуги и цены'], ['text' => 'Оставить заявку']],
+        ],
+        'resize_keyboard' => true,
+        'one_time_keyboard' => false
     ];
 
     public function webhookHandler(Request $request)
