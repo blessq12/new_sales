@@ -52,10 +52,20 @@ class TelegramMessageService extends TelegramService
         ]);
     }
 
-    public function sendMessageToChat($message, $chatId)
+    public function sendMessageToChat($message, $chatId, $keyboard = null)
     {
-        $this->client->get('sendMessage?chat_id=' . $chatId . '&parse_mode=HTML', [
-            'json' => ['text' => $this->prepareMessage($message)]
+        $payload = [
+            'chat_id' => $chatId,
+            'text' => $this->prepareMessage($message),
+            'parse_mode' => 'HTML'
+        ];
+
+        if ($keyboard) {
+            $payload['reply_markup'] = $keyboard;
+        }
+
+        $this->client->post('sendMessage', [
+            'json' => $payload
         ]);
     }
 

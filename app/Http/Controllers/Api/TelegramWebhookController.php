@@ -25,6 +25,17 @@ class TelegramWebhookController extends Controller
     private $media;
     private $blacklistedChatIds = [-1002449128308];
 
+    protected $keyboard = [
+        'inline_keyboard' => [
+            [
+                ['text' => 'О компании', 'callback_data' => 'about_company'],
+                ['text' => 'Контакты', 'callback_data' => 'contacts'],
+                ['text' => 'Услуги и цены', 'callback_data' => 'services_and_prices'],
+                ['text' => 'Оставить заявку', 'callback_data' => 'order'],
+            ]
+        ]
+    ];
+
     public function webhookHandler(Request $request)
     {
         $data = $request->all();
@@ -136,7 +147,8 @@ class TelegramWebhookController extends Controller
     {
         (new \App\Services\Telegram\TelegramMessageService())->sendMessageToChat(
             ["Привет, {$this->userFirstName}! Чем могу помочь?"],
-            $this->chatId
+            $this->chatId,
+            $this->keyboard
         );
     }
 
