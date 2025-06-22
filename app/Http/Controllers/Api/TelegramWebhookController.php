@@ -291,7 +291,11 @@ class TelegramWebhookController extends Controller
 
     private function handleServicesAndPrices()
     {
-        $response = "Наши услуги: установка, ремонт, обслуживание сантехники. Вот наш прайс-лист!";
+        $response = [
+            "Скачай прайс-лист ниже чтобы ознакомиться с нашими услугами и ценами",
+            "",
+            "Прайс-лист актуален на " . date('d.m.Y'),
+        ];
 
         $filepath = $this->downloadPrice();
 
@@ -438,6 +442,9 @@ class TelegramWebhookController extends Controller
         ])->render());
 
         $pdfContent = $mpdf->Output('price.pdf', 'S');
-        return $pdfContent;
+        $filepath = storage_path('app/public/price.pdf');
+        file_put_contents($filepath, $pdfContent);
+
+        return $filepath;
     }
 }
