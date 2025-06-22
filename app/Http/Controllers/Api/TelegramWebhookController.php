@@ -218,7 +218,6 @@ class TelegramWebhookController extends Controller
             "Мы предоставляем качественный сервис по установке и ремонту сантехники.",
             "",
             "Мы в социальных сетях:",
-            $socials,
         ];
 
         $response = array_merge($response, $socials);
