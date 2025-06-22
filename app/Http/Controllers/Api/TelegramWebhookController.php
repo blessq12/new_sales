@@ -231,11 +231,34 @@ class TelegramWebhookController extends Controller
 
     private function handleContacts()
     {
+        $phones = [];
+
+        foreach ($this->company->phones as $phone) {
+            $phones[] = "📞 Телефон: {$phone}";
+        }
+
+        $emails = [];
+        foreach ($this->company->emails as $email) {
+            $emails[] = "📧 Email: {$email}";
+        }
+
+        $legals = [];
+        foreach ($this->company->legals as $legal) {
+            $legals[] = "📄 {$legal->name}: {$legal->inn} {$legal->kpp} {$legal->bank} {$legal->bik} {$legal->account_number} {$legal->correspondent_account}";
+        }
+
         $response = [
             "Связаться с нами, {$this->userFirstName}:",
-            "📞 Телефон: +7 (999) 123-45-67",
-            "📧 Email: info@salescompany.com",
-            "🌐 Сайт: www.salescompany.com"
+            "",
+            ...$phones,
+            "",
+            ...$emails,
+            "",
+            "🌐 Сайт: {$this->company->website}",
+            "",
+            "Данные организации:",
+            "",
+            ...$legals,
         ];
         (new \App\Services\Telegram\TelegramMessageService())->sendMessageToChat(
             $response,
