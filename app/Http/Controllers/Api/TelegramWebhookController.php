@@ -244,7 +244,14 @@ class TelegramWebhookController extends Controller
 
         $legals = [];
         foreach ($this->company->legals as $legal) {
-            $legals[] = "📄 {$legal->name}: {$legal->inn} {$legal->kpp} {$legal->bank} {$legal->bik} {$legal->account_number} {$legal->correspondent_account}";
+            $legals[] = "📄 {$legal->name}";
+            $legals[] = "📄 ИНН: {$legal->inn}";
+            $legals[] = "📄 КПП: {$legal->kpp}";
+            $legals[] = "📄 Банк: {$legal->bank}";
+            $legals[] = "📄 БИК: {$legal->bik}";
+            $legals[] = "📄 Номер счета: {$legal->account_number}";
+            $legals[] = "📄 Корр. счет: {$legal->correspondent_account}";
+            $legals[] = "";
         }
 
         $response = [
