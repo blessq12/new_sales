@@ -27,8 +27,10 @@ class TelegramWebhookController extends Controller
 
     protected $keyboard = [
         'keyboard' => [
-            [['text' => 'О компании'], ['text' => 'Контакты']],
-            [['text' => 'Услуги и цены'], ['text' => 'Оставить заявку']],
+            [['text' => 'О компании 📄'], ['text' => 'Контакты 📩']],
+            [['text' => 'Услуги и цены 💰'], ['text' => 'Оставить заявку 📝']],
+            [['text' => 'Выезд и стоимость 🚗'], ['text' => 'Зоны обслуживания 📍']],
+            ['text' => 'Grohe Сервис 🔧']
         ],
         'resize_keyboard' => true,
         'one_time_keyboard' => false
@@ -144,7 +146,7 @@ class TelegramWebhookController extends Controller
     private function handleStartCommand()
     {
         (new \App\Services\Telegram\TelegramMessageService())->sendMessageToChat(
-            ["Привет, {$this->userFirstName}! Чем могу помочь?"],
+            ["Привет, {$this->userFirstName}! Я бот компании. Выбери опцию на клавиатуре ниже."],
             $this->chatId,
             $this->keyboard
         );
@@ -153,19 +155,102 @@ class TelegramWebhookController extends Controller
     private function handleDefaultCommand()
     {
         (new \App\Services\Telegram\TelegramMessageService())->sendMessageToChat(
-            'Не знаю такой команды, попробуй /start.',
-            $this->chatId
+            "Не знаю такой команды, {$this->userFirstName}. Попробуй /start или выбери опцию на клавиатуре.",
+            $this->chatId,
+            $this->keyboard
         );
     }
 
     private function handleMessage($message)
     {
-        $response = $this->media
-            ? "Получил медиа, {$this->userFirstName}! Пока не знаю, что с этим делать."
-            : "Эй, {$this->userFirstName}, я пока не умею отвечать на обычные сообщения.";
+        if ($this->media) {
+            $response = "Получил медиа, {$this->userFirstName}! Пока не знаю, что с этим делать.";
+            (new \App\Services\Telegram\TelegramMessageService())->sendMessageToChat(
+                $response,
+                $this->chatId,
+                $this->keyboard
+            );
+            return;
+        }
+
+        switch ($message) {
+            case 'О компании 📄':
+                $this->handleAboutCompany();
+                break;
+            case 'Контакты 📩':
+                $this->handleContacts();
+                break;
+            case 'Услуги и цены 💰':
+                $this->handleServicesAndPrices();
+                break;
+            case 'Оставить заявку 📝':
+                $this->handleRequest();
+                break;
+            default:
+                $this->handleUnknownMessage();
+        }
+    }
+
+    private function handleAboutCompany()
+    {
+        $response = "Мы крутая компания, {$this->userFirstName}! Работаем с 2000 года, делаем всё для клиентов.";
         (new \App\Services\Telegram\TelegramMessageService())->sendMessageToChat(
             $response,
-            $this->chatId
+            $this->chatId,
+            $this->keyboard
+        );
+    }
+
+    private function handleContacts()
+    {
+        $response = "Связаться с нами: телефон +7 (999) 123-45-67, email info@company.com.";
+        (new \App\Services\Telegram\TelegramMessageService())->sendMessageToChat(
+            $response,
+            $this->chatId,
+            $this->keyboard
+        );
+    }
+
+    private function handleServicesAndPrices()
+    {
+        $response = "Услуги: разработка, дизайн, маркетинг. Вот наш прайс-лист!";
+        $filePath = storage_path('app/public/pricelist.pdf');
+
+        if (file_exists($filePath)) {
+            (new \App\Services\Telegram\TelegramMessageService())->sendPhoto(
+                $response,
+                $filePath,
+                null,
+                $this->chatId,
+                $this->keyboard
+            );
+        } else {
+            (new \App\Services\Telegram\TelegramMessageService())->sendMessageToChat(
+                "$response\nК сожалению, прайс-лист временно недоступен.",
+                $this->chatId,
+                $this->keyboard
+            );
+        }
+    }
+
+    private function handleRequest()
+    {
+        // Логика для обработки заявки, например, сохранение в БД
+        $response = "Опиши, что нужно, {$this->userFirstName}, и мы свяжемся! (Пока просто напиши, я не умею обрабатывать заявки.)";
+        (new \App\Services\Telegram\TelegramMessageService())->sendMessageToChat(
+            $response,
+            $this->chatId,
+            $this->keyboard
+        );
+    }
+
+    private function handleUnknownMessage()
+    {
+        $response = "Я не понимаю, о чём ты, {$this->userFirstName}. Используй кнопки на клавиатуре!";
+        (new \App\Services\Telegram\TelegramMessageService())->sendMessageToChat(
+            $response,
+            $this->chatId,
+            $this->keyboard
         );
     }
 
@@ -173,7 +258,8 @@ class TelegramWebhookController extends Controller
     {
         (new \App\Services\Telegram\TelegramMessageService())->sendMessageToChat(
             "Получен callback, {$this->userFirstName}: $callbackData",
-            $this->chatId
+            $this->chatId,
+            $this->keyboard
         );
     }
 
@@ -181,7 +267,8 @@ class TelegramWebhookController extends Controller
     {
         (new \App\Services\Telegram\TelegramMessageService())->sendMessageToChat(
             "Инлайн-запрос от {$this->userFirstName}: $query",
-            $this->chatId
+            $this->chatId,
+            $this->keyboard
         );
     }
 }
