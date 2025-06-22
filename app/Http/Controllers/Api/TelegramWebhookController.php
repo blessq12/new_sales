@@ -35,6 +35,12 @@ class TelegramWebhookController extends Controller
         'resize_keyboard' => true,
         'one_time_keyboard' => false
     ];
+    protected $company;
+
+    public function __construct()
+    {
+        $this->company = \App\Models\Company::first();
+    }
 
     public function webhookHandler(Request $request)
     {
@@ -186,6 +192,15 @@ class TelegramWebhookController extends Controller
             case 'Оставить заявку 📝':
                 $this->handleRequest();
                 break;
+            case 'Выезд и стоимость 🚗':
+                $this->handleServiceAndPrice();
+                break;
+            case 'Зоны обслуживания 📍':
+                $this->handleServiceArea();
+                break;
+            case 'Grohe Сервис 🔧':
+                $this->handleGroheService();
+                break;
             default:
                 $this->handleUnknownMessage();
         }
@@ -193,7 +208,17 @@ class TelegramWebhookController extends Controller
 
     private function handleAboutCompany()
     {
-        $response = "Мы крутая компания, {$this->userFirstName}! Работаем с 2000 года, делаем всё для клиентов.";
+        $socials = $this->company->socials->map(function ($social) {
+            return "📱 {$social->title}: {$social->url}";
+        })->implode("\n");
+
+        $response = [
+            "ООО {$this->company->name} — лидер в сфере сантехнических услуг с 2000 года",
+            "Мы предоставляем качественный сервис по установке и ремонту сантехники.",
+            "",
+            "Мы в социальных сетях:",
+            $socials,
+        ];
         (new \App\Services\Telegram\TelegramMessageService())->sendMessageToChat(
             $response,
             $this->chatId,
@@ -203,7 +228,12 @@ class TelegramWebhookController extends Controller
 
     private function handleContacts()
     {
-        $response = "Связаться с нами: телефон +7 (999) 123-45-67, email info@company.com.";
+        $response = [
+            "Связаться с нами, {$this->userFirstName}:",
+            "📞 Телефон: +7 (999) 123-45-67",
+            "📧 Email: info@salescompany.com",
+            "🌐 Сайт: www.salescompany.com"
+        ];
         (new \App\Services\Telegram\TelegramMessageService())->sendMessageToChat(
             $response,
             $this->chatId,
@@ -213,13 +243,14 @@ class TelegramWebhookController extends Controller
 
     private function handleServicesAndPrices()
     {
-        $response = "Услуги: разработка, дизайн, маркетинг. Вот наш прайс-лист!";
-        $filePath = storage_path('app/public/pricelist.pdf');
+        $response = "Наши услуги: установка, ремонт, обслуживание сантехники. Вот наш прайс-лист!";
 
-        if (file_exists($filePath)) {
-            (new \App\Services\Telegram\TelegramMessageService())->sendPhoto(
+        $filepath = $this->downloadPrice();
+
+        if (file_exists($filepath)) {
+            (new \App\Services\Telegram\TelegramMessageService())->sendDocument(
                 $response,
-                $filePath,
+                $filepath,
                 null,
                 $this->chatId,
                 $this->keyboard
@@ -235,8 +266,61 @@ class TelegramWebhookController extends Controller
 
     private function handleRequest()
     {
-        // Логика для обработки заявки, например, сохранение в БД
-        $response = "Опиши, что нужно, {$this->userFirstName}, и мы свяжемся! (Пока просто напиши, я не умею обрабатывать заявки.)";
+        $response = [
+            "Опиши, что нужно, {$this->userFirstName}, и мы свяжемся!",
+            "Например: адрес, тип услуги (установка, ремонт), удобное время.",
+            "(Пока я не сохраняю заявки, просто напиши для теста.)"
+        ];
+        (new \App\Services\Telegram\TelegramMessageService())->sendMessageToChat(
+            $response,
+            $this->chatId,
+            $this->keyboard
+        );
+    }
+
+    private function handleServiceAndPrice()
+    {
+        $response = [
+            "Выезд и стоимость",
+            "Выезд для оказания профессиональной помощи осуществляется в следующих условиях:",
+            "Выезд в Томск/Северск:",
+            "Стоимость составляет от 3000 рублей. Специалисты прибудут в назначенное время с необходимым оборудованием для выполнения работы.",
+            "Выезд за город:",
+            "Стоимость составляет 100 рублей за каждый километр. Выезд возможен на любое расстояние в соответствии с потребностями клиента.",
+            "Для получения дополнительной информации и записи на выезд, пожалуйста, свяжитесь с нами."
+        ];
+        (new \App\Services\Telegram\TelegramMessageService())->sendMessageToChat(
+            $response,
+            $this->chatId,
+            $this->keyboard
+        );
+    }
+
+    private function handleServiceArea()
+    {
+        $response = [
+            "Районы города:",
+            "Кировский район, Октябрьский район, Ленинский район, Академгородок, Советский район",
+            "",
+            "Пригороды:",
+            "Тимирязево, Зональный, Черная речка, Кисловка, Дзержинское, Зоркальцево, Слобода Вольная, Тахтамышево, Кафтанчиково, Лучаново, Березкино, Поросино, Светлый, Копылово, Рассвет, Воронино, Корнилово, Мирный, Кузовлево, Сосновый Бор, Спутник, Новомихайловка, Лязгино, Трубачево, Позднеево, Ключи, Апрель, Просторный, Лоскутово, Богашёво, Синий Утёс, Коларово"
+        ];
+        (new \App\Services\Telegram\TelegramMessageService())->sendMessageToChat(
+            $response,
+            $this->chatId,
+            $this->keyboard
+        );
+    }
+
+    private function handleGroheService()
+    {
+        $response = [
+            "Grohe Сервис 🔧, {$this->userFirstName}:",
+            "Мы — официальный сервисный центр Grohe.",
+            "Услуги: установка, ремонт, замена картриджей и смесителей.",
+            "Гарантия на работы: 1 год.",
+            "Запчасти: только оригинальные."
+        ];
         (new \App\Services\Telegram\TelegramMessageService())->sendMessageToChat(
             $response,
             $this->chatId,
@@ -270,5 +354,17 @@ class TelegramWebhookController extends Controller
             $this->chatId,
             $this->keyboard
         );
+    }
+
+    private function downloadPrice()
+    {
+        $mpdf = new \Mpdf\Mpdf();
+        $mpdf->WriteHTML(view('services.price.pdf', [
+            'categories' => \App\Models\ServiceCategory::all(),
+            'company' => \App\Models\Company::first(),
+        ])->render());
+
+        $pdfContent = $mpdf->Output('price.pdf', 'S');
+        return $pdfContent;
     }
 }
