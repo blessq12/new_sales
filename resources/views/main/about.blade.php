@@ -196,8 +196,10 @@
                         работы.</p>
                 </div>
                 <div class="rounded-2xl bg-white p-8 shadow-md">
-                    <h3 class="text-lg font-semibold leading-8 tracking-tight text-gray-900">Бесплатный выезд</h3>
-                    <p class="mt-4 text-base leading-7 text-gray-600">Выезд мастера бесплатный в пределах города.</p>
+                    <h3 class="text-lg font-semibold leading-8 tracking-tight text-gray-900">Оперативный аварийный выезд
+                    </h3>
+                    <p class="mt-4 text-base leading-7 text-gray-600">Выезд мастера в пределах города в течение 1 часа.
+                    </p>
                 </div>
                 <div class="rounded-2xl bg-white p-8 shadow-md">
                     <h3 class="text-lg font-semibold leading-8 tracking-tight text-gray-900">Гибкие скидки</h3>
