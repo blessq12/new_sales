@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use App\Services\SiteMapService;
+use App\Services\Yandex\YandexFeedService;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -15,6 +16,10 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton('sitemap', function ($app) {
             return new SiteMapService();
         });
+        $this->app->singleton('yandex-feed', function ($app) {
+            return new YandexFeedService();
+        });
+        $this->app->alias('yandex-feed', YandexFeedService::class);
     }
 
     /**

@@ -5,6 +5,7 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\Api\SearchController;
 use App\Http\Controllers\Api\ReviewController;
 use App\Http\Controllers\Api\UserRequestController;
+use App\Facades\YandexFeed;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -36,3 +37,12 @@ Route::controller(\App\Http\Controllers\NotificationController::class)->prefix('
 Route::controller(\App\Http\Controllers\Api\TelegramWebhookController::class)->prefix('telegram')->group(function () {
     Route::post('/webhook', 'webhookHandler');
 });
+
+
+Route::get('/yandex-feed', function () {
+    return YandexFeed::generateFeed();
+});
+
+Route::get('/feeds/yandex/services', function () {
+    return app(App\Services\Yandex\YandexFeedService::class)->generateFeed();
+})->name('feeds.yandex.services');
