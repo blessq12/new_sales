@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\SearchController;
 use App\Http\Controllers\Api\ReviewController;
 use App\Http\Controllers\Api\UserRequestController;
 use App\Facades\YandexFeed;
+use App\Models\QrCode;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -38,11 +39,12 @@ Route::controller(\App\Http\Controllers\Api\TelegramWebhookController::class)->p
     Route::post('/webhook', 'webhookHandler');
 });
 
+Route::get('/get-link/{id}', function ($id) {
+    $qrCode = QrCode::findOrFail($id);
 
-Route::get('/yandex-feed', function () {
-    return YandexFeed::generateFeed();
+    if (!$qrCode->status) {
+        abort(404);
+    }
+
+    return redirect($qrCode->qr_link);
 });
-
-Route::get('/feeds/yandex/services', function () {
-    return app(App\Services\Yandex\YandexFeedService::class)->generateFeed();
-})->name('feeds.yandex.services');

@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use App\Services\SiteMapService;
+use App\Services\QrCodeService;
 use App\Services\Yandex\YandexFeedService;
 
 class AppServiceProvider extends ServiceProvider
@@ -13,13 +14,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton('sitemap', function ($app) {
-            return new SiteMapService();
-        });
-        $this->app->singleton('yandex-feed', function ($app) {
-            return new YandexFeedService();
-        });
-        $this->app->alias('yandex-feed', YandexFeedService::class);
+        $this->app->singleton(SiteMapService::class, fn() => new SiteMapService());
+        $this->app->singleton(YandexFeedService::class, fn() => new YandexFeedService());
+        $this->app->singleton(QrCodeService::class, fn() => new QrCodeService());
     }
 
     /**
