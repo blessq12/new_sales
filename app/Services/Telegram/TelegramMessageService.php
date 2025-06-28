@@ -30,41 +30,57 @@ class TelegramMessageService extends TelegramService
         ]);
     }
 
-    public function sendPhoto($message, $filePath, ?string $thread = null)
+    public function sendDocument($message, $filePath, ?string $thread = null, $chatId = null, $keyboard = null)
     {
-        $url = 'sendPhoto?chat_id=' . $this->chatId . '&parse_mode=HTML';
+        $url = 'sendDocument?chat_id=' . ($chatId ?? $this->chatId) . '&parse_mode=HTML';
         if ($thread && $this->getThread($thread)) {
             $url .= '&message_thread_id=' . $this->getThread($thread);
         }
 
-        $this->client->post($url, [
-            'multipart' => [
-                [
-                    'name' => 'photo',
-                    'contents' => fopen($filePath, 'r'),
-                    'filename' => basename($filePath)
-                ],
-                [
-                    'name' => 'caption',
-                    'contents' => $this->prepareMessage($message)
-                ]
+        $payload = [
+            [
+                'name' => 'document',
+                'contents' => fopen($filePath, 'r'),
+                'filename' => basename($filePath)
+            ],
+            [
+                'name' => 'caption',
+                'contents' => $this->prepareMessage($message)
             ]
+        ];
+
+        if ($keyboard) {
+            $payload[] = [
+                'name' => 'reply_markup',
+                'contents' => json_encode($keyboard)
+            ];
+        }
+
+        $this->client->post($url, [
+            'multipart' => $payload
         ]);
     }
 
-    public function sendMessageToChat($message, $chatId)
+    public function sendMessageToChat($message, $chatId, $keyboard = null)
     {
-        $this->client->get('sendMessage?chat_id=' . $chatId . '&parse_mode=HTML', [
-            'json' => ['text' => $this->prepareMessage($message)]
+        $payload = [
+            'chat_id' => $chatId,
+            'text' => $this->prepareMessage($message),
+            'parse_mode' => 'HTML'
+        ];
+
+        if ($keyboard) {
+            $payload['reply_markup'] = $keyboard;
+        }
+
+        $this->client->post('sendMessage', [
+            'json' => $payload
         ]);
     }
 
     public function getThread($thread)
     {
-        if (isset($this->threads[$thread])) {
-            return $this->threads[$thread];
-        }
-        return null;
+        return $this->threads[$thread] ?? null;
     }
 
     protected function prepareMessage($message)

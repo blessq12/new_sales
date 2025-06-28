@@ -5,6 +5,8 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\Api\SearchController;
 use App\Http\Controllers\Api\ReviewController;
 use App\Http\Controllers\Api\UserRequestController;
+use App\Facades\YandexFeed;
+use App\Models\QrCode;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -35,4 +37,14 @@ Route::controller(\App\Http\Controllers\NotificationController::class)->prefix('
 
 Route::controller(\App\Http\Controllers\Api\TelegramWebhookController::class)->prefix('telegram')->group(function () {
     Route::post('/webhook', 'webhookHandler');
+});
+
+Route::get('/get-link/{id}', function ($id) {
+    $qrCode = QrCode::findOrFail($id);
+
+    if (!$qrCode->status) {
+        abort(404);
+    }
+
+    return redirect($qrCode->qr_link);
 });

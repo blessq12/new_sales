@@ -8,6 +8,7 @@
     "require": {
         "php": "^8.2",
         "encore/laravel-admin": "^1.8",
+        "endroid/qr-code": "^6.0",
         "intervention/image": "^2",
         "laravel/framework": "^11.31",
         "laravel/sanctum": "^4.0",

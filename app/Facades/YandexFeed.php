@@ -2,13 +2,13 @@
 
 namespace App\Facades;
 
+use App\Services\Yandex\YandexFeedService;
 use Illuminate\Support\Facades\Facade;
-use App\Services\SiteMapService;
 
-class SiteMap extends Facade
+class YandexFeed extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return SiteMapService::class;
+        return YandexFeedService::class;
     }
 }

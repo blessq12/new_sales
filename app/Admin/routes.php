@@ -19,4 +19,5 @@ Route::group([
     $router->resource('reviews', ReviewController::class);
     $router->resource('galleries', GalleryController::class);
     $router->resource('service-categories', ServiceCategoryController::class);
+    $router->resource('qr-codes', QrCodeController::class);
 });

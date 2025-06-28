@@ -2,13 +2,13 @@
 
 namespace App\Facades;
 
+use App\Services\QrCodeService;
 use Illuminate\Support\Facades\Facade;
-use App\Services\SiteMapService;
 
-class SiteMap extends Facade
+class QrCodeFacade extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return SiteMapService::class;
+        return QrCodeService::class;
     }
 }

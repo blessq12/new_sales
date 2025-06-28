@@ -4,6 +4,7 @@
 use Illuminate\Support\Facades\Schedule;
 
 Schedule::command('app:sitemap-generate')->dailyAt('00:00');
+Schedule::command('app:yandex-feed')->dailyAt('00:00');
 Schedule::call(function () {
     $data = (new \App\Services\Yandex\YandexMetrikaService())->getMetrics('sales');
     if (isset($data->error)) {
