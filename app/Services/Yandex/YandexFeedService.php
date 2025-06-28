@@ -5,6 +5,7 @@ namespace App\Services\Yandex;
 use App\Models\ServiceCategory;
 use App\Models\Service;
 use App\Models\Company;
+use Illuminate\Support\Facades\Log;
 use SimpleXMLElement;
 
 class YandexFeedService
@@ -30,8 +31,10 @@ class YandexFeedService
 
         // Добавляем категории
         $categories = $shop->addChild('categories');
-        $dbCategories = ServiceCategory::where('status', 'active')->get();
+        $dbCategories = ServiceCategory::where('status', true)->get();
+        Log::info('Categories count: ' . $dbCategories->count());
         foreach ($dbCategories as $category) {
+            Log::info('Adding category: ' . $category->name . ' (ID: ' . $category->id . ')');
             $cat = $categories->addChild('category', htmlspecialchars($category->name));
             $cat->addAttribute('id', $category->id);
             if ($category->parent_id) {
@@ -51,7 +54,9 @@ class YandexFeedService
         // Добавляем услуги
         $offers = $shop->addChild('offers');
         $services = Service::where('status', 'active')->with('category')->get();
+        Log::info('Services count: ' . $services->count());
         foreach ($services as $service) {
+            Log::info('Adding service: ' . $service->name . ' (ID: ' . $service->id . ', Category ID: ' . $service->category_id . ')');
             $offer = $offers->addChild('offer');
             $offer->addAttribute('id', $service->id);
             $offer->addChild('name', htmlspecialchars($service->name));
