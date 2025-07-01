@@ -56,7 +56,7 @@ class GenerateExcel extends Command
 
             // Добавляем категории
             $categories = $shop->addChild('categories');
-            $dbCategories = ServiceCategory::where('status', 'active')->get();
+            $dbCategories = ServiceCategory::where('status', true)->get();
             foreach ($dbCategories as $category) {
                 $cat = $categories->addChild('category', $this->cleanText($category->name));
                 $cat->addAttribute('id', $category->id);
@@ -72,7 +72,6 @@ class GenerateExcel extends Command
                 $offer = $offers->addChild('offer');
                 $offer->addAttribute('id', $service->id);
 
-                // Название и описание
                 $offer->addChild('name', $this->cleanText($service->name));
                 if ($service->description) {
                     $offer->addChild('description', $this->cleanText($service->description));
@@ -86,7 +85,7 @@ class GenerateExcel extends Command
                     $offer->addChild('price', '0');
                 }
                 $offer->addChild('currencyId', 'RUR');
-                $offer->addChild('categoryId', $service->category_id);
+                $offer->addChild('categoryId', $service->category->id);
 
                 // Изображение
                 if ($service->image) {
