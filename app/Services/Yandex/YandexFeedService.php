@@ -117,12 +117,14 @@ class YandexFeedService
             $offer->addChild('adult', 'false');
             $offer->addChild('expiry', 'P5Y');
 
-            $this->addParam($offer, 'Рейтинг', $service->rating ?? '5.0');
-            $this->addParam($offer, 'Число отзывов', $service->reviews()->count());
-            $this->addParam($offer, 'Годы опыта', 17);
+            // Обязательные параметры для Яндекс.Маркета
+            $this->addParam($offer, 'Рейтинг',  5.0);
+            $this->addParam($offer, 'Число отзывов', (string)$service->reviews()->count());
+            $this->addParam($offer, 'Годы опыта', '17');
             $this->addParam($offer, 'Регион', $company->city ?? 'Томск');
-            $this->addParam($offer, 'Конверсия', '1.0');
+            $this->addParam($offer, 'Конверсия', '0.7');
 
+            // Дополнительные параметры
             $this->addParam($offer, 'Выезд на дом', $service->home_service ?? 'да');
             $this->addParam($offer, 'Работа по договору', 'да');
             $this->addParam($offer, 'Наличный расчет', 'да');
