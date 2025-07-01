@@ -67,7 +67,7 @@ class YandexFeedService
             }
         }
 
-        // Добавляем сеты (группы услуг)
+        // Добавляем сеты
         $sets = $shop->addChild('sets');
         foreach ($dbCategories as $category) {
             $set = $sets->addChild('set');
@@ -83,26 +83,25 @@ class YandexFeedService
             $offer = $offers->addChild('offer');
             $offer->addAttribute('id', $service->id);
 
-            // Основные поля
-            $offer->addChild('name', $this->cleanText($service->name));
+            // Имя исполнителя вместо имени компании
+            $offer->addChild('name', $this->cleanText($service->executor_name ?? $company->name));
+
+            // Формируем URL с параметрами как в шаблоне
             $offer->addChild('url', route('services.show', [
                 'category' => $service->category->slug,
                 'slug' => $service->slug
             ]));
 
             // Цена и валюта
-            if ($service->price > 0) {
-                $offer->addChild('price', $service->price);
-                if ($service->price_type) {
-                    $offer->addChild('sales_notes', 'за ' . $this->cleanText($service->price_type));
-                }
-            } else {
-                $offer->addChild('price', '0');
-                $offer->addChild('sales_notes', 'цена договорная');
+            $price = $offer->addChild('price', $service->price > 0 ? $service->price : '0');
+            if ($service->price > 0 && $service->is_variable_price) {
+                $price->addAttribute('from', 'true');
             }
+            $offer->addChild('sales_notes', $service->price > 0 ? 'за ' . $this->cleanText($service->price_type ?? 'услугу') : 'цена договорная');
             $offer->addChild('currencyId', 'RUR');
             $offer->addChild('categoryId', $service->category_id);
 
+            // Поддержка нескольких сетов, если нужно
             $offer->addChild('set-ids', 's' . $service->category_id);
 
             if ($service->image) {
@@ -117,18 +116,22 @@ class YandexFeedService
             $offer->addChild('adult', 'false');
             $offer->addChild('expiry', 'P5Y');
 
-            // Обязательные параметры для Яндекс.Маркета
-            $this->addParam($offer, 'Рейтинг',  5.0);
-            $this->addParam($offer, 'Число отзывов', (string)$service->reviews()->count());
-            $this->addParam($offer, 'Годы опыта', '17');
-            $this->addParam($offer, 'Регион', $company->city ?? 'Томск');
-            $this->addParam($offer, 'Конверсия', '0.7');
+            // Обязательные параметры
+            $this->addParam($offer, 'рейтинг', $service->rating ?? '5.0');
+            $this->addParam($offer, 'число отзывов', (string)$service->reviews()->count());
+            $this->addParam($offer, 'годы опыта', $service->experience_years ?? '17');
+            $this->addParam($offer, 'регион', $company->city ?? 'Томск');
+            $this->addParam($offer, 'конверсия', $service->conversion ?? '0.7');
 
-            // Дополнительные параметры
-            $this->addParam($offer, 'Выезд на дом', $service->home_service ?? 'да');
-            $this->addParam($offer, 'Работа по договору', 'да');
-            $this->addParam($offer, 'Наличный расчет', 'да');
-            $this->addParam($offer, 'Безналичный расчет', 'да');
+            // Необязательные параметры
+            $this->addParam($offer, 'выезд на дом', $service->home_service ?? 'да');
+            $this->addParam($offer, 'работа по адресу', $service->on_site_service ?? 'нет');
+            $this->addParam($offer, 'выполняется удаленно', $service->remote_service ?? 'нет');
+            $this->addParam($offer, 'проживание на объекте', $service->live_on_site ?? 'нет');
+            $this->addParam($offer, 'бригада', $service->has_team ?? 'да');
+            $this->addParam($offer, 'работа по договору', 'да');
+            $this->addParam($offer, 'наличный расчет', 'да');
+            $this->addParam($offer, 'безналичный расчет', 'да');
         }
 
         if (!file_exists(public_path('feeds'))) {
