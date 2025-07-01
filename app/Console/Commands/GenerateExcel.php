@@ -7,17 +7,28 @@ use App\Models\Service;
 use App\Models\ServiceCategory;
 use App\Models\Company;
 use SimpleXMLElement;
+use DOMDocument;
 
 class GenerateExcel extends Command
 {
     protected $signature = 'yandex:services';
     protected $description = 'Генерация YML файла с услугами для выгрузки в Яндекс.Бизнес';
 
-    protected function addCData(SimpleXMLElement $element, string $text): void
+    protected function formatXML(SimpleXMLElement $xml): string
     {
-        $node = dom_import_simplexml($element);
-        $no = $node->ownerDocument;
-        $node->appendChild($no->createCDATASection($text));
+        $dom = new DOMDocument('1.0');
+        $dom->preserveWhiteSpace = false;
+        $dom->formatOutput = true;
+        $dom->loadXML($xml->asXML());
+        return $dom->saveXML();
+    }
+
+    protected function cleanText(string $text): string
+    {
+        $text = strip_tags($text);
+        $text = preg_replace('/\s+/', ' ', $text);
+        $text = html_entity_decode($text, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        return htmlspecialchars(trim($text), ENT_QUOTES | ENT_XML1, 'UTF-8');
     }
 
     public function handle()
@@ -27,7 +38,7 @@ class GenerateExcel extends Command
         try {
             $path = public_path('xlsx/');
             if (!file_exists($path)) {
-                $this->info('Создание директории feeds');
+                $this->info('Создание директории xlsx');
                 mkdir($path, 0777, true);
             }
 
@@ -37,47 +48,60 @@ class GenerateExcel extends Command
                 unlink($path);
             }
 
-            $company = Company::first();
-            $xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><yml_catalog/>');
-            $shop = $xml->addChild('shop');
-            $this->info('Добавление категорий...');
+            $xml = new SimpleXMLElement(file_get_contents(public_path('feeds/services.xml')));
+            $shop = $xml->shop;
+
+            unset($shop->categories);
+            unset($shop->offers);
+
+            // Добавляем категории
             $categories = $shop->addChild('categories');
             $dbCategories = ServiceCategory::where('status', 'active')->get();
             foreach ($dbCategories as $category) {
-                $cat = $categories->addChild('category', htmlspecialchars($category->name));
+                $cat = $categories->addChild('category', $this->cleanText($category->name));
                 $cat->addAttribute('id', $category->id);
+                if ($category->parent_id) {
+                    $cat->addAttribute('parentId', $category->parent_id);
+                }
             }
-            $this->info('Добавление услуг...');
+
+            // Добавляем услуги
             $offers = $shop->addChild('offers');
             $services = Service::where('status', 'active')->with('category')->get();
             foreach ($services as $service) {
                 $offer = $offers->addChild('offer');
                 $offer->addAttribute('id', $service->id);
-                $offer->addChild('name', htmlspecialchars($service->name));
-                $offer->addChild('vendor', $company->name ?? 'Company Name');
-                $offer->addChild('price', $service->price);
+
+                // Название и описание
+                $offer->addChild('name', $this->cleanText($service->name));
+                if ($service->description) {
+                    $offer->addChild('description', $this->cleanText($service->description));
+                }
+                $offer->addChild('shortDescription', $this->cleanText(mb_substr($service->description, 0, 200) . '...'));
+
+                // Цена
+                if ($service->price > 0) {
+                    $offer->addChild('price', $service->price);
+                } else {
+                    $offer->addChild('price', '0');
+                }
                 $offer->addChild('currencyId', 'RUR');
                 $offer->addChild('categoryId', $service->category_id);
 
+                // Изображение
                 if ($service->image) {
                     $offer->addChild('picture', config('app.url') . '/uploads/' . $service->image);
                 }
 
-                if ($service->description) {
-                    $description = $offer->addChild('description');
-                    $this->addCData($description, strip_tags($service->description));
-
-                    $shortDescription = $offer->addChild('shortDescription');
-                    $this->addCData($shortDescription, mb_substr(strip_tags($service->description), 0, 100));
-                }
-
+                // URL
                 $offer->addChild('url', route('services.show', [
                     'category' => $service->category->slug,
                     'slug' => $service->slug
                 ]));
             }
 
-            $xml->asXML($path);
+            // Форматируем и сохраняем XML в файл
+            file_put_contents($path, $this->formatXML($xml));
             $this->info('YML файл успешно сгенерирован в ' . $path);
         } catch (\Exception $e) {
             $this->error('Ошибка при генерации файла: ' . $e->getMessage());
