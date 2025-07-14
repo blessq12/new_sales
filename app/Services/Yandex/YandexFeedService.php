@@ -5,25 +5,52 @@ namespace App\Services\Yandex;
 use App\Models\ServiceCategory;
 use App\Models\Service;
 use App\Models\Company;
-use Illuminate\Support\Facades\Log;
+
 use SimpleXMLElement;
+use DOMDocument;
 
 class YandexFeedService
 {
+    protected function formatXML(SimpleXMLElement $xml): string
+    {
+        $dom = new DOMDocument('1.0');
+        $dom->preserveWhiteSpace = false;
+        $dom->formatOutput = true;
+        $dom->loadXML($xml->asXML());
+        return $dom->saveXML();
+    }
+
+    protected function addCData(SimpleXMLElement $element, string $text): void
+    {
+        $node = dom_import_simplexml($element);
+        $no = $node->ownerDocument;
+        $node->appendChild($no->createCDATASection($text));
+    }
+
+    protected function cleanText(string $text): string
+    {
+        $text = strip_tags($text);
+        $text = preg_replace('/\s+/', ' ', $text);
+        $text = html_entity_decode($text, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        return htmlspecialchars(trim($text), ENT_QUOTES | ENT_XML1, 'UTF-8');
+    }
+
     public function generateFeed()
     {
         $company = Company::first();
 
-        $xml = new SimpleXMLElement('<?xml version="1.0" encoding="utf-8" standalone="yes"?><yml_catalog/>');
+        $xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><yml_catalog/>');
         $xml->addAttribute('date', date('Y-m-d H:i'));
 
         $shop = $xml->addChild('shop');
-        $shop->addChild('name', $company->name ?? 'Название компании');
-        $shop->addChild('company', $company->legals()->first()->name ?? 'ООО Компания');
-        $shop->addChild('url', config('app.url'));
-        $shop->addChild('email', $company->emails[0] ?? 'info@company.ru');
 
-        // Добавляем валюту
+        // Основная информация о компании
+        $shop->addChild('name', $this->cleanText($company->name));
+        $shop->addChild('company', $this->cleanText($company->legal_name ?? $company->name));
+        $shop->addChild('url', config('app.url'));
+        $shop->addChild('email', $company->email);
+
+        // Валюта
         $currencies = $shop->addChild('currencies');
         $currency = $currencies->addChild('currency');
         $currency->addAttribute('id', 'RUR');
@@ -31,55 +58,97 @@ class YandexFeedService
 
         // Добавляем категории
         $categories = $shop->addChild('categories');
-        $dbCategories = ServiceCategory::where('status', true)->get();
-        Log::info('Categories count: ' . $dbCategories->count());
+        $dbCategories = ServiceCategory::where('status', 'active')->get();
         foreach ($dbCategories as $category) {
-            Log::info('Adding category: ' . $category->name . ' (ID: ' . $category->id . ')');
-            $cat = $categories->addChild('category', htmlspecialchars($category->name));
+            $cat = $categories->addChild('category', $this->cleanText($category->name));
             $cat->addAttribute('id', $category->id);
             if ($category->parent_id) {
                 $cat->addAttribute('parentId', $category->parent_id);
             }
         }
 
-        // Добавляем сеты (группы услуг)
+        // Добавляем сеты
         $sets = $shop->addChild('sets');
         foreach ($dbCategories as $category) {
             $set = $sets->addChild('set');
             $set->addAttribute('id', 's' . $category->id);
-            $set->addChild('name', htmlspecialchars($category->name));
-            $set->addChild('url', route('services.category', $category->slug));
+            $set->addChild('name', $this->cleanText($category->name . ' в ' . ($company->city ?? 'вашем городе')));
+            $set->addChild('url', route('services.category', ['category' => $category->slug]));
         }
 
         // Добавляем услуги
         $offers = $shop->addChild('offers');
         $services = Service::where('status', 'active')->with('category')->get();
-        Log::info('Services count: ' . $services->count());
         foreach ($services as $service) {
-            Log::info('Adding service: ' . $service->name . ' (ID: ' . $service->id . ', Category ID: ' . $service->category_id . ')');
             $offer = $offers->addChild('offer');
             $offer->addAttribute('id', $service->id);
-            $offer->addChild('name', htmlspecialchars($service->name));
-            $offer->addChild('url', route('services.show', ['category' => $service->category->slug, 'slug' => $service->slug]));
-            $offer->addChild('price', $service->price);
+
+            // Имя исполнителя вместо имени компании
+            $offer->addChild('name', $this->cleanText($service->executor_name ?? $company->name));
+
+            // Формируем URL с параметрами как в шаблоне
+            $offer->addChild('url', route('services.show', [
+                'category' => $service->category->slug,
+                'slug' => $service->slug
+            ]));
+
+            // Цена и валюта
+            $price = $offer->addChild('price', $service->price > 0 ? $service->price : '0');
+            if ($service->price > 0 && $service->is_variable_price) {
+                $price->addAttribute('from', 'true');
+            }
+            $offer->addChild('sales_notes', $service->price > 0 ? 'за ' . $this->cleanText($service->price_type ?? 'услугу') : 'цена договорная');
             $offer->addChild('currencyId', 'RUR');
             $offer->addChild('categoryId', $service->category_id);
+
+            // Поддержка нескольких сетов, если нужно
             $offer->addChild('set-ids', 's' . $service->category_id);
-            if ($service->description) {
-                $offer->addChild('description', htmlspecialchars(strip_tags($service->description)));
+
+            if ($service->image) {
+                $offer->addChild('picture', config('app.url') . '/uploads/' . $service->image);
             }
+
+            if ($service->description) {
+                $description = $offer->addChild('description');
+                $this->addCData($description, $this->cleanText($service->description));
+            }
+
+            $offer->addChild('adult', 'false');
+            $offer->addChild('expiry', 'P5Y');
+
+            // Обязательные параметры
+            $this->addParam($offer, 'рейтинг', $service->rating ?? '5.0');
+            $this->addParam($offer, 'число отзывов', (string)$service->reviews()->count());
+            $this->addParam($offer, 'годы опыта', $service->experience_years ?? '17');
+            $this->addParam($offer, 'регион', $company->city ?? 'Томск');
+            $this->addParam($offer, 'конверсия', $service->conversion ?? '0.7');
+
+            // Необязательные параметры
+            $this->addParam($offer, 'выезд на дом', $service->home_service ?? 'да');
+            $this->addParam($offer, 'работа по адресу', $service->on_site_service ?? 'нет');
+            $this->addParam($offer, 'выполняется удаленно', $service->remote_service ?? 'нет');
+            $this->addParam($offer, 'проживание на объекте', $service->live_on_site ?? 'нет');
+            $this->addParam($offer, 'бригада', $service->has_team ?? 'да');
+            $this->addParam($offer, 'работа по договору', 'да');
+            $this->addParam($offer, 'наличный расчет', 'да');
+            $this->addParam($offer, 'безналичный расчет', 'да');
         }
 
-        // Создаём директорию если её нет
         if (!file_exists(public_path('feeds'))) {
             mkdir(public_path('feeds'), 0755, true);
         }
 
-        // Сохраняем XML в файл
-        $xml->asXML(public_path('feeds/services.xml'));
+        file_put_contents(
+            public_path('feeds/services.xml'),
+            $this->formatXML($xml)
+        );
 
-        return response($xml->asXML(), 200)
-            ->header('Content-Type', 'application/xml')
-            ->header('Cache-Control', 'no-cache');
+        return true;
+    }
+
+    protected function addParam(SimpleXMLElement $offer, string $name, string $value): void
+    {
+        $param = $offer->addChild('param', $this->cleanText($value));
+        $param->addAttribute('name', $name);
     }
 }

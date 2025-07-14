@@ -2,6 +2,7 @@
 /node_modules
 # /public/build
 /public/feeds
+/public/xlsx
 /public/hot
 /public/sitemap.xml
 /public/storage
