@@ -9,20 +9,28 @@
     <meta name="googlebot" content="noindex, nofollow">
     <meta name="yandex" content="noindex, nofollow">
     <meta name="google" content="notranslate">
-    <meta name="keywords" content="@yield('keywords')">
-    <meta name="description" content="@yield('description')">
+    <meta name="keywords"
+        content="@yield('keywords'), сантехник Томск, сантехник Северск, сантехнические работы Томская область">
+    <meta name="description" content="@yield('description') Работаем в Томске, Северске и пригороде в радиусе 300 км.">
+    <!-- Гео-теги -->
+    <meta name="geo.region" content="RU-TOM">
+    <meta name="geo.placename" content="Томск, Северск">
+    <meta name="geo.position" content="56.5010;84.9924">
+    <meta name="ICBM" content="56.5010, 84.9924">
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ url()->current() }}">
-    <meta property="og:title" content="@yield('title')">
-    <meta property="og:description" content="@yield('description')">
+    <meta property="og:title" content="@yield('title') | Томск, Северск">
+    <meta property="og:description"
+        content="@yield('description') Работаем в Томске, Северске и пригороде в радиусе 300 км.">
     <meta property="og:image" content="@yield('og_image', '/assets/images/banner.png')">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="{{ url()->current() }}">
-    <meta property="twitter:title" content="@yield('title')">
-    <meta property="twitter:description" content="@yield('description')">
+    <meta property="twitter:title" content="@yield('title') | Томск, Северск">
+    <meta property="twitter:description"
+        content="@yield('description') Работаем в Томске, Северске и пригороде в радиусе 300 км.">
     <meta property="twitter:image" content="@yield('og_image', '/assets/images/banner.png')">
 
     <!-- Canonical URL -->
@@ -32,8 +40,8 @@
         <x-includes.analytics />
     @endif
 
-    <title>@yield('title', config('app.name'))</title>
-    <meta name="description" content="@yield('description')">
+    <title>@yield('title', config('app.name')) | Томск, Северск</title>
+    <meta name="description" content="@yield('description') Работаем в Томске, Северске и пригороде в радиусе 300 км.">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -46,6 +54,14 @@
 <x-json-ld type="WebPage" />
 
 <body class="font-sans antialiased">
+    <!-- Зона обслуживания -->
+    <div class="bg-indigo-600">
+        <div class="max-w-7xl mx-auto py-2 px-4 sm:px-6 lg:px-8">
+            <p class="text-sm text-center font-medium text-white">
+                Работаем в Томске, Северске и пригороде в радиусе 300 км
+            </p>
+        </div>
+    </div>
     <div id="app">
         <x-header />
         <main>

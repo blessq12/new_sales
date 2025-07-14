@@ -28,3 +28,13 @@ Route::controller(\App\Http\Controllers\ServiceController::class)->group(functio
     Route::get('/{category}/{slug}', 'show')->name('services.show');
     Route::get('/{category}', 'category')->name('services.category');
 });
+
+
+Route::controller(\App\Http\Controllers\NewsController::class)
+    ->prefix('news')
+    ->name('news.')
+    ->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/category/{slug}', 'category')->name('category');
+        Route::get('/{slug}', 'show')->name('show');
+    });
