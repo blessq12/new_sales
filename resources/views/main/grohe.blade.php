@@ -22,7 +22,7 @@
                     <p class="text-xl text-gray-600 mb-8">Выезжаем в любое время суток по всей Томской области. Работаем с
                         установками любой сложности!</p>
                     <div class="flex justify-center gap-4">
-                        <a href="#contact"
+                        <a href="tel:{{ $company->phones[0] }}"
                             class="inline-flex w-full items-center justify-center px-3 py-1 bg-indigo-600 text-white rounded-xl font-semibold hover:bg-indigo-700 transition-colors duration-200">
                             <span class="mdi mdi-phone text-2xl mr-2"></span>
                             Вызвать мастера
