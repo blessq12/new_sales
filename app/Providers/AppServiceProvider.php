@@ -17,6 +17,10 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(SiteMapService::class, fn() => new SiteMapService());
         $this->app->singleton(YandexFeedService::class, fn() => new YandexFeedService());
         $this->app->singleton(QrCodeService::class, fn() => new QrCodeService());
+
+        \Illuminate\Support\Facades\View::composer('layouts.main', function ($view) {
+            $view->with('company', \App\Models\Company::first());
+        });
     }
 
     /**

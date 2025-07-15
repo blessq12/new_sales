@@ -20,7 +20,7 @@
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ url()->current() }}">
-    <meta property="og:title" content="@yield('title') | Томск, Северск">
+    <meta property="og:title" content='@yield('title') | ООО "Салес" тел. {{ $company->phone }} | Томск, Северск'>
     <meta property="og:description"
         content="@yield('description') Работаем в Томске, Северске и пригороде в радиусе 300 км.">
     <meta property="og:image" content="@yield('og_image', '/assets/images/banner.png')">
@@ -28,7 +28,8 @@
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="{{ url()->current() }}">
-    <meta property="twitter:title" content="@yield('title') | Томск, Северск">
+    <meta property="twitter:title"
+        content='@yield('title') | ООО "Салес" тел. {{ $company->phone }} | Томск, Северск'>
     <meta property="twitter:description"
         content="@yield('description') Работаем в Томске, Северске и пригороде в радиусе 300 км.">
     <meta property="twitter:image" content="@yield('og_image', '/assets/images/banner.png')">
@@ -40,7 +41,7 @@
         <x-includes.analytics />
     @endif
 
-    <title>@yield('title', config('app.name')) | Томск, Северск</title>
+    <title>@yield('title', config('app.name')) | ООО "Салес" тел. {{ $company->phones[0] }} | Томск, Северск</title>
     <meta name="description" content="@yield('description') Работаем в Томске, Северске и пригороде в радиусе 300 км.">
 
     <!-- Fonts -->
