@@ -38,7 +38,7 @@
         <div class="flex justify-between h-16">
             <div class="flex items-center">
                 <a href="{{ route('main.index') }}" class="flex-shrink-0 flex items-center">
-                    <img src="assets/images/logo.png" alt="{{ $company->name }}" class="h-8 w-auto">
+                    <img src="/assets/images/logo.png" alt="{{ $company->name }}" class="h-8 w-auto">
                     <div class="block">
                         <span
                             class="ml-2 text-xl font-bold text-gray-900 block leading-none">{{ $company->name }}</span>
@@ -99,6 +99,10 @@
                 <a href="{{ route('reviews.index') }}"
                     class="text-gray-700 hover:text-indigo-600 px-2 py-1 rounded-md text-sm font-medium transition-colors duration-200 ">
                     Отзывы
+                </a>
+                <a href="{{ route('news.index') }}"
+                    class="text-gray-700 hover:text-indigo-600 px-2 py-1 rounded-md text-sm font-medium transition-colors duration-200 ">
+                    Новости
                 </a>
                 <a href="{{ route('main.contacts') }}"
                     class="text-gray-700 hover:text-indigo-600 px-2 py-1 rounded-md text-sm font-medium transition-colors duration-200">

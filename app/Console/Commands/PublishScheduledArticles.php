@@ -31,6 +31,12 @@ class PublishScheduledArticles extends Command
                 'published_at' => now()->setTimezone('Asia/Tomsk'),
             ]);
             $article->save();
+
+            (new \App\Services\Telegram\TelegramMessageService())->sendMessage([
+                '👤 Новая статья: ' . $article->title . "\n",
+                'Ссылка: ' . route('news.show', $article->slug),
+            ], 'event');
+
             $this->info("Опубликована статья: {$article->title}");
             Log::info("Опубликована запланированная статья: {$article->title}");
         }

@@ -38,7 +38,11 @@ class ArticleCategory extends Model
         return $this->hasMany(Article::class, 'category_id');
     }
 
-    // Получить все дочерние категории рекурсивно
+    public function getArticlesCountAttribute()
+    {
+        return $this->articles()->count();
+    }
+
     public function allChildren()
     {
         return $this->children()->with('allChildren');

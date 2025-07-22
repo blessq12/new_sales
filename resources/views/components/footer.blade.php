@@ -4,7 +4,7 @@
             <!-- О компании -->
             <div class="space-y-4">
                 <div class="flex items-center">
-                    <img src="assets/images/logo.png" alt="{{ $company->name }}" class="h-8 w-auto">
+                    <img src="/assets/images/logo.png" alt="{{ $company->name }}" class="h-8 w-auto">
                     <div class="block">
                         <span class="ml-2 text-xl font-bold text-white block leading-none">{{ $company->name }}</span>
                         <span class="ml-2 text-sm text-gray-400 block leading-none">работаем с 2009 года</span>

@@ -22,6 +22,7 @@ use App\Models\QrCode;
 
 Route::get('/services', [ServiceController::class, 'list']);
 Route::get('/search', [SearchController::class, 'search']);
+Route::get('/search/news', [SearchController::class, 'searchNews']);
 Route::controller(ReviewController::class)->prefix('reviews')->group(function () {
     Route::post('/store', 'store');
 });

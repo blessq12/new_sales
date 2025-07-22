@@ -21,14 +21,6 @@ Route::controller(\App\Http\Controllers\ReviewController::class)->group(function
     Route::get('/reviews', 'index')->name('reviews.index');
 });
 
-Route::controller(\App\Http\Controllers\ServiceController::class)->group(function () {
-    Route::get('/services', 'services')->name('services');
-    Route::get('/services/price', 'price')->name('services.price');
-    Route::get('/services/price/download', 'downloadPrice')->name('services.price.download');
-    Route::get('/{category}/{slug}', 'show')->name('services.show');
-    Route::get('/{category}', 'category')->name('services.category');
-});
-
 
 Route::controller(\App\Http\Controllers\NewsController::class)
     ->prefix('news')
@@ -38,3 +30,12 @@ Route::controller(\App\Http\Controllers\NewsController::class)
         Route::get('/category/{slug}', 'category')->name('category');
         Route::get('/{slug}', 'show')->name('show');
     });
+
+
+Route::controller(\App\Http\Controllers\ServiceController::class)->group(function () {
+    Route::get('/services', 'services')->name('services');
+    Route::get('/services/price', 'price')->name('services.price');
+    Route::get('/services/price/download', 'downloadPrice')->name('services.price.download');
+    Route::get('/{category}/{slug}', 'show')->name('services.show');
+    Route::get('/{category}', 'category')->name('services.category');
+});

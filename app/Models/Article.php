@@ -80,4 +80,8 @@ class Article extends Model
     {
         return $query->orderBy('published_at', 'desc');
     }
+    public function suggestedServices()
+    {
+        return Service::whereIn('id', $this->suggested_services_ids ?? []);
+    }
 }
