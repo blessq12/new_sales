@@ -190,6 +190,10 @@
                         class="block px-4 py-3 text-lg font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition-colors duration-200">
                         Отзывы
                     </a>
+                    <a href="{{ route('news.index') }}"
+                        class="block px-4 py-3 text-lg font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition-colors duration-200">
+                        Новости
+                    </a>
                 </nav>
             </div>
 
