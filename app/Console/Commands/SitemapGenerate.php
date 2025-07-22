@@ -38,9 +38,12 @@ class SitemapGenerate extends Command
             (object)['route' => route('main.agreement'), 'lastmod' => date('Y-m-d'), 'changefreq' => 'monthly', 'priority' => '1.0'],
             (object)['route' => route('services'), 'lastmod' => date('Y-m-d'), 'changefreq' => 'monthly', 'priority' => '1.0'],
             (object)['route' => route('services.price'), 'lastmod' => date('Y-m-d'), 'changefreq' => 'monthly', 'priority' => '1.0'],
+            (object)['route' => route('news.index'), 'lastmod' => date('Y-m-d'), 'changefreq' => 'daily', 'priority' => '0.9'],
         ];
 
         $services = \App\Models\Service::all();
+        $articles = \App\Models\Article::active()->get();
+        $articleCategories = \App\Models\ArticleCategory::where('is_active', true)->get();
 
         foreach ($routes as $route) {
             SiteMap::addUrl($route->route, $route->lastmod, $route->changefreq, $route->priority, []);
@@ -55,7 +58,35 @@ class SitemapGenerate extends Command
             ]);
         }
 
+        // Добавляем категории новостей
+        foreach ($articleCategories as $category) {
+            SiteMap::addUrl(route('news.category', [
+                'slug' => $category->slug
+            ]), $category->updated_at, 'weekly', '0.7', []);
+        }
+
+        // Добавляем статьи
+        foreach ($articles as $article) {
+            $images = [];
+            if ($article->cover_image) {
+                $images[] = ['loc' => '/uploads/' . $article->cover_image, 'title' => $article->title];
+            }
+
+            SiteMap::addUrl(route('news.show', [
+                'slug' => $article->slug
+            ]), $article->published_at, 'weekly', '0.6', $images);
+        }
+
         $result = SiteMap::generate();
-        \Log::info('Sitemap generated');
+        $this->info('Sitemap generated');
+        (new \App\Services\Telegram\TelegramMessageService())->sendMessage([
+            '🗂️ Сгенерирован сайтмап',
+            "",
+            'Количество услуг: ' . $services->count(),
+            'Количество статей: ' . $articles->count(),
+            'Количество категорий статей: ' . $articleCategories->count(),
+            "",
+            '🔗 Ссылка: ' . env('APP_URL') . '/sitemap.xml',
+        ], 'event');
     }
 }
