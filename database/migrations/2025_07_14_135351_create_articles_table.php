@@ -24,7 +24,9 @@ return new class extends Migration
                 ->on('article_categories')
                 ->onDelete('cascade');
             $table->integer('views_count')->default(0);
-            $table->boolean('is_active')->default(true);
+            $table->boolean('is_active')->default(false);
+            $table->boolean('is_scheduled')->default(false);
+            $table->timestamp('scheduled_at')->nullable();
             $table->timestamp('published_at')->nullable();
             $table->timestamps();
             $table->softDeletes();

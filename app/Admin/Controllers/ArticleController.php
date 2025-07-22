@@ -18,18 +18,44 @@ class ArticleController extends AdminController
         $grid = new Grid(new Article());
 
         $grid->column('id', __('ID'))->sortable();
+        $grid->column('is_active', 'Активна')->switch([
+            0 => 'danger',
+            1 => 'success'
+        ]);
+        $grid->column('published', 'Опубликовано')
+            ->display(function ($value) {
+                return $value ? 'Да' : 'Нет';
+            })
+            ->label([
+                0 => 'danger',
+                1 => 'success'
+            ]);
+
+        $grid->column('is_scheduled', 'Тип публикации')->display(function ($value) {
+            return $value ? 'Запланированная' : 'Обычная';
+        })->label([
+            0 => 'success',
+            1 => 'info'
+        ]);
         $grid->column('title', 'Заголовок');
-        $grid->column('slug', 'URL');
         $grid->column('category.name', 'Категория');
-        $grid->column('views_count', 'Просмотры')->sortable();
-        $grid->column('is_active', 'Активна')->switch();
-        $grid->column('published_at', 'Опубликовано')->sortable();
-        $grid->column('created_at', 'Создано')->sortable();
+        $grid->column('suggested_services_ids', 'Связанные услуги')
+            ->display(function ($ids) {
+                if (!$ids) return '';
+                $services = \App\Models\Service::whereIn('id', $ids)->pluck('name')->toArray();
+                return implode(', ', $services);
+            });
+        $grid->column('scheduled_at', 'Запланирована на')
+            ->display(fn($value) => $value ? \Carbon\Carbon::parse($value)->setTimezone('Asia/Tomsk')->format('d.m.Y H:i') : null)
+            ->sortable();
+        $grid->column('created_at', 'Создано')->sortable()
+            ->display(fn($value) => \Carbon\Carbon::parse($value)->setTimezone('Asia/Tomsk')->format('d.m.Y H:i'));
 
         $grid->filter(function ($filter) {
             $filter->like('title', 'Заголовок');
             $filter->equal('category_id', 'Категория')->select(ArticleCategory::pluck('name', 'id'));
             $filter->equal('is_active', 'Активна')->select([0 => 'Нет', 1 => 'Да']);
+            $filter->between('scheduled_at', 'Запланирована на')->datetime();
         });
 
         return $grid;
@@ -38,17 +64,72 @@ class ArticleController extends AdminController
     protected function form()
     {
         $form = new Form(new Article());
-
-        $form->text('title', 'Заголовок')->required();
-        $form->text('slug', 'URL')->required();
-        $form->image('cover_image', 'Обложка')->move('articles/covers');
-        $form->textarea('short_description', 'Краткое описание')->required();
-        $form->textarea('content', 'Содержание')->required();
         $form->select('category_id', 'Категория')
             ->options(ArticleCategory::pluck('name', 'id'))
             ->required();
+
+        $form->radioButton('is_scheduled', 'Тип публикации')
+            ->options([
+                0 => 'Обычная публикация',
+                1 => 'Запланированная публикация',
+            ])
+            ->when(1, function ($form) {
+                $form->datetime('scheduled_at', 'Запланировать публикацию на')
+                    ->help('Статья будет автоматически опубликована в указанное время');
+            })
+            ->default(0);
+
+        $form->text('slug', 'URL')->readonly()->help('URL будет автоматически генерироваться из названия');
+        $form->text('title', 'Заголовок')->required();
+
+        $form->image('cover_image', 'Обложка')
+            ->uniqueName()
+            ->move('articles/covers')
+            ->resize(1024, null, function ($constraint) {
+                $constraint->aspectRatio();
+            })
+            ->encode('webp', 80)
+            ->required();
+        $form->textarea('short_description', 'Краткое описание')->required();
+        $form->textarea('content', __('Контент'))->setElementClass('editor-mce form-control content');
+
+        $form->multipleSelect('suggested_services_ids', 'Связанные услуги')
+            ->options(\App\Models\Service::pluck('name', 'id'))
+            ->help('Выберите услуги, которые будут рекомендованы в статье');
+
         $form->switch('is_active', 'Активна')->default(1);
-        $form->datetime('published_at', 'Дата публикации')->default(date('Y-m-d H:i:s'));
+
+        $form->saving(function (Form $form) {
+            if (!$form->slug) {
+                $form->slug = \Illuminate\Support\Str::slug($form->title);
+            }
+        });
+
+        $form->saved(function (Form $form) {
+            $model = $form->model();
+
+            // Для новой или обычной публикации
+            if (!$model->is_scheduled) {
+                $model->scheduled_at = null;
+                $model->published_at = now()->setTimezone('Asia/Tomsk');
+                $model->save();
+            }
+
+            // Для отложенной публикации с наступившей датой
+            if ($model->is_scheduled && $model->scheduled_at && $model->scheduled_at <= now()) {
+                $model->is_active = true;
+                $model->published_at = now()->setTimezone('Asia/Tomsk');
+                $model->scheduled_at = null;
+                $model->is_scheduled = false;
+                $model->save();
+            }
+
+            // Если статья стала неактивной
+            if (!$model->is_active && $model->getOriginal('is_active')) {
+                $model->published_at = null;
+                $model->save();
+            }
+        });
 
         return $form;
     }

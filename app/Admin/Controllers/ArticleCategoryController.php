@@ -7,6 +7,7 @@ use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
+use Illuminate\Support\Str;
 
 class ArticleCategoryController extends AdminController
 {
@@ -32,14 +33,18 @@ class ArticleCategoryController extends AdminController
         $form = new Form(new ArticleCategory());
 
         $form->text('name', 'Название')->required();
-        $form->text('slug', 'URL')->required();
+        $form->text('slug', 'URL')->readonly()->help('URL будет автоматически генерироваться из названия');
         $form->textarea('description', 'Описание');
         $form->select('parent_id', 'Родительская категория')
             ->options(ArticleCategory::where('id', '!=', $form->model()->id)
                 ->pluck('name', 'id'))
-            ->nullable();
+            ->default(null);
         $form->number('sort_order', 'Порядок сортировки')->default(0);
         $form->switch('is_active', 'Активна')->default(1);
+
+        $form->saving(function (Form $form) {
+            $form->slug = \Illuminate\Support\Str::slug($form->name);
+        });
 
         return $form;
     }
