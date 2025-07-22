@@ -112,10 +112,9 @@
                 </div>
             </div>
 
-            <!-- Сайдбар -->
             <aside class="lg:col-span-4 mt-12 lg:mt-0">
                 <div class="sticky top-8 space-y-8">
-                    <!-- Категории -->
+
                     <div class="rounded-2xl bg-white p-8 shadow-lg border border-gray-100">
                         <h3 class="text-xl font-bold text-gray-900 mb-6">
                             <span class="inline-flex items-center">

@@ -40,6 +40,11 @@ class Article extends Model
         parent::boot();
 
         static::saving(function ($article) {
+            // Если статья была запланирована, а теперь нет
+            if ($article->getOriginal('is_scheduled') && !$article->is_scheduled) {
+                $article->published = true;
+                $article->published_at = now();
+            }
 
             if (!$article->is_active && $article->getOriginal('is_active')) {
                 $article->published_at = null;
@@ -65,6 +70,7 @@ class Article extends Model
     public function scopeActive($query)
     {
         return $query->where('is_active', true)
+            ->where('published', true)
             ->whereNotNull('published_at')
             ->where('published_at', '<=', now());
     }

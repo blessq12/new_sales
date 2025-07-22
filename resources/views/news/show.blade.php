@@ -55,13 +55,13 @@
                         <div class="flex flex-wrap gap-4">
                             <a href="https://vk.com/share.php?url={{ urlencode(request()->url()) }}" target="_blank"
                                 rel="noopener"
-                                class="inline-flex items-center rounded-xl bg-[#0077FF] px-6 py-3 text-sm font-semibold text-gray-900 shadow-sm hover:bg-opacity-90 transition-all duration-200">
+                                class="inline-flex items-center rounded-xl bg-[#0077FF] px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-opacity-90 transition-all duration-200">
                                 <span class="mdi mdi-vk mr-2 text-lg"></span>
                                 ВКонтакте
                             </a>
                             <a href="https://t.me/share/url?url={{ urlencode(request()->url()) }}&text={{ urlencode($article->title) }}"
                                 target="_blank" rel="noopener"
-                                class="inline-flex items-center rounded-xl bg-[#26A5E4] px-6 py-3 text-sm font-semibold text-gray-900 shadow-sm hover:bg-opacity-90 transition-all duration-200">
+                                class="inline-flex items-center rounded-xl bg-[#26A5E4] px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-opacity-90 transition-all duration-200">
                                 <span class="mdi mdi-telegram mr-2 text-lg"></span>
                                 Telegram
                             </a>

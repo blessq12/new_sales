@@ -13,13 +13,11 @@ class NewsController extends Controller
      */
     public function index()
     {
-        // Получаем топ-новость (последняя активная)
         $featuredArticle = Article::with('category')
             ->active()
             ->latest()
             ->first();
 
-        // Получаем свежие новости (исключая топ-новость)
         $latestArticles = Article::with('category')
             ->active()
             ->where('id', '!=', $featuredArticle?->id)
@@ -27,7 +25,6 @@ class NewsController extends Controller
             ->limit(5)
             ->get();
 
-        // Получаем популярные новости за неделю
         $trendingArticles = Article::with('category')
             ->active()
             ->where('created_at', '>=', now()->subWeek())
@@ -35,7 +32,6 @@ class NewsController extends Controller
             ->limit(4)
             ->get();
 
-        // Получаем категории для фильтра
         $categories = ArticleCategory::where('is_active', true)
             ->whereNull('parent_id')
             ->with('children')
@@ -53,7 +49,6 @@ class NewsController extends Controller
             ->where('is_active', true)
             ->firstOrFail();
 
-        // Получаем ID всех подкатегорий
         $categoryIds = [$category->id];
         $children = $category->allChildren()->get();
         foreach ($children as $child) {
@@ -99,10 +94,8 @@ class NewsController extends Controller
             ->active()
             ->firstOrFail();
 
-        // Увеличиваем счетчик просмотров
         $article->increment('views_count');
 
-        // Получаем похожие статьи из той же категории
         $relatedArticles = Article::where('category_id', $article->category_id)
             ->where('id', '!=', $article->id)
             ->active()
@@ -110,7 +103,6 @@ class NewsController extends Controller
             ->limit(5)
             ->get();
 
-        // Получаем релевантные услуги
         $suggestedServices = $article->suggestedServices()->get();
 
         return view('news.show', compact('article', 'relatedArticles', 'suggestedServices'));

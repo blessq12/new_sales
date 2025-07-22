@@ -40,7 +40,7 @@ class ArticleCategory extends Model
 
     public function getArticlesCountAttribute()
     {
-        return $this->articles()->count();
+        return $this->articles()->active()->count();
     }
 
     public function allChildren()
