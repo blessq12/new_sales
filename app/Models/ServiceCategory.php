@@ -12,7 +12,12 @@ class ServiceCategory extends Model
         'image',
         'description',
         'status',
-        'order'
+        'order',
+        'keywords'
+    ];
+
+    protected $casts = [
+        'keywords' => 'array'
     ];
 
     public function getRouteKeyName()

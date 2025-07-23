@@ -2,6 +2,7 @@
 
 
 use Illuminate\Support\Facades\Schedule;
+use Illuminate\Support\Facades\Log;
 
 Schedule::command('app:sitemap-generate')->dailyAt('00:00');
 Schedule::command('app:yandex-feed')->dailyAt('00:00');
@@ -16,7 +17,7 @@ Schedule::call(function () {
             '🚨 Ошибка при получении данных из Яндекса: ',
             '```' . $data->error . '```',
         ], 'error');
-        \Log::error($data->error);
+        Log::error($data->error);
     } else {
         (new \App\Services\Telegram\TelegramMessageService())->sendMessage(
             [
