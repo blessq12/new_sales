@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\TelegramChat;
+use App\Services\Telegram\TelegramChatFlowService;
 use Illuminate\Support\Facades\Log;
 
 class TelegramWebhookController extends Controller
@@ -30,7 +31,7 @@ class TelegramWebhookController extends Controller
             [['text' => 'О компании 📄']],
             [['text' => 'Контакты 📩']],
             [['text' => 'Услуги и цены 💰']],
-            // [['text' => 'Оставить заявку 📝']],
+            [['text' => 'Оставить заявку 📝']],
             [['text' => 'Выезд и стоимость 🚗']],
             [['text' => 'Зоны обслуживания 📍']],
             [['text' => 'Grohe Сервис 🔧']]
@@ -39,6 +40,8 @@ class TelegramWebhookController extends Controller
         'one_time_keyboard' => false
     ];
     protected $company;
+    protected $chat;
+    protected $flowService;
 
     public function __construct()
     {
@@ -75,6 +78,7 @@ class TelegramWebhookController extends Controller
         }
 
         $this->storeChat();
+        $this->initializeServices();
 
         if ($this->callbackData) {
             $this->handleCallback($this->callbackData);
@@ -84,6 +88,14 @@ class TelegramWebhookController extends Controller
             $this->handleCommand($this->messageText);
         } elseif ($this->messageText || $this->media) {
             $this->handleMessage($this->messageText);
+        }
+    }
+
+    private function initializeServices()
+    {
+        $this->chat = TelegramChat::where('chat_id', $this->chatId)->first();
+        if ($this->chat) {
+            $this->flowService = new TelegramChatFlowService($this->chat);
         }
     }
 
@@ -127,14 +139,7 @@ class TelegramWebhookController extends Controller
         } catch (\Exception $e) {
             Log::error('Failed to store chat: ' . $e->getMessage(), [
                 'chat_id' => $this->chatId,
-                'user_id' => $this->userId,
-                'data' => [
-                    'first_name' => $this->userFirstName,
-                    'last_name' => $this->userLastName,
-                    'username' => $this->username,
-                    'chat_type' => $this->chatType,
-                    'last_message' => $this->messageText
-                ]
+                'user_id' => $this->userId
             ]);
         }
     }
@@ -184,6 +189,12 @@ class TelegramWebhookController extends Controller
 
     private function handleMessage($message)
     {
+        // Если у чата есть активное состояние флоу и это состояние contact_info
+        if ($this->chat && $this->chat->flow_state === 'contact_info') {
+            $this->flowService->handleContactInfo($message);
+            return;
+        }
+
         if ($this->media) {
             $response = "Получил медиа, {$this->userFirstName}! Пока не знаю, что с этим делать.";
             (new \App\Services\Telegram\TelegramMessageService())->sendMessageToChat(
@@ -205,7 +216,7 @@ class TelegramWebhookController extends Controller
                 $this->handleServicesAndPrices();
                 break;
             case 'Оставить заявку 📝':
-                $this->handleRequest();
+                $this->flowService->startServiceFlow();
                 break;
             case 'Выезд и стоимость 🚗':
                 $this->handleServiceAndPrice();
@@ -419,8 +430,29 @@ class TelegramWebhookController extends Controller
 
     private function handleCallback($callbackData)
     {
+        // Если это кнопка возврата
+        if (str_starts_with($callbackData, 'back_')) {
+            switch ($callbackData) {
+                case 'back_categories':
+                    $this->flowService->startServiceFlow();
+                    break;
+                case 'back_services':
+                    $flowData = json_decode($this->chat->flow_data, true);
+                    $this->flowService->handleCategorySelection($flowData['category_id']);
+                    break;
+            }
+            return;
+        }
+
+        // Обработка остальных callback'ов через сервис
+        if ($this->chat && $this->chat->flow_state) {
+            $this->flowService->processCallback($callbackData);
+            return;
+        }
+
+        // Если не обработано выше, отправляем дефолтный ответ
         (new \App\Services\Telegram\TelegramMessageService())->sendMessageToChat(
-            "Получен callback, {$this->userFirstName}: $callbackData",
+            "Получен неизвестный callback: $callbackData",
             $this->chatId,
             $this->keyboard
         );
