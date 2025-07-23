@@ -121,9 +121,10 @@ class TelegramWebhookController extends Controller
     private function storeChat()
     {
         try {
-            TelegramChat::updateOrCreate(
+            $this->chat = TelegramChat::updateOrCreate(
                 ['chat_id' => $this->chatId],
                 [
+                    'chat_id' => $this->chatId, // Добавляем chat_id в данные создания
                     'user_id' => $this->userId,
                     'first_name' => $this->userFirstName,
                     'last_name' => $this->userLastName,
@@ -136,10 +137,17 @@ class TelegramWebhookController extends Controller
                     'updated_at' => now()
                 ]
             );
+
+            // Инициализируем сервис сразу после создания чата
+            if ($this->chat) {
+                $this->flowService = new TelegramChatFlowService($this->chat);
+            }
         } catch (\Exception $e) {
             Log::error('Failed to store chat: ' . $e->getMessage(), [
                 'chat_id' => $this->chatId,
-                'user_id' => $this->userId
+                'user_id' => $this->userId,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
             ]);
         }
     }
