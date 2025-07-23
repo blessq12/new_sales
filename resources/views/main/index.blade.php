@@ -186,6 +186,60 @@
         </div>
     </section>
 
+    <!-- Новости -->
+    <section class="py-24 bg-gray-50">
+        <div class="mx-auto max-w-7xl px-6 lg:px-8">
+            <div class="mx-auto max-w-2xl lg:text-center">
+                <h2 class="text-base font-semibold leading-7 text-indigo-600">Новости и статьи</h2>
+                <p class="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+                    Последние новости
+                </p>
+                <p class="mt-6 text-lg leading-8 text-gray-600">
+                    Следите за нашими новостями и полезными статьями о сантехнике
+                </p>
+            </div>
+
+            <div class="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+                @foreach ($latestArticles as $article)
+                    <article class="flex flex-col items-start">
+                        <div class="relative w-full">
+                            <img src="/uploads/{{ $article->cover_image }}" alt="{{ $article->title }}"
+                                class="aspect-[16/9] w-full rounded-2xl bg-gray-100 object-cover sm:aspect-[2/1] lg:aspect-[3/2]">
+                            <div class="absolute inset-0 rounded-2xl ring-1 ring-inset ring-gray-900/10"></div>
+                        </div>
+                        <div class="max-w-xl">
+                            <div class="mt-8 flex items-center gap-x-4 text-xs">
+                                <time datetime="{{ $article->created_at->format('Y-m-d') }}"
+                                    class="text-gray-500">{{ $article->created_at->format('d.m.Y') }}</time>
+                                @if ($article->category)
+                                    <a href="{{ route('news.category', $article->category->slug) }}"
+                                        class="relative z-10 rounded-full bg-gray-50 px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-100">{{ $article->category->name }}</a>
+                                @endif
+                            </div>
+                            <div class="group relative">
+                                <h3 class="mt-3 text-lg font-semibold leading-6 text-gray-900 group-hover:text-gray-600">
+                                    <a href="{{ route('news.show', $article->slug) }}">
+                                        <span class="absolute inset-0"></span>
+                                        {{ $article->title }}
+                                    </a>
+                                </h3>
+                                <p class="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">
+                                    {{ strip_tags($article->content) }}</p>
+                            </div>
+                        </div>
+                    </article>
+                @endforeach
+            </div>
+
+            <div class="mt-16 flex justify-center">
+                <a href="{{ route('news.index') }}"
+                    class="rounded-xl bg-indigo-600 px-6 py-3 text-lg font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-all duration-200 hover:scale-105">
+                    Все новости
+                </a>
+            </div>
+        </div>
+    </section>
+
     <!-- Контакты -->
     <section class="relative isolate overflow-hidden bg-white py-24 sm:py-32">
         <div class="absolute -top-80 left-[max(6rem,33%)] -z-10 transform-gpu blur-3xl sm:left-1/2 md:top-20 lg:ml-20 xl:top-3 xl:ml-56"

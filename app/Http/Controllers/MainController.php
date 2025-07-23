@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Article;
+use Illuminate\Support\Facades\View;
 
 class MainController extends Controller
 {
     public function __construct()
     {
-        \View::share('company', \App\Models\Company::first());
+        View::share('company', \App\Models\Company::first());
     }
 
     public function index()
@@ -16,6 +18,11 @@ class MainController extends Controller
         return view('main.index', [
             'categories' => \App\Models\ServiceCategory::orderBy('order', 'asc')->get(),
             'reviews' => \App\Models\Review::where('is_approved', true)->limit(6)->orderBy('created_at', 'desc')->get(),
+            'latestArticles' => Article::with('category')
+                ->active()
+                ->latest()
+                ->limit(3)
+                ->get(),
         ]);
     }
     public function about()

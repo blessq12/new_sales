@@ -72,6 +72,7 @@
         <callback-form></callback-form>
         <review-form></review-form>
         <cookie-consent></cookie-consent>
+        <chatbot></chatbot>
     </div>
 </body>
 

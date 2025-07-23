@@ -49,3 +49,8 @@ Route::get('/get-link/{id}', function ($id) {
 
     return redirect($qrCode->qr_link);
 });
+
+Route::prefix('chatbot')->group(function () {
+    Route::get('start', [App\Http\Controllers\Api\ChatbotController::class, 'start']);
+    Route::post('answer', [App\Http\Controllers\Api\ChatbotController::class, 'answer']);
+});
