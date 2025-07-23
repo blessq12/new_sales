@@ -24,150 +24,253 @@ class TelegramChatFlowService
 
     public function startServiceFlow()
     {
-        $this->chat->update(['flow_state' => 'service_selection']);
+        try {
+            Log::debug('Starting service flow');
 
-        $categories = ServiceCategory::select('id', 'name', 'slug')->get();
-        $buttons = [];
-        foreach ($categories as $category) {
-            $buttons[] = [
-                ['text' => $category->name, 'callback_data' => "category_{$category->id}"]
+            // Сохраняем состояние
+            $this->chat->flow_state = 'service_selection';
+            $this->chat->flow_data = null;
+            $this->chat->save();
+
+            Log::debug('Flow state updated', [
+                'state' => $this->chat->flow_state,
+                'chat_id' => $this->chat->chat_id
+            ]);
+
+            $categories = ServiceCategory::select('id', 'name', 'slug')->get();
+            $buttons = [];
+            foreach ($categories as $category) {
+                $buttons[] = [
+                    ['text' => $category->name, 'callback_data' => "category_{$category->id}"]
+                ];
+            }
+
+            $keyboard = [
+                'inline_keyboard' => $buttons
             ];
+
+            $message = [
+                "Выберите категорию услуг:",
+                "",
+                "После выбора категории я покажу доступные услуги."
+            ];
+
+            $this->messageService->sendMessageToChat($message, $this->chat->chat_id, $keyboard);
+        } catch (\Exception $e) {
+            Log::error('Failed to start service flow: ' . $e->getMessage(), [
+                'chat_id' => $this->chat->chat_id,
+                'trace' => $e->getTraceAsString()
+            ]);
         }
-
-        $keyboard = [
-            'inline_keyboard' => $buttons
-        ];
-
-        $message = [
-            "Выберите категорию услуг:",
-            "",
-            "После выбора категории я покажу доступные услуги."
-        ];
-
-        $this->messageService->sendMessageToChat($message, $this->chat->chat_id, $keyboard);
     }
 
     public function processCallback($callbackData)
     {
-        $parts = explode('_', $callbackData);
-        $type = $parts[0];
-        $value = $parts[1];
+        try {
+            Log::debug('Processing callback', [
+                'callback' => $callbackData,
+                'current_state' => $this->chat->flow_state,
+                'chat_id' => $this->chat->chat_id
+            ]);
 
-        switch ($this->chat->flow_state) {
-            case 'service_selection':
-                if ($type === 'category') {
-                    return $this->handleCategorySelection($value);
-                }
-                break;
-            case 'service_details':
-                if ($type === 'service') {
-                    return $this->handleServiceSelection($value);
-                }
-                break;
-            case 'timing':
-                if ($type === 'time') {
-                    return $this->handleTimingSelection($value);
-                }
-                break;
+            $parts = explode('_', $callbackData);
+            if (count($parts) !== 2) {
+                Log::warning('Invalid callback data format', ['callback' => $callbackData]);
+                return false;
+            }
+
+            $type = $parts[0];
+            $value = $parts[1];
+
+            switch ($this->chat->flow_state) {
+                case 'service_selection':
+                    if ($type === 'category') {
+                        return $this->handleCategorySelection($value);
+                    }
+                    break;
+                case 'service_details':
+                    if ($type === 'service') {
+                        return $this->handleServiceSelection($value);
+                    }
+                    break;
+                case 'timing':
+                    if ($type === 'time') {
+                        return $this->handleTimingSelection($value);
+                    }
+                    break;
+            }
+
+            Log::warning('Unhandled callback', [
+                'type' => $type,
+                'value' => $value,
+                'state' => $this->chat->flow_state
+            ]);
+
+            return false;
+        } catch (\Exception $e) {
+            Log::error('Failed to process callback: ' . $e->getMessage(), [
+                'callback' => $callbackData,
+                'chat_id' => $this->chat->chat_id,
+                'trace' => $e->getTraceAsString()
+            ]);
+            return false;
         }
-
-        return false;
     }
 
     protected function handleCategorySelection($categoryId)
     {
-        $this->chat->update([
-            'flow_state' => 'service_details',
-            'flow_data' => json_encode(['category_id' => $categoryId])
-        ]);
+        try {
+            Log::debug('Handling category selection', [
+                'category_id' => $categoryId,
+                'chat_id' => $this->chat->chat_id
+            ]);
 
-        $services = Service::where('service_category_id', $categoryId)
-            ->select('id', 'name', 'slug', 'price')
-            ->get();
+            // Сохраняем состояние и данные
+            $this->chat->flow_state = 'service_details';
+            $this->chat->flow_data = json_encode(['category_id' => $categoryId]);
+            $this->chat->save();
 
-        $buttons = [];
-        foreach ($services as $service) {
-            $buttons[] = [
-                ['text' => "{$service->name} - {$service->price}₽", 'callback_data' => "service_{$service->id}"]
+            Log::debug('Flow state updated', [
+                'state' => $this->chat->flow_state,
+                'data' => $this->chat->flow_data
+            ]);
+
+            $services = Service::where('service_category_id', $categoryId)
+                ->select('id', 'name', 'slug', 'price')
+                ->get();
+
+            $buttons = [];
+            foreach ($services as $service) {
+                $buttons[] = [
+                    ['text' => "{$service->name} - {$service->price}₽", 'callback_data' => "service_{$service->id}"]
+                ];
+            }
+            $buttons[] = [['text' => '« Назад к категориям', 'callback_data' => 'back_categories']];
+
+            $keyboard = [
+                'inline_keyboard' => $buttons
             ];
+
+            $message = [
+                "Выберите интересующую услугу:",
+                "",
+                "Цены указаны за базовую стоимость работ."
+            ];
+
+            return $this->messageService->sendMessageToChat($message, $this->chat->chat_id, $keyboard);
+        } catch (\Exception $e) {
+            Log::error('Failed to handle category selection: ' . $e->getMessage(), [
+                'category_id' => $categoryId,
+                'chat_id' => $this->chat->chat_id,
+                'trace' => $e->getTraceAsString()
+            ]);
+            return false;
         }
-        $buttons[] = [['text' => '« Назад к категориям', 'callback_data' => 'back_categories']];
-
-        $keyboard = [
-            'inline_keyboard' => $buttons
-        ];
-
-        $message = [
-            "Выберите интересующую услугу:",
-            "",
-            "Цены указаны за базовую стоимость работ."
-        ];
-
-        $this->messageService->sendMessageToChat($message, $this->chat->chat_id, $keyboard);
-        return true;
     }
 
     protected function handleServiceSelection($serviceId)
     {
-        $this->chat->update([
-            'flow_state' => 'timing',
-            'flow_data' => json_encode([
-                'category_id' => json_decode($this->chat->flow_data)->category_id,
-                'service_id' => $serviceId
-            ])
-        ]);
+        try {
+            Log::debug('Handling service selection', [
+                'service_id' => $serviceId,
+                'chat_id' => $this->chat->chat_id
+            ]);
 
-        $buttons = [
-            [['text' => 'Как можно скорее', 'callback_data' => 'time_asap']],
-            [['text' => 'Сегодня', 'callback_data' => 'time_today']],
-            [['text' => 'Завтра', 'callback_data' => 'time_tomorrow']],
-            [['text' => 'В течение недели', 'callback_data' => 'time_week']],
-            [['text' => '« Назад к услугам', 'callback_data' => 'back_services']]
-        ];
+            $flowData = json_decode($this->chat->flow_data, true);
+            $flowData['service_id'] = $serviceId;
 
-        $keyboard = [
-            'inline_keyboard' => $buttons
-        ];
+            $this->chat->flow_state = 'timing';
+            $this->chat->flow_data = json_encode($flowData);
+            $this->chat->save();
 
-        $message = [
-            "Когда вам удобно принять мастера?",
-            "",
-            "Выберите примерное время:"
-        ];
+            Log::debug('Flow state updated', [
+                'state' => $this->chat->flow_state,
+                'data' => $this->chat->flow_data
+            ]);
 
-        $this->messageService->sendMessageToChat($message, $this->chat->chat_id, $keyboard);
-        return true;
+            $buttons = [
+                [['text' => 'Как можно скорее', 'callback_data' => 'time_asap']],
+                [['text' => 'Сегодня', 'callback_data' => 'time_today']],
+                [['text' => 'Завтра', 'callback_data' => 'time_tomorrow']],
+                [['text' => 'В течение недели', 'callback_data' => 'time_week']],
+                [['text' => '« Назад к услугам', 'callback_data' => 'back_services']]
+            ];
+
+            $keyboard = [
+                'inline_keyboard' => $buttons
+            ];
+
+            $message = [
+                "Когда вам удобно принять мастера?",
+                "",
+                "Выберите примерное время:"
+            ];
+
+            return $this->messageService->sendMessageToChat($message, $this->chat->chat_id, $keyboard);
+        } catch (\Exception $e) {
+            Log::error('Failed to handle service selection: ' . $e->getMessage(), [
+                'service_id' => $serviceId,
+                'chat_id' => $this->chat->chat_id,
+                'trace' => $e->getTraceAsString()
+            ]);
+            return false;
+        }
     }
 
     protected function handleTimingSelection($timing)
     {
-        $this->chat->update([
-            'flow_state' => 'contact_info',
-            'flow_data' => json_encode([
-                'category_id' => json_decode($this->chat->flow_data)->category_id,
-                'service_id' => json_decode($this->chat->flow_data)->service_id,
-                'timing' => $timing
-            ])
-        ]);
+        try {
+            Log::debug('Handling timing selection', [
+                'timing' => $timing,
+                'chat_id' => $this->chat->chat_id
+            ]);
 
-        $message = [
-            "Отлично! Для оформления заявки мне нужны ваши контактные данные.",
-            "",
-            "Пожалуйста, отправьте ваше имя и номер телефона в формате:",
-            "Иван, +79991234567"
-        ];
+            $flowData = json_decode($this->chat->flow_data, true);
+            $flowData['timing'] = $timing;
 
-        $this->messageService->sendMessageToChat($message, $this->chat->chat_id);
-        return true;
+            $this->chat->flow_state = 'contact_info';
+            $this->chat->flow_data = json_encode($flowData);
+            $this->chat->save();
+
+            Log::debug('Flow state updated', [
+                'state' => $this->chat->flow_state,
+                'data' => $this->chat->flow_data
+            ]);
+
+            $message = [
+                "Отлично! Для оформления заявки мне нужны ваши контактные данные.",
+                "",
+                "Пожалуйста, отправьте ваше имя и номер телефона в формате:",
+                "Иван, +79991234567"
+            ];
+
+            return $this->messageService->sendMessageToChat($message, $this->chat->chat_id);
+        } catch (\Exception $e) {
+            Log::error('Failed to handle timing selection: ' . $e->getMessage(), [
+                'timing' => $timing,
+                'chat_id' => $this->chat->chat_id,
+                'trace' => $e->getTraceAsString()
+            ]);
+            return false;
+        }
     }
 
     public function handleContactInfo($messageText)
     {
-        if (!$this->chat->flow_state === 'contact_info') {
-            return false;
-        }
-
         try {
+            Log::debug('Handling contact info', [
+                'message' => $messageText,
+                'chat_id' => $this->chat->chat_id,
+                'state' => $this->chat->flow_state
+            ]);
+
+            if ($this->chat->flow_state !== 'contact_info') {
+                Log::warning('Invalid state for contact info', [
+                    'current_state' => $this->chat->flow_state
+                ]);
+                return false;
+            }
+
             // Парсим имя и телефон из сообщения
             $parts = array_map('trim', explode(',', $messageText));
             if (count($parts) !== 2) {
@@ -194,6 +297,8 @@ class TelegramChatFlowService
                 ])
             ]);
 
+            Log::debug('Lead created', ['lead_id' => $lead->id]);
+
             // Отправляем уведомление в админский чат
             $service = Service::find($flowData['service_id']);
             $message = [
@@ -219,17 +324,19 @@ class TelegramChatFlowService
             $this->messageService->sendMessageToChat($message, $this->chat->chat_id);
 
             // Сбрасываем состояние
-            $this->chat->update([
-                'flow_state' => null,
-                'flow_data' => null
-            ]);
+            $this->chat->flow_state = null;
+            $this->chat->flow_data = null;
+            $this->chat->save();
+
+            Log::debug('Flow completed and reset');
 
             return true;
         } catch (\Exception $e) {
             Log::error('Failed to process contact info: ' . $e->getMessage(), [
                 'message' => $messageText,
                 'chat_id' => $this->chat->chat_id,
-                'flow_data' => $this->chat->flow_data
+                'flow_data' => $this->chat->flow_data,
+                'trace' => $e->getTraceAsString()
             ]);
 
             $message = [
