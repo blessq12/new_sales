@@ -293,6 +293,8 @@ export default {
             },
             showScrollIndicator: false,
             isScrolledToBottom: true,
+            autoOpenTimer: null,
+            hasBeenOpened: false, // Флаг для отслеживания, был ли уже открыт чат
         };
     },
 
@@ -303,6 +305,11 @@ export default {
             if (messagesContainer) {
                 messagesContainer.addEventListener("scroll", this.handleScroll);
             }
+
+            // Запускаем таймер только если чат еще не открывался
+            if (!this.hasBeenOpened && !this.getChatOpenedCookie()) {
+                this.startAutoOpenTimer();
+            }
         });
     },
 
@@ -312,11 +319,52 @@ export default {
         if (messagesContainer) {
             messagesContainer.removeEventListener("scroll", this.handleScroll);
         }
+        // Очищаем таймер при уничтожении компонента
+        if (this.autoOpenTimer) {
+            clearTimeout(this.autoOpenTimer);
+        }
     },
 
     methods: {
+        startAutoOpenTimer() {
+            this.autoOpenTimer = setTimeout(() => {
+                if (!this.isOpen && !this.hasBeenOpened) {
+                    this.openChat();
+                    this.hasBeenOpened = true;
+                    this.setChatOpenedCookie();
+                }
+            }, 30000); // 30 секунд
+        },
+
+        // Сохраняем в куки информацию о том, что чат уже открывался
+        setChatOpenedCookie() {
+            const date = new Date();
+            date.setTime(date.getTime() + 24 * 60 * 60 * 1000); // Куки на 24 часа
+            document.cookie =
+                "chatbot_opened=true; expires=" +
+                date.toUTCString() +
+                "; path=/";
+        },
+
+        // Проверяем, открывался ли уже чат
+        getChatOpenedCookie() {
+            const cookies = document.cookie.split(";");
+            for (let cookie of cookies) {
+                const [name, value] = cookie.trim().split("=");
+                if (name === "chatbot_opened") {
+                    return value === "true";
+                }
+            }
+            return false;
+        },
+
         async openChat() {
             this.isOpen = true;
+            this.hasBeenOpened = true;
+            // Очищаем таймер при ручном открытии
+            if (this.autoOpenTimer) {
+                clearTimeout(this.autoOpenTimer);
+            }
             if (!this.sessionId) {
                 const { data } = await axios.get("/api/chatbot/start");
                 this.sessionId = data.session_id;
