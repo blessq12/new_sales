@@ -1,3 +1,5 @@
+@props(['service'])
+
 <div class="group relative overflow-hidden rounded-2xl bg-white shadow-md transition-all duration-300 hover:shadow-xl"
     itemscope itemtype="https://schema.org/Service">
     <!-- Изображение с эффектом масштабирования при наведении -->
@@ -17,15 +19,41 @@
             <p class="mb-4 text-gray-600 line-clamp-3" itemprop="description">
                 {{ $service->description }}
             </p>
+
+            <!-- Дополнительная микроразметка -->
+            <meta itemprop="serviceType" content="Plumbing Service">
+            <div itemprop="provider" itemscope itemtype="https://schema.org/LocalBusiness">
+                <meta itemprop="name" content="ООО Салес">
+                <meta itemprop="telephone" content="+7 (3822) 226-224">
+                <meta itemprop="url" content="https://sales-tomsk.ru">
+            </div>
+
+            <div itemprop="areaServed" itemscope itemtype="https://schema.org/GeoCircle">
+                <div itemprop="geoMidpoint" itemscope itemtype="https://schema.org/GeoCoordinates">
+                    <meta itemprop="latitude" content="56.5010">
+                    <meta itemprop="longitude" content="84.9924">
+                </div>
+                <meta itemprop="geoRadius" content="300000">
+            </div>
+
+            <div itemprop="hasOfferCatalog" itemscope itemtype="https://schema.org/OfferCatalog">
+                <meta itemprop="name" content="Сантехнические услуги в Томске">
+                <div itemprop="itemListElement" itemscope itemtype="https://schema.org/OfferCatalog">
+                    <meta itemprop="name" content="{{ $service->category->name }}">
+                </div>
+            </div>
         </div>
 
         <div class="mt-4 flex items-center justify-between">
             <div class="flex items-baseline">
                 <span class="mr-1 text-sm text-gray-500" itemprop="offers" itemscope
                     itemtype="https://schema.org/Offer">
-                    <span class="text-2xl font-bold text-indigo-600" itemprop="price">{{ $service->prefix }}
-                        {{ $service->price }}</span>
+                    <meta itemprop="availability" content="https://schema.org/InStock">
+                    <meta itemprop="priceValidUntil" content="{{ now()->addMonths(6)->format('Y-m-d') }}">
+                    <span class="text-2xl font-bold text-indigo-600" itemprop="price">{{ $service->price }}</span>
                     <span itemprop="priceCurrency" content="RUB">₽</span>
+                    <link itemprop="url"
+                        href="{{ route('services.show', ['category' => $service->category->slug, 'slug' => $service->slug]) }}">
                 </span>
             </div>
             <a href="{{ route('services.show', [

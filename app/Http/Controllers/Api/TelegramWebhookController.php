@@ -52,12 +52,10 @@ class TelegramWebhookController extends Controller
     {
         try {
             $data = $request->all();
-            Log::debug('Telegram Webhook Data: ', $data);
+            Log::info('Telegram Webhook Data: ', $data);
 
             $this->updateId = $data['update_id'] ?? null;
             $this->chatId = $this->extractChatId($data);
-
-            Log::debug('Extracted chat ID: ' . $this->chatId);
 
             if (!$this->chatId) {
                 Log::error('Chat ID is null, skipping processing.', ['data' => $data]);
@@ -82,36 +80,16 @@ class TelegramWebhookController extends Controller
             $this->entities = $data['message']['entities'] ?? null;
             $this->media = $this->parseMedia($data['message'] ?? []);
 
-            Log::debug('Parsed webhook data:', [
-                'chatId' => $this->chatId,
-                'userId' => $this->userId,
-                'messageText' => $this->messageText,
-                'isCommand' => $this->isCommand,
-                'callbackData' => $this->callbackData
-            ]);
-
             $this->storeChat();
-
-            Log::debug('Chat stored, initializing services...');
-
             $this->initializeServices();
 
-            Log::debug('Services initialized:', [
-                'chat' => $this->chat ? 'exists' : 'null',
-                'flowService' => $this->flowService ? 'exists' : 'null'
-            ]);
-
             if ($this->callbackData) {
-                Log::debug('Processing callback: ' . $this->callbackData);
                 $this->handleCallback($this->callbackData);
             } elseif ($this->inlineQuery) {
-                Log::debug('Processing inline query: ' . $this->inlineQuery);
                 $this->handleInlineQuery($this->inlineQuery);
             } elseif ($this->isCommand) {
-                Log::debug('Processing command: ' . $this->messageText);
                 $this->handleCommand($this->messageText);
             } elseif ($this->messageText || $this->media) {
-                Log::debug('Processing message: ' . $this->messageText);
                 $this->handleMessage($this->messageText);
             }
         } catch (\Exception $e) {
@@ -127,12 +105,10 @@ class TelegramWebhookController extends Controller
         try {
             if (!$this->chat) {
                 $this->chat = TelegramChat::where('chat_id', $this->chatId)->first();
-                Log::debug('Chat loaded in initializeServices:', ['exists' => (bool)$this->chat]);
             }
 
             if ($this->chat) {
                 $this->flowService = new TelegramChatFlowService($this->chat);
-                Log::debug('Flow service initialized in initializeServices');
             } else {
                 Log::warning('Cannot initialize flow service - chat not found');
             }
@@ -165,13 +141,6 @@ class TelegramWebhookController extends Controller
     private function storeChat()
     {
         try {
-            Log::debug('Storing chat data:', [
-                'chat_id' => $this->chatId,
-                'user_id' => $this->userId,
-                'first_name' => $this->userFirstName,
-                'last_name' => $this->userLastName
-            ]);
-
             // Сначала пробуем найти существующий чат
             $this->chat = TelegramChat::where('chat_id', $this->chatId)->first();
 
@@ -192,18 +161,11 @@ class TelegramWebhookController extends Controller
             $this->chat->media = $this->media ? json_encode($this->media) : null;
             $this->chat->entities = $this->entities ? json_encode($this->entities) : null;
 
-            $saved = $this->chat->save();
-
-            Log::debug('Chat ' . ($this->chat->wasRecentlyCreated ? 'created' : 'updated') . ':', [
-                'success' => $saved,
-                'chat_id' => $this->chat->chat_id,
-                'id' => $this->chat->id
-            ]);
+            $this->chat->save();
 
             // Инициализируем сервис сразу после сохранения чата
-            if ($saved && $this->chat) {
+            if ($this->chat) {
                 $this->flowService = new TelegramChatFlowService($this->chat);
-                Log::debug('Flow service initialized');
             }
         } catch (\Exception $e) {
             Log::error('Failed to store chat: ' . $e->getMessage(), [

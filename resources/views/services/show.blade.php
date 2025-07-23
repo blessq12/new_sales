@@ -98,7 +98,7 @@
                                 Посмотрите также другие услуги в категории {{ $category->name }}.
                             </p>
                             <ul class="space-y-4">
-                                @foreach ($category->services as $service)
+                                @foreach ($category->services()->take(10)->get() as $service)
                                     <a href="{{ route('services.show', [
                                         'category' => $category->slug,
                                         'slug' => $service->slug,
@@ -115,6 +115,14 @@
                                         </li>
                                     </a>
                                 @endforeach
+
+                                <a href="{{ route('services.category', $category->slug) }}"
+                                    class="flex items-center gap-4">
+                                    <li class="flex items-center gap-4 bg-indigo-400 text-white px-4 py-2 rounded-lg">
+                                        Посмотреть все услуги категории
+                                        <span class="mdi mdi-chevron-right"></span>
+                                    </li>
+                                </a>
                             </ul>
                         </div>
                     </div>

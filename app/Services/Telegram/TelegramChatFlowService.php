@@ -25,17 +25,10 @@ class TelegramChatFlowService
     public function startServiceFlow()
     {
         try {
-            Log::debug('Starting service flow');
-
             // Сохраняем состояние
             $this->chat->flow_state = 'service_selection';
             $this->chat->flow_data = null;
             $this->chat->save();
-
-            Log::debug('Flow state updated', [
-                'state' => $this->chat->flow_state,
-                'chat_id' => $this->chat->chat_id
-            ]);
 
             $categories = ServiceCategory::select('id', 'name', 'slug')->get();
             $buttons = [];
@@ -67,15 +60,8 @@ class TelegramChatFlowService
     public function processCallback($callbackData)
     {
         try {
-            Log::debug('Processing callback', [
-                'callback' => $callbackData,
-                'current_state' => $this->chat->flow_state,
-                'chat_id' => $this->chat->chat_id
-            ]);
-
             $parts = explode('_', $callbackData);
             if (count($parts) !== 2) {
-                Log::warning('Invalid callback data format', ['callback' => $callbackData]);
                 return false;
             }
 
@@ -100,12 +86,6 @@ class TelegramChatFlowService
                     break;
             }
 
-            Log::warning('Unhandled callback', [
-                'type' => $type,
-                'value' => $value,
-                'state' => $this->chat->flow_state
-            ]);
-
             return false;
         } catch (\Exception $e) {
             Log::error('Failed to process callback: ' . $e->getMessage(), [
@@ -120,20 +100,10 @@ class TelegramChatFlowService
     protected function handleCategorySelection($categoryId)
     {
         try {
-            Log::debug('Handling category selection', [
-                'category_id' => $categoryId,
-                'chat_id' => $this->chat->chat_id
-            ]);
-
             // Сохраняем состояние и данные
             $this->chat->flow_state = 'service_details';
             $this->chat->flow_data = json_encode(['category_id' => $categoryId]);
             $this->chat->save();
-
-            Log::debug('Flow state updated', [
-                'state' => $this->chat->flow_state,
-                'data' => $this->chat->flow_data
-            ]);
 
             $services = Service::where('service_category_id', $categoryId)
                 ->select('id', 'name', 'slug', 'price')
@@ -171,22 +141,12 @@ class TelegramChatFlowService
     protected function handleServiceSelection($serviceId)
     {
         try {
-            Log::debug('Handling service selection', [
-                'service_id' => $serviceId,
-                'chat_id' => $this->chat->chat_id
-            ]);
-
             $flowData = json_decode($this->chat->flow_data, true);
             $flowData['service_id'] = $serviceId;
 
             $this->chat->flow_state = 'timing';
             $this->chat->flow_data = json_encode($flowData);
             $this->chat->save();
-
-            Log::debug('Flow state updated', [
-                'state' => $this->chat->flow_state,
-                'data' => $this->chat->flow_data
-            ]);
 
             $buttons = [
                 [['text' => 'Как можно скорее', 'callback_data' => 'time_asap']],
@@ -220,22 +180,12 @@ class TelegramChatFlowService
     protected function handleTimingSelection($timing)
     {
         try {
-            Log::debug('Handling timing selection', [
-                'timing' => $timing,
-                'chat_id' => $this->chat->chat_id
-            ]);
-
             $flowData = json_decode($this->chat->flow_data, true);
             $flowData['timing'] = $timing;
 
             $this->chat->flow_state = 'contact_info';
             $this->chat->flow_data = json_encode($flowData);
             $this->chat->save();
-
-            Log::debug('Flow state updated', [
-                'state' => $this->chat->flow_state,
-                'data' => $this->chat->flow_data
-            ]);
 
             $message = [
                 "Отлично! Для оформления заявки мне нужны ваши контактные данные.",
@@ -258,16 +208,7 @@ class TelegramChatFlowService
     public function handleContactInfo($messageText)
     {
         try {
-            Log::debug('Handling contact info', [
-                'message' => $messageText,
-                'chat_id' => $this->chat->chat_id,
-                'state' => $this->chat->flow_state
-            ]);
-
             if ($this->chat->flow_state !== 'contact_info') {
-                Log::warning('Invalid state for contact info', [
-                    'current_state' => $this->chat->flow_state
-                ]);
                 return false;
             }
 
@@ -296,8 +237,6 @@ class TelegramChatFlowService
                     'chat_id' => $this->chat->chat_id
                 ])
             ]);
-
-            Log::debug('Lead created', ['lead_id' => $lead->id]);
 
             // Отправляем уведомление в админский чат
             $service = Service::find($flowData['service_id']);
@@ -328,14 +267,10 @@ class TelegramChatFlowService
             $this->chat->flow_data = null;
             $this->chat->save();
 
-            Log::debug('Flow completed and reset');
-
             return true;
         } catch (\Exception $e) {
             Log::error('Failed to process contact info: ' . $e->getMessage(), [
-                'message' => $messageText,
                 'chat_id' => $this->chat->chat_id,
-                'flow_data' => $this->chat->flow_data,
                 'trace' => $e->getTraceAsString()
             ]);
 

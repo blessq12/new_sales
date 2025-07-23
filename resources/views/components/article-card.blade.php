@@ -1,3 +1,5 @@
+@props(['article'])
+
 <div class="group relative overflow-hidden rounded-2xl bg-white shadow-md transition-all duration-300 hover:shadow-xl"
     itemscope itemtype="https://schema.org/Article">
     <!-- Изображение с эффектом масштабирования при наведении -->
@@ -13,7 +15,8 @@
             <!-- Категория -->
             <div class="mb-3">
                 <span
-                    class="inline-flex items-center rounded-md bg-indigo-500/10 px-2 py-1 text-xs font-medium text-indigo-600 ring-1 ring-inset ring-indigo-500/20">
+                    class="inline-flex items-center rounded-md bg-indigo-500/10 px-2 py-1 text-xs font-medium text-indigo-600 ring-1 ring-inset ring-indigo-500/20"
+                    itemprop="articleSection">
                     {{ $article->category->name }}
                 </span>
             </div>
@@ -25,6 +28,25 @@
             <p class="mb-4 text-gray-600 line-clamp-2" itemprop="description">
                 {{ strip_tags($article->content) }}
             </p>
+
+            <!-- Метаданные статьи -->
+            <div itemprop="author" itemscope itemtype="https://schema.org/Organization">
+                <meta itemprop="name" content="ООО Салес">
+                <meta itemprop="url" content="https://sales-tomsk.ru">
+            </div>
+
+            <div itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
+                <meta itemprop="name" content="ООО Салес">
+                <meta itemprop="url" content="https://sales-tomsk.ru">
+                <div itemprop="logo" itemscope itemtype="https://schema.org/ImageObject">
+                    <meta itemprop="url" content="https://sales-tom.ru/wp-content/uploads/2024/09/logo-sales-tom.png">
+                </div>
+            </div>
+
+            <meta itemprop="dateModified" content="{{ $article->updated_at->toIso8601String() }}">
+            <meta itemprop="wordCount" content="{{ str_word_count(strip_tags($article->content)) }}">
+            <meta itemprop="url" content="{{ route('news.show', $article->slug) }}">
+            <meta itemprop="mainEntityOfPage" content="{{ route('news.show', $article->slug) }}">
         </div>
 
         <div class="mt-4 flex items-center justify-between">

@@ -31,12 +31,6 @@ class TelegramService
     protected function makeRequest($method, $url, $options = [])
     {
         try {
-            Log::debug("Making Telegram API request", [
-                'method' => $method,
-                'url' => $url,
-                'options' => $options
-            ]);
-
             $response = $this->client->request($method, $url, $options);
             $body = json_decode($response->getBody(), true);
 
@@ -53,7 +47,6 @@ class TelegramService
             Log::error("Telegram API request failed: " . $e->getMessage(), [
                 'method' => $method,
                 'url' => $url,
-                'options' => $options,
                 'trace' => $e->getTraceAsString()
             ]);
             return false;

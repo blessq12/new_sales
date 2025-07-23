@@ -15,6 +15,27 @@
 
     <!-- Список услуг -->
     <div class="mx-auto max-w-7xl px-6 lg:px-8 py-24">
+        <!-- Общий рейтинг -->
+        <div class="mb-12 text-center" itemscope itemtype="https://schema.org/LocalBusiness">
+            <meta itemprop="name" content="ООО Салес">
+            <div itemprop="aggregateRating" itemscope itemtype="https://schema.org/AggregateRating">
+                <div class="text-4xl font-bold text-indigo-600 mb-2">
+                    <span itemprop="ratingValue">{{ number_format($reviews->avg('rating'), 1) }}</span>
+                    <span class="text-gray-400">/</span>
+                    <span itemprop="bestRating">5</span>
+                </div>
+                <div class="flex items-center justify-center mb-4">
+                    @for ($i = 1; $i <= 5; $i++)
+                        <span
+                            class="mdi mdi-star{{ $i <= round($reviews->avg('rating')) ? ' text-yellow-400' : ' text-gray-300' }} text-2xl"></span>
+                    @endfor
+                </div>
+                <p class="text-gray-600">
+                    На основе <span itemprop="reviewCount">{{ $reviews->count() }}</span> отзывов
+                </p>
+            </div>
+        </div>
+
         <div class="mb-6">
             <button @click="openModal('review')"
                 class="inline-flex items-center px-4 py-2 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200">
