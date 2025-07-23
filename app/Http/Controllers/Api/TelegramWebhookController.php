@@ -50,44 +50,75 @@ class TelegramWebhookController extends Controller
 
     public function webhookHandler(Request $request)
     {
-        $data = $request->all();
-        Log::debug('Telegram Webhook Data: ', $data);
-        $this->updateId = $data['update_id'] ?? null;
-        $this->chatId = $this->extractChatId($data);
-        $this->userId = $data['message']['from']['id'] ?? $data['callback_query']['from']['id'] ?? $data['inline_query']['from']['id'] ?? null;
-        $this->userFirstName = $data['message']['from']['first_name'] ?? $data['callback_query']['from']['first_name'] ?? $data['inline_query']['from']['first_name'] ?? 'друг';
-        $this->userLastName = $data['message']['from']['last_name'] ?? $data['callback_query']['from']['last_name'] ?? $data['inline_query']['from']['last_name'] ?? null;
-        $this->username = $data['message']['from']['username'] ?? $data['callback_query']['from']['username'] ?? $data['inline_query']['from']['username'] ?? null;
-        $this->messageId = $data['message']['message_id'] ?? $data['callback_query']['message']['message_id'] ?? null;
-        $this->messageText = $data['message']['text'] ?? null;
-        $this->isCommand = $this->messageText && str_starts_with($this->messageText, '/');
-        $this->callbackData = $data['callback_query']['data'] ?? null;
-        $this->inlineQuery = $data['inline_query']['query'] ?? null;
-        $this->chatType = $data['message']['chat']['type'] ?? $data['callback_query']['message']['chat']['type'] ?? null;
-        $this->entities = $data['message']['entities'] ?? null;
-        $this->media = $this->parseMedia($data['message'] ?? []);
+        try {
+            $data = $request->all();
+            Log::debug('Telegram Webhook Data: ', $data);
 
-        if (!$this->chatId) {
-            Log::error('Chat ID is null, skipping processing.', ['data' => $data]);
-            return;
-        }
+            $this->updateId = $data['update_id'] ?? null;
+            $this->chatId = $this->extractChatId($data);
 
-        if (in_array($this->chatId, $this->blacklistedChatIds)) {
-            Log::info('Chat ID in blacklist: ' . $this->chatId);
-            return;
-        }
+            Log::debug('Extracted chat ID: ' . $this->chatId);
 
-        $this->storeChat();
-        $this->initializeServices();
+            if (!$this->chatId) {
+                Log::error('Chat ID is null, skipping processing.', ['data' => $data]);
+                return;
+            }
 
-        if ($this->callbackData) {
-            $this->handleCallback($this->callbackData);
-        } elseif ($this->inlineQuery) {
-            $this->handleInlineQuery($this->inlineQuery);
-        } elseif ($this->isCommand) {
-            $this->handleCommand($this->messageText);
-        } elseif ($this->messageText || $this->media) {
-            $this->handleMessage($this->messageText);
+            if (in_array($this->chatId, $this->blacklistedChatIds)) {
+                Log::info('Chat ID in blacklist: ' . $this->chatId);
+                return;
+            }
+
+            $this->userId = $data['message']['from']['id'] ?? $data['callback_query']['from']['id'] ?? $data['inline_query']['from']['id'] ?? null;
+            $this->userFirstName = $data['message']['from']['first_name'] ?? $data['callback_query']['from']['first_name'] ?? $data['inline_query']['from']['first_name'] ?? 'друг';
+            $this->userLastName = $data['message']['from']['last_name'] ?? $data['callback_query']['from']['last_name'] ?? $data['inline_query']['from']['last_name'] ?? null;
+            $this->username = $data['message']['from']['username'] ?? $data['callback_query']['from']['username'] ?? $data['inline_query']['from']['username'] ?? null;
+            $this->messageId = $data['message']['message_id'] ?? $data['callback_query']['message']['message_id'] ?? null;
+            $this->messageText = $data['message']['text'] ?? null;
+            $this->isCommand = $this->messageText && str_starts_with($this->messageText, '/');
+            $this->callbackData = $data['callback_query']['data'] ?? null;
+            $this->inlineQuery = $data['inline_query']['query'] ?? null;
+            $this->chatType = $data['message']['chat']['type'] ?? $data['callback_query']['message']['chat']['type'] ?? null;
+            $this->entities = $data['message']['entities'] ?? null;
+            $this->media = $this->parseMedia($data['message'] ?? []);
+
+            Log::debug('Parsed webhook data:', [
+                'chatId' => $this->chatId,
+                'userId' => $this->userId,
+                'messageText' => $this->messageText,
+                'isCommand' => $this->isCommand,
+                'callbackData' => $this->callbackData
+            ]);
+
+            $this->storeChat();
+
+            Log::debug('Chat stored, initializing services...');
+
+            $this->initializeServices();
+
+            Log::debug('Services initialized:', [
+                'chat' => $this->chat ? 'exists' : 'null',
+                'flowService' => $this->flowService ? 'exists' : 'null'
+            ]);
+
+            if ($this->callbackData) {
+                Log::debug('Processing callback: ' . $this->callbackData);
+                $this->handleCallback($this->callbackData);
+            } elseif ($this->inlineQuery) {
+                Log::debug('Processing inline query: ' . $this->inlineQuery);
+                $this->handleInlineQuery($this->inlineQuery);
+            } elseif ($this->isCommand) {
+                Log::debug('Processing command: ' . $this->messageText);
+                $this->handleCommand($this->messageText);
+            } elseif ($this->messageText || $this->media) {
+                Log::debug('Processing message: ' . $this->messageText);
+                $this->handleMessage($this->messageText);
+            }
+        } catch (\Exception $e) {
+            Log::error('Webhook handler error: ' . $e->getMessage(), [
+                'trace' => $e->getTraceAsString(),
+                'data' => $data ?? null
+            ]);
         }
     }
 
