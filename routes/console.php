@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Log;
 Schedule::command('app:sitemap-generate')->dailyAt('00:00');
 Schedule::command('app:yandex-feed')->dailyAt('00:00');
 Schedule::command('articles:publish-scheduled')->everyMinute();
-Schedule::command('app:get-popular-services')->weekends();
+Schedule::command('app:get-popular-services')->weeklyOn(0, '12:00');
 
 
 Schedule::call(function () {
