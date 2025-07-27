@@ -1,4 +1,4 @@
 User-agent: *
 Disallow:
 
-Sitemap: https://new-sales.ru/sitemap.xml
+Sitemap: https://sales-tomsk.ru/sitemap.xml
