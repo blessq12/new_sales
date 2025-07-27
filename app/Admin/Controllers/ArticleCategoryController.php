@@ -34,7 +34,7 @@ class ArticleCategoryController extends AdminController
 
         $form->text('name', 'Название')->required();
         $form->text('slug', 'URL')->readonly()->help('URL будет автоматически генерироваться из названия');
-        $form->textarea('description', 'Описание');
+        $form->textarea('description', 'Описание')->required();
         $form->select('parent_id', 'Родительская категория')
             ->options(ArticleCategory::where('id', '!=', $form->model()->id)
                 ->pluck('name', 'id'))
