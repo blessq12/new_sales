@@ -17,6 +17,7 @@ class Kernel extends ConsoleKernel
         Commands\GetPopularServices::class,
         Commands\PublishScheduledArticles::class,
         Commands\GenerateYandexDirectXlsx::class,
+        Commands\ListAllUrls::class,
     ];
 
     /**
